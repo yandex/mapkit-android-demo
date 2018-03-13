@@ -19,7 +19,7 @@ apply plugin: "com.android.application"
 
 android {
     dependencies {
-        compile 'com.yandex.android:mapkit:3.0.0'
+        implementation 'com.yandex.android:mapkit:3.0.0'
     }
 
     compileSdkVersion 27

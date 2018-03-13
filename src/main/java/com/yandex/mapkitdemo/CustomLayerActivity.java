@@ -8,6 +8,7 @@ import com.yandex.mapkit.TileId;
 import com.yandex.mapkit.Version;
 import com.yandex.mapkit.layers.Layer;
 import com.yandex.mapkit.layers.LayerOptions;
+import com.yandex.mapkit.map.MapType;
 import com.yandex.mapkit.tiles.UrlProvider;
 import com.yandex.mapkit.resource_url_provider.DefaultUrlProvider;
 import com.yandex.mapkit.geometry.geo.Projection;
@@ -49,6 +50,7 @@ public class CustomLayerActivity extends Activity {
         projection = Projections.createWgs84Mercator();
 
         mapView = (MapView)findViewById(R.id.mapview);
+        mapView.getMap().setMapType(MapType.NONE);
         Layer l = mapView.getMap().addLayer(
                 "mapkit_logo",
                 "image/png",
