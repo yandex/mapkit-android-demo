@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="map">Map</string>/string
+    <string name="user_location">User Location</string>
+    <string name="driving">Driving</string>
+    <string name="mapobjects">Map Objects</string>
+    <string name="search">Search</string>
+    <string name="suggest">Suggest</string>
+    <string name="panorama">Panorama</string>
+    <string name="custom_layer">Custom Layer</string>
+
+    <string name="not_found_error_message">Not found</string>
+    <string name="network_error_message">Network error</string>
+    <string name="remote_error_message">Remote server error</string>
+    <string name="unknown_error_message">Unknown error</string>
+
+    <string name="app_name">MapKit Demo</string>
+    <string name="package_name">com.yandex.mapkitdemo</string>
+</resources>

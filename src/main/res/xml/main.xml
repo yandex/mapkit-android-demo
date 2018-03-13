@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+        android:title="@string/app_name">
+        <Preference
+            android:key="map_test"
+            android:title="@string/map">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:targetPackage="@string/package_name"
+                android:targetClass="com.yandex.mapkitdemo.MapActivity" />
+        </Preference>
+        <Preference
+            android:key="mapobjects_test"
+            android:title="@string/mapobjects">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:targetPackage="@string/package_name"
+                android:targetClass="com.yandex.mapkitdemo.MapObjectsActivity" />
+        </Preference>
+        <Preference
+            android:key="masstransit_test"
+            android:title="@string/driving">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:targetPackage="@string/package_name"
+                android:targetClass="com.yandex.mapkitdemo.DrivingActivity" />
+        </Preference>
+        <Preference
+            android:key="user_location_test"
+            android:title="@string/user_location">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:targetPackage="@string/package_name"
+                android:targetClass="com.yandex.mapkitdemo.UserLocationActivity" />
+        </Preference>
+        <Preference
+            android:key="search_test"
+            android:title="@string/search">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:targetPackage="@string/package_name"
+                android:targetClass="com.yandex.mapkitdemo.SearchActivity" />
+        </Preference>
+        <Preference
+            android:key="suggest_test"
+            android:title="@string/suggest">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:targetPackage="@string/package_name"
+                android:targetClass="com.yandex.mapkitdemo.SuggestActivity" />
+        </Preference>
+        <Preference
+            android:key="panorama_test"
+            android:title="@string/panorama">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="@string/package_name"
+            android:targetClass="com.yandex.mapkitdemo.PanoramaActivity" />
+        </Preference>
+        <Preference
+            android:key="custom_layer_test"
+            android:title="@string/custom_layer">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:targetPackage="@string/package_name"
+                android:targetClass="com.yandex.mapkitdemo.CustomLayerActivity" />
+        </Preference>
+    </PreferenceCategory>
+</PreferenceScreen>
