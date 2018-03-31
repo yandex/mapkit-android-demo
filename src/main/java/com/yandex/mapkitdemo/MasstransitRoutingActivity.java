@@ -99,7 +99,6 @@ public class MasstransitRoutingActivity extends Activity
                         SubpolylineHelper.subpolyline(
                                 routes.get(0).getGeometry(), section.getGeometry()));
             }
-            // mapObjects.addPolyline(routes.get(0).getGeometry());
         }
     }
 
@@ -118,7 +117,7 @@ public class MasstransitRoutingActivity extends Activity
     private void drawSection(SectionMetadata.SectionData data,
                              Polyline geometry) {
         // Draw a section polyline on a map
-        // Set its color depending on an information which the section contains
+        // Set its color depending on the information which the section contains
         PolylineMapObject polylineMapObject = mapObjects.addPolyline(geometry);
         // Masstransit route section defines exactly one on the following
         // 1. Wait until public transport unit arrives
@@ -131,10 +130,11 @@ public class MasstransitRoutingActivity extends Activity
         if (data.getTransports() != null) {
             // A ride on a public transport section contains information about
             // all known public transport lines which can be used to travel from
-            // the start of the section to the end of the section along a similar geometry
+            // the start of the section to the end of the section without transfers
+            // along a similar geometry
             for (Transport transport : data.getTransports()) {
                 // Some public transport lines may have a color associated with them
-                // Typically this is the of underground lines
+                // Typically this is the case of underground lines
                 if (transport.getLine().getStyle() != null) {
                     polylineMapObject.setStrokeColor(
                             // The color is in RRGGBB 24-bit format
@@ -175,6 +175,8 @@ public class MasstransitRoutingActivity extends Activity
         // (because this list is expanding over time), therefore to get the vehicle type of
         // a public line you should iterate from the more specific ones to more common ones
         // until you get a vehicle type which you can process
+        // Some examples of vehicle types:
+        // "bus", "minibus", "trolleybus", "tramway", "underground", "railway"
         for (String type : transport.getLine().getVehicleTypes()) {
             if (knownVehicleTypes.contains(type)) {
                 return type;
