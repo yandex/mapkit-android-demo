@@ -66,5 +66,14 @@
                 android:targetPackage="@string/package_name"
                 android:targetClass="com.yandex.mapkitdemo.CustomLayerActivity" />
         </Preference>
+        <Preference
+            android:key="masstransit_routing_test"
+            android:title="@string/masstransit_routing">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:targetPackage="@string/package_name"
+                android:targetClass="com.yandex.mapkitdemo.MasstransitRoutingActivity" />
+        </Preference>
+
     </PreferenceCategory>
 </PreferenceScreen>
