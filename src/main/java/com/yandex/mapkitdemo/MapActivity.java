@@ -26,12 +26,17 @@ public class MapActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        // Application must set api key before calling initialize on MapKitFactory.
-        // It is recommended to set api key and initialize MapKit in
-        // Application onCreate method, but here we do it in each activity to
-        // make examples isolated.
+        /**
+        * Set the api key before calling initialize on MapKitFactory.
+        * It is recommended to set api key in the Application.onCreate method,
+        * but here we do it in each activity to make examples isolated.
+        */
         MapKitFactory.setApiKey(MAPKIT_API_KEY);
-        // The library must be initialized to load required native libraries.
+        /**
+        * Initialize the library to load required native libraries.
+        * It is recommended to initialize the MapKit library in the Activity.onCreate method
+        * Initializing in the Application.onCreate method may lead to extra calls and increased battery use.
+        */
         MapKitFactory.initialize(this);
         // Now MapView can be created.
         setContentView(R.layout.map);
