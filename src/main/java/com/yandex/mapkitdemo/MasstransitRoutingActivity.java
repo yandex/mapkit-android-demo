@@ -6,6 +6,8 @@ import android.widget.Toast;
 
 import com.yandex.mapkit.Animation;
 import com.yandex.mapkit.MapKitFactory;
+import com.yandex.mapkit.RequestPoint;
+import com.yandex.mapkit.RequestPointType;
 import com.yandex.mapkit.geometry.Point;
 import com.yandex.mapkit.geometry.Polyline;
 import com.yandex.mapkit.geometry.SubpolylineHelper;
@@ -13,14 +15,15 @@ import com.yandex.mapkit.map.CameraPosition;
 import com.yandex.mapkit.map.MapObjectCollection;
 import com.yandex.mapkit.map.PolylineMapObject;
 import com.yandex.mapkit.mapview.MapView;
-import com.yandex.mapkit.masstransit.MasstransitOptions;
-import com.yandex.mapkit.masstransit.MasstransitRouter;
-import com.yandex.mapkit.masstransit.Route;
-import com.yandex.mapkit.masstransit.Section;
-import com.yandex.mapkit.masstransit.SectionMetadata;
-import com.yandex.mapkit.masstransit.Session;
-import com.yandex.mapkit.masstransit.TimeOptions;
-import com.yandex.mapkit.masstransit.Transport;
+import com.yandex.mapkit.transport.TransportFactory;
+import com.yandex.mapkit.transport.masstransit.MasstransitOptions;
+import com.yandex.mapkit.transport.masstransit.MasstransitRouter;
+import com.yandex.mapkit.transport.masstransit.Route;
+import com.yandex.mapkit.transport.masstransit.Section;
+import com.yandex.mapkit.transport.masstransit.SectionMetadata;
+import com.yandex.mapkit.transport.masstransit.Session;
+import com.yandex.mapkit.transport.masstransit.TimeOptions;
+import com.yandex.mapkit.transport.masstransit.Transport;
 import com.yandex.runtime.Error;
 import com.yandex.runtime.network.NetworkError;
 import com.yandex.runtime.network.RemoteError;
@@ -55,6 +58,8 @@ public class MasstransitRoutingActivity extends Activity
     protected void onCreate(Bundle savedInstanceState) {
         MapKitFactory.setApiKey(MAPKIT_API_KEY);
         MapKitFactory.initialize(this);
+        TransportFactory.initialize(this);
+
         setContentView(R.layout.map);
         super.onCreate(savedInstanceState);
         mapView = (MapView)findViewById(R.id.mapview);
@@ -67,12 +72,16 @@ public class MasstransitRoutingActivity extends Activity
 
         mapObjects = mapView.getMap().getMapObjects().addCollection();
 
-        mtRouter = MapKitFactory.getInstance().createMasstransitRouter();
-        mtRouter.requestRoutes(ROUTE_START_LOCATION, ROUTE_END_LOCATION,
-                new MasstransitOptions(new ArrayList<String>(), new ArrayList<String>(),
-                        // Specify departure time or arrival time here
-                        new TimeOptions()),
-                this);
+
+        MasstransitOptions options = new MasstransitOptions(
+                new ArrayList<String>(),
+                new ArrayList<String>(),
+                new TimeOptions());
+        List<RequestPoint> points = new ArrayList<RequestPoint>();
+        points.add(new RequestPoint(ROUTE_START_LOCATION, new ArrayList<Point>(), RequestPointType.WAYPOINT));
+        points.add(new RequestPoint(ROUTE_END_LOCATION, new ArrayList<Point>(), RequestPointType.WAYPOINT));
+        mtRouter = TransportFactory.getInstance().createMasstransitRouter();
+        mtRouter.requestRoutes(points, options, this);
     }
 
     @Override

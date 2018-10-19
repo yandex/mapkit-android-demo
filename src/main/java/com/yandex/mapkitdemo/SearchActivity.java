@@ -19,6 +19,7 @@ import com.yandex.mapkit.map.MapObjectCollection;
 import com.yandex.mapkit.map.VisibleRegionUtils;
 import com.yandex.mapkit.mapview.MapView;
 import com.yandex.mapkit.search.Response;
+import com.yandex.mapkit.search.SearchFactory;
 import com.yandex.mapkit.search.SearchManagerType;
 import com.yandex.mapkit.search.SearchOptions;
 import com.yandex.mapkit.search.SearchManager;
@@ -57,10 +58,12 @@ public class SearchActivity extends Activity implements Session.SearchListener, 
     protected void onCreate(Bundle savedInstanceState) {
         MapKitFactory.setApiKey(MAPKIT_API_KEY);
         MapKitFactory.initialize(this);
+        SearchFactory.initialize(this);
+
         setContentView(R.layout.search);
         super.onCreate(savedInstanceState);
 
-        searchManager = MapKitFactory.getInstance().createSearchManager(SearchManagerType.COMBINED);
+        searchManager = SearchFactory.getInstance().createSearchManager(SearchManagerType.COMBINED);
 
         mapView = (MapView)findViewById(R.id.mapview);
         mapView.getMap().addCameraListener(this);

@@ -6,9 +6,10 @@ import android.widget.Toast;
 
 import com.yandex.mapkit.MapKitFactory;
 import com.yandex.mapkit.geometry.Point;
-import com.yandex.mapkit.panorama.NotFoundError;
-import com.yandex.mapkit.panorama.PanoramaService;
-import com.yandex.mapkit.panorama.PanoramaView;
+import com.yandex.mapkit.places.PlacesFactory;
+import com.yandex.mapkit.places.panorama.NotFoundError;
+import com.yandex.mapkit.places.panorama.PanoramaService;
+import com.yandex.mapkit.places.panorama.PanoramaView;
 import com.yandex.runtime.Error;
 import com.yandex.runtime.network.NetworkError;
 import com.yandex.runtime.network.RemoteError;
@@ -36,11 +37,12 @@ public class PanoramaActivity extends Activity implements PanoramaService.Search
     protected void onCreate(Bundle savedInstanceState) {
         MapKitFactory.setApiKey(MAPKIT_API_KEY);
         MapKitFactory.initialize(this);
+        PlacesFactory.initialize(this);
         setContentView(R.layout.panorama);
         super.onCreate(savedInstanceState);
         panoramaView = (PanoramaView)findViewById(R.id.panoview);
 
-        panoramaService = MapKitFactory.getInstance().createPanoramaService();
+        panoramaService = PlacesFactory.getInstance().createPanoramaService();
         searchSession = panoramaService.findNearest(SEARCH_LOCATION, this);
     }
 
