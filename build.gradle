@@ -19,7 +19,11 @@ apply plugin: "com.android.application"
 
 android {
     dependencies {
-        implementation 'com.yandex.android:mapkit:3.0.0'
+        implementation 'com.yandex.android:mapkit:3.1.1'
+        implementation 'com.yandex.android:search:3.1.1'
+        implementation 'com.yandex.android:directions:3.1.1'
+        implementation 'com.yandex.android:transport:3.1.1'
+        implementation 'com.yandex.android:places:3.1.1'
     }
 
     compileSdkVersion 27

@@ -11,8 +11,10 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.yandex.mapkit.MapKitFactory;
+import com.yandex.mapkit.search.Search;
 import com.yandex.mapkit.geometry.BoundingBox;
 import com.yandex.mapkit.geometry.Point;
+import com.yandex.mapkit.search.SearchFactory;
 import com.yandex.mapkit.search.SearchManager;
 import com.yandex.mapkit.search.SearchManagerType;
 import com.yandex.mapkit.search.SearchOptions;
@@ -55,10 +57,11 @@ public class SuggestActivity extends Activity implements SearchManager.SuggestLi
     protected void onCreate(Bundle savedInstanceState) {
         MapKitFactory.setApiKey(MAPKIT_API_KEY);
         MapKitFactory.initialize(this);
+        SearchFactory.initialize(this);
         setContentView(R.layout.suggest);
         super.onCreate(savedInstanceState);
 
-        searchManager = MapKitFactory.getInstance().createSearchManager(SearchManagerType.COMBINED);
+        searchManager = SearchFactory.getInstance().createSearchManager(SearchManagerType.COMBINED);
         EditText queryEdit = (EditText)findViewById(R.id.suggest_query);
         suggestResultView = (ListView)findViewById(R.id.suggest_result);
         suggestResult = new ArrayList<>();

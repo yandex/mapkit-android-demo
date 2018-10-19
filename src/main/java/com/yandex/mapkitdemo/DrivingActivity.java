@@ -8,12 +8,14 @@ import java.util.List;
 import java.util.ArrayList;
 
 import com.yandex.mapkit.MapKitFactory;
-import com.yandex.mapkit.driving.DrivingRouter;
-import com.yandex.mapkit.driving.DrivingOptions;
-import com.yandex.mapkit.driving.DrivingSession;
-import com.yandex.mapkit.driving.DrivingRoute;
-import com.yandex.mapkit.driving.RequestPoint;
-import com.yandex.mapkit.driving.RequestPointType;
+import com.yandex.mapkit.directions.DirectionsFactory;
+import com.yandex.mapkit.directions.driving.DrivingArrivalPoint;
+import com.yandex.mapkit.directions.driving.DrivingRouter;
+import com.yandex.mapkit.directions.driving.DrivingOptions;
+import com.yandex.mapkit.directions.driving.DrivingSession;
+import com.yandex.mapkit.directions.driving.DrivingRoute;
+import com.yandex.mapkit.directions.driving.RequestPoint;
+import com.yandex.mapkit.directions.driving.RequestPointType;
 import com.yandex.mapkit.geometry.Point;
 import com.yandex.mapkit.map.CameraPosition;
 import com.yandex.mapkit.map.MapObjectCollection;
@@ -48,13 +50,15 @@ public class DrivingActivity extends Activity implements DrivingSession.DrivingR
     protected void onCreate(Bundle savedInstanceState) {
         MapKitFactory.setApiKey(MAPKIT_API_KEY);
         MapKitFactory.initialize(this);
+        DirectionsFactory.initialize(this);
+
         setContentView(R.layout.driving);
         super.onCreate(savedInstanceState);
 
         mapView = (MapView)findViewById(R.id.mapview);
         mapView.getMap().move(new CameraPosition(
                 SCREEN_CENTER, 5, 0, 0));
-        drivingRouter = MapKitFactory.getInstance().createDrivingRouter();
+        drivingRouter = DirectionsFactory.getInstance().createDrivingRouter();
         mapObjects = mapView.getMap().getMapObjects().addCollection();
 
         submitRequest();
@@ -97,9 +101,15 @@ public class DrivingActivity extends Activity implements DrivingSession.DrivingR
         DrivingOptions options = new DrivingOptions();
         ArrayList<RequestPoint> requestPoints = new ArrayList<>();
         requestPoints.add(new RequestPoint(
-                ROUTE_START_LOCATION, new ArrayList<Point>(), RequestPointType.WAYPOINT));
+                ROUTE_START_LOCATION,
+                new ArrayList<Point>(),
+                new ArrayList<DrivingArrivalPoint>(),
+                RequestPointType.WAYPOINT));
         requestPoints.add(new RequestPoint(
-                ROUTE_END_LOCATION, new ArrayList<Point>(), RequestPointType.WAYPOINT));
+                ROUTE_END_LOCATION,
+                new ArrayList<Point>(),
+                new ArrayList<DrivingArrivalPoint>(),
+                RequestPointType.WAYPOINT));
         drivingSession = drivingRouter.requestRoutes(requestPoints, options, this);
     }
 }
