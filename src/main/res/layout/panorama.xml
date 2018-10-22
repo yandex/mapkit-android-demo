@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.yandex.mapkit.panorama.PanoramaView
+    <com.yandex.mapkit.places.panorama.PanoramaView
         android:id="@+id/panoview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
