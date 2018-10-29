@@ -9,6 +9,9 @@ import com.yandex.mapkit.MapKitFactory;
 import com.yandex.mapkit.geometry.Point;
 import com.yandex.mapkit.layers.ObjectEvent;
 import com.yandex.mapkit.map.CameraPosition;
+import com.yandex.mapkit.map.CompositeIcon;
+import com.yandex.mapkit.map.IconStyle;
+import com.yandex.mapkit.map.RotationType;
 import com.yandex.mapkit.mapview.MapView;
 import com.yandex.mapkit.user_location.UserLocationLayer;
 import com.yandex.mapkit.user_location.UserLocationObjectListener;
@@ -65,10 +68,29 @@ public class UserLocationActivity extends Activity implements UserLocationObject
                 new PointF((float)(mapView.getWidth() * 0.5), (float)(mapView.getHeight() * 0.5)),
                 new PointF((float)(mapView.getWidth() * 0.5), (float)(mapView.getHeight() * 0.83)));
 
-        userLocationView.getPin().setIcon(ImageProvider.fromResource(
-                this, R.drawable.user_arrow));
         userLocationView.getArrow().setIcon(ImageProvider.fromResource(
                 this, R.drawable.user_arrow));
+
+        CompositeIcon pinIcon = userLocationView.getPin().useCompositeIcon();
+
+        pinIcon.setIcon(
+                "icon",
+                ImageProvider.fromResource(this, R.drawable.icon),
+                new IconStyle().setAnchor(new PointF(0f, 0f))
+                        .setRotationType(RotationType.ROTATE)
+                        .setZIndex(0f)
+                        .setScale(1f)
+        );
+
+        pinIcon.setIcon(
+                "pin",
+                ImageProvider.fromResource(this, R.drawable.search_result),
+                new IconStyle().setAnchor(new PointF(0.5f, 0.5f))
+                        .setRotationType(RotationType.ROTATE)
+                        .setZIndex(1f)
+                        .setScale(0.5f)
+        );
+
         userLocationView.getAccuracyCircle().setFillColor(Color.BLUE);
     }
 
