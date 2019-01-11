@@ -3,6 +3,9 @@ package com.yandex.mapkitdemo;
 import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.yandex.mapkit.MapKitFactory;
 import com.yandex.mapkit.geometry.Circle;
@@ -20,8 +23,10 @@ import com.yandex.mapkit.map.PolylineMapObject;
 import com.yandex.mapkit.mapview.MapView;
 import com.yandex.runtime.image.AnimatedImageProvider;
 import com.yandex.runtime.image.ImageProvider;
+import com.yandex.runtime.ui_view.ViewProvider;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * This example shows how to add simple objects such as polygons, circles and polylines to the map.
@@ -43,6 +48,7 @@ public class MapObjectsActivity extends Activity {
 
     private MapView mapView;
     private MapObjectCollection mapObjects;
+    private Handler animationHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +60,7 @@ public class MapObjectsActivity extends Activity {
         mapView.getMap().move(
                 new CameraPosition(CAMERA_TARGET, 15.0f, 0.0f, 0.0f));
         mapObjects = mapView.getMap().getMapObjects().addCollection();
+        animationHandler = new Handler();
         createMapObjects();
     }
 
@@ -132,5 +139,34 @@ public class MapObjectsActivity extends Activity {
         mark.setOpacity(0.5f);
         mark.setIcon(ImageProvider.fromResource(this, R.drawable.mark));
         mark.setDraggable(true);
+
+        createPlacemarkMapObjectWithViewProvider();
+    }
+
+    private void createPlacemarkMapObjectWithViewProvider() {
+        final TextView textView = new TextView(this);
+        final int[] colors = new int[] { Color.RED, Color.GREEN, Color.BLACK };
+        ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        textView.setLayoutParams(params);
+
+        textView.setTextColor(Color.RED);
+        textView.setText("Hello, World!");
+
+        final ViewProvider viewProvider = new ViewProvider(textView);
+        final PlacemarkMapObject viewPlacemark =
+                mapObjects.addPlacemark(new Point(59.946263, 30.315181), viewProvider);
+
+        final Random random = new Random();
+        animationHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                final int randomInt = random.nextInt(1000);
+                textView.setText("Some text " + randomInt);
+                textView.setTextColor(colors[randomInt % colors.length]);
+                viewProvider.snapshot();
+                viewPlacemark.setView(viewProvider);
+                animationHandler.postDelayed(this, 500);
+            }
+        }, 5000);
     }
 }
