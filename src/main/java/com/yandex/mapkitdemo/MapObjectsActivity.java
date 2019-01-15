@@ -157,16 +157,21 @@ public class MapObjectsActivity extends Activity {
                 mapObjects.addPlacemark(new Point(59.946263, 30.315181), viewProvider);
 
         final Random random = new Random();
+        final int delayToShowInitialText = 5000;  // milliseconds
+        final int delayToShowRandomText = 500; // milliseconds;
+
+        // Show initial text `delayToShowInitialText` milliseconds and then
+        // randomly change text in textView every `delayToShowRandomText` milliseconds
         animationHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 final int randomInt = random.nextInt(1000);
-                textView.setText("Some text " + randomInt);
+                textView.setText("Some text version " + randomInt);
                 textView.setTextColor(colors[randomInt % colors.length]);
                 viewProvider.snapshot();
                 viewPlacemark.setView(viewProvider);
-                animationHandler.postDelayed(this, 500);
+                animationHandler.postDelayed(this, delayToShowRandomText);
             }
-        }, 5000);
+        }, delayToShowInitialText);
     }
 }
