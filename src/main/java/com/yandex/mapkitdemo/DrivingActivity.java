@@ -9,13 +9,12 @@ import java.util.ArrayList;
 
 import com.yandex.mapkit.MapKitFactory;
 import com.yandex.mapkit.directions.DirectionsFactory;
-import com.yandex.mapkit.directions.driving.DrivingArrivalPoint;
 import com.yandex.mapkit.directions.driving.DrivingRouter;
 import com.yandex.mapkit.directions.driving.DrivingOptions;
 import com.yandex.mapkit.directions.driving.DrivingSession;
 import com.yandex.mapkit.directions.driving.DrivingRoute;
-import com.yandex.mapkit.directions.driving.RequestPoint;
-import com.yandex.mapkit.directions.driving.RequestPointType;
+import com.yandex.mapkit.RequestPoint;
+import com.yandex.mapkit.RequestPointType;
 import com.yandex.mapkit.geometry.Point;
 import com.yandex.mapkit.map.CameraPosition;
 import com.yandex.mapkit.map.MapObjectCollection;
@@ -102,14 +101,12 @@ public class DrivingActivity extends Activity implements DrivingSession.DrivingR
         ArrayList<RequestPoint> requestPoints = new ArrayList<>();
         requestPoints.add(new RequestPoint(
                 ROUTE_START_LOCATION,
-                new ArrayList<Point>(),
-                new ArrayList<DrivingArrivalPoint>(),
-                RequestPointType.WAYPOINT));
+                RequestPointType.WAYPOINT,
+                null));
         requestPoints.add(new RequestPoint(
                 ROUTE_END_LOCATION,
-                new ArrayList<Point>(),
-                new ArrayList<DrivingArrivalPoint>(),
-                RequestPointType.WAYPOINT));
+                RequestPointType.WAYPOINT,
+                null));
         drivingSession = drivingRouter.requestRoutes(requestPoints, options, this);
     }
 }

@@ -1,8 +1,6 @@
 repositories {
     mavenCentral()
-    maven {
-        url "http://maven.google.com/"
-    }
+    google()
 }
 
 buildscript {
@@ -11,7 +9,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.1.0'
+        classpath 'com.android.tools.build:gradle:3.3.1'
     }
 }
 
@@ -19,19 +17,19 @@ apply plugin: "com.android.application"
 
 android {
     dependencies {
-        implementation 'com.yandex.android:mapkit:3.2.0'
-        implementation 'com.yandex.android:search:3.2.0'
-        implementation 'com.yandex.android:directions:3.2.0'
-        implementation 'com.yandex.android:transport:3.2.0'
-        implementation 'com.yandex.android:places:3.2.0'
+        implementation 'com.yandex.android:mapkit:3.3.1'
+        implementation 'com.yandex.android:search:3.3.1'
+        implementation 'com.yandex.android:directions:3.3.1'
+        implementation 'com.yandex.android:transport:3.3.1'
+        implementation 'com.yandex.android:places:3.3.1'
     }
 
     compileSdkVersion 28
-    buildToolsVersion "28.0.0"
+    buildToolsVersion "28.0.3"
 
     defaultConfig {
         minSdkVersion 15
-        targetSdkVersion 27
+        targetSdkVersion 28
     }
 
     sourceSets {
@@ -41,8 +39,4 @@ android {
             res.srcDirs = ['src/main/res']
         }
     }
-}
-
-task wrapper(type: Wrapper) {
-    gradleVersion = "4.5.1"
 }
