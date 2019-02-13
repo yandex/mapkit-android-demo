@@ -78,8 +78,8 @@ public class MasstransitRoutingActivity extends Activity
                 new ArrayList<String>(),
                 new TimeOptions());
         List<RequestPoint> points = new ArrayList<RequestPoint>();
-        points.add(new RequestPoint(ROUTE_START_LOCATION, new ArrayList<Point>(), RequestPointType.WAYPOINT));
-        points.add(new RequestPoint(ROUTE_END_LOCATION, new ArrayList<Point>(), RequestPointType.WAYPOINT));
+        points.add(new RequestPoint(ROUTE_START_LOCATION, RequestPointType.WAYPOINT, null));
+        points.add(new RequestPoint(ROUTE_END_LOCATION, RequestPointType.WAYPOINT, null));
         mtRouter = TransportFactory.getInstance().createMasstransitRouter();
         mtRouter.requestRoutes(points, options, this);
     }
