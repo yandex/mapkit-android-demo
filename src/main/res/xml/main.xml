@@ -74,6 +74,14 @@
                 android:targetPackage="@string/package_name"
                 android:targetClass="com.yandex.mapkitdemo.MasstransitRoutingActivity" />
         </Preference>
+        <Preference
+            android:key="geo_json_test"
+            android:title="@string/geo_json_test">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:targetPackage="@string/package_name"
+                android:targetClass="com.yandex.mapkitdemo.GeoJsonActivity" />
+        </Preference>
 
     </PreferenceCategory>
 </PreferenceScreen>
