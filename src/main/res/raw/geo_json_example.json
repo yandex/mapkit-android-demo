@@ -1,0 +1,163 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+
+    {
+      "type": "Feature",
+      "geometry":
+      {
+        "type": "Point",
+        "coordinates": [30.318, 59.952]
+      },
+      "properties":
+      {
+        "layerName": "Points",
+        "presentation":
+        {
+          "classes": [
+            {
+              "name": "PointStyle",
+              "id": 1,
+              "slices": [
+                {
+                  "point": {
+                    "icon": {
+                      "id": "assets/animation.png"
+                    },
+                    "anchorX": 1.0,
+                    "anchorY": 1.0
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "classId": 1
+      },
+      "id": "Point1"
+    },
+
+    {
+      "type": "Feature",
+      "geometry":
+      {
+        "type": "Point",
+        "coordinates": [30.318, 59.955]
+      },
+      "properties":
+      {
+        "layerName": "Points",
+        "presentation":
+        {
+          "classes": [
+            {
+              "name": "PointStyle",
+              "id": 2,
+              "slices": [
+                {
+                  "point": {
+                    "icon": {
+                      "id": "res/drawable/icon.png"
+                    },
+                    "anchorX": 1.0,
+                    "anchorY": 1.0
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "classId": 2
+      },
+      "id": "Point2"
+    },
+
+    {
+      "type": "Feature",
+      "geometry":
+      {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [30.3185, 59.953],
+            [30.3200, 59.954],
+            [30.3185, 59.955],
+            [30.3170, 59.954],
+            [30.3185, 59.953]
+          ]
+        ]
+      },
+      "properties":
+      {
+        "layerName": "Polygons",
+        "presentation": {
+          "classes": [
+            {
+              "name": "PolygonStyle",
+              "id": 3,
+              "slices": [
+                {
+                  "poly":
+                  {
+                    "color": 4281596776
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "classId": 3
+      },
+      "id": "Polygon1"
+    },
+
+    {
+      "type": "Feature",
+      "geometry":
+      {
+        "type": "LineString",
+        "coordinates": [
+          [30.3185, 59.950],
+          [30.3200, 59.951],
+          [30.3185, 59.952],
+          [30.3170, 59.951]
+        ]
+      },
+      "properties":
+      {
+        "layerName": "LineStrings",
+        "presentation":
+        {
+          "classes": [
+            {
+              "name": "PolylineStyle",
+              "id": 4,
+              "slices": [
+                {
+                  "line":
+                  {
+                    "line":
+                    {
+                      "color": 4280327200,
+                      "width": 10.0,
+                      "caps": "Round"
+                    },
+
+                    "outline":
+                    {
+                      "color": 3221685529,
+                      "width": 20.0,
+                      "caps": "Butt"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "classId": 4
+      },
+      "id": "Polyline1"
+    }
+  ]
+}

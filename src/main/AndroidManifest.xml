@@ -56,6 +56,10 @@
             android:name=".MasstransitRoutingActivity"
             android:configChanges="orientation|screenSize"
             android:theme="@android:style/Theme.NoTitleBar" />
+        <activity
+            android:name=".GeoJsonActivity"
+            android:configChanges="orientation|screenSize"
+            android:theme="@android:style/Theme.NoTitleBar" />
     </application>
 
 </manifest>
