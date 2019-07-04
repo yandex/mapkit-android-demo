@@ -52,6 +52,8 @@ public class GeoJsonActivity extends Activity {
         mapView.getMap().move(
                 new CameraPosition(CAMERA_TARGET, 15.0f, 0.0f, 0.0f));
         mapView.getMap().setMapType(MapType.VECTOR_MAP);
+
+        // You need to have strong reference to projection in the platform code
         projection = Projections.createWgs84Mercator();
 
         createGeoJsonLayer();
