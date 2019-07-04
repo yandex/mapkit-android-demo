@@ -39,6 +39,8 @@ public class GeoJsonActivity extends Activity {
 
     private Logger LOGGER = Logger.getLogger("mapkitdemo.geojson");
     private Projection projection;
+    private ResourceUrlProvider urlProvider;
+    private TileProvider tileProvider;
     private MapView mapView;
 
     @Override
@@ -53,8 +55,22 @@ public class GeoJsonActivity extends Activity {
                 new CameraPosition(CAMERA_TARGET, 15.0f, 0.0f, 0.0f));
         mapView.getMap().setMapType(MapType.VECTOR_MAP);
 
-        // You need to have strong reference to projection in the platform code
+        // Client code must retain strong references to providers and projection
         projection = Projections.createWgs84Mercator();
+        urlProvider = new ResourceUrlProvider() {
+            @NonNull
+            @Override
+            public String formatUrl(@NonNull String s) {
+                return String.format("https://raw.githubusercontent.com/yandex/mapkit-android-demo/master/src/main/%s", s);
+            }
+        };
+        try {
+            tileProvider = createTileProvider();
+        }
+        catch (IOException ex) {
+            LOGGER.severe("Tile provider not created: cancel creation of geo json layer");
+            return;
+        }
 
         createGeoJsonLayer();
     }
@@ -74,24 +90,6 @@ public class GeoJsonActivity extends Activity {
     }
 
     private void createGeoJsonLayer() {
-
-        final ResourceUrlProvider urlProvider = new ResourceUrlProvider() {
-            @NonNull
-            @Override
-            public String formatUrl(@NonNull String s) {
-                return String.format("https://raw.githubusercontent.com/yandex/mapkit-android-demo/master/src/main/%s", s);
-            }
-        };
-
-        TileProvider tileProvider;
-        try {
-            tileProvider = createTileProvider();
-        }
-        catch (IOException ex) {
-            LOGGER.severe("Tile provider not created: cancel creation of geo json layer");
-            return;
-        }
-
         Layer layer = mapView.getMap().addLayer(
                 "geo_json_layer",
                 "application/geo-json",
