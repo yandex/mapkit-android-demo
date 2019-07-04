@@ -38,6 +38,7 @@ public class GeoJsonActivity extends Activity {
     private final Point CAMERA_TARGET = new Point(59.952, 30.318);
 
     private Logger LOGGER = Logger.getLogger("mapkitdemo.geojson");
+    private Projection projection;
     private MapView mapView;
 
     @Override
@@ -51,6 +52,7 @@ public class GeoJsonActivity extends Activity {
         mapView.getMap().move(
                 new CameraPosition(CAMERA_TARGET, 15.0f, 0.0f, 0.0f));
         mapView.getMap().setMapType(MapType.VECTOR_MAP);
+        projection = Projections.createWgs84Mercator();
 
         createGeoJsonLayer();
     }
@@ -87,8 +89,6 @@ public class GeoJsonActivity extends Activity {
             LOGGER.severe("Tile provider not created: cancel creation of geo json layer");
             return;
         }
-
-        final Projection projection = Projections.createWgs84Mercator();
 
         Layer layer = mapView.getMap().addLayer(
                 "geo_json_layer",
