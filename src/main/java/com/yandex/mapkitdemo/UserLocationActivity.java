@@ -1,9 +1,12 @@
 package com.yandex.mapkitdemo;
 
 import android.app.Activity;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.PointF;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 
 import com.yandex.mapkit.MapKitFactory;
 import com.yandex.mapkit.geometry.Point;
@@ -27,6 +30,8 @@ public class UserLocationActivity extends Activity implements UserLocationObject
      * You can get it at the https://developer.tech.yandex.ru/ website.
      */
     private final String MAPKIT_API_KEY = "your_api_key";
+    private final String LOCATION_PERMISSION_NAME = "android.permission.ACCESS_FINE_LOCATION";
+    private final int LOCATION_PERMISSION_REQUEST = 1;
 
     private MapView mapView;
     private UserLocationLayer userLocationLayer;
@@ -41,11 +46,13 @@ public class UserLocationActivity extends Activity implements UserLocationObject
         mapView.getMap().setRotateGesturesEnabled(false);
         mapView.getMap().move(new CameraPosition(new Point(0, 0), 14, 0, 0));
 
-        userLocationLayer = mapView.getMap().getUserLocationLayer();
-        userLocationLayer.setEnabled(true);
-        userLocationLayer.setHeadingEnabled(true);
-
-        userLocationLayer.setObjectListener(this);
+        if (ContextCompat.checkSelfPermission(this, LOCATION_PERMISSION_NAME)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{LOCATION_PERMISSION_NAME}, LOCATION_PERMISSION_REQUEST);
+        } else {
+            addUserLocationLayer();
+        }
     }
 
     @Override
@@ -100,5 +107,22 @@ public class UserLocationActivity extends Activity implements UserLocationObject
 
     @Override
     public void onObjectUpdated(UserLocationView view, ObjectEvent event) {
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        if (requestCode == LOCATION_PERMISSION_REQUEST) {
+            addUserLocationLayer();
+        } else {
+            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+    }
+
+    private void addUserLocationLayer() {
+        userLocationLayer = mapView.getMap().getUserLocationLayer();
+        userLocationLayer.setEnabled(true);
+        userLocationLayer.setHeadingEnabled(true);
+
+        userLocationLayer.setObjectListener(this);
     }
 }
