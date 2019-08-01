@@ -82,6 +82,14 @@
                 android:targetPackage="@string/package_name"
                 android:targetClass="com.yandex.mapkitdemo.GeoJsonActivity" />
         </Preference>
+        <Preference
+            android:key="clustering"
+            android:title="@string/clustering">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:targetPackage="@string/package_name"
+                android:targetClass="com.yandex.mapkitdemo.ClusteringActivity" />
+        </Preference>
 
     </PreferenceCategory>
 </PreferenceScreen>
