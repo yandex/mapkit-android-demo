@@ -5,12 +5,14 @@ import android.graphics.Color;
 import android.graphics.PointF;
 import android.os.Bundle;
 
+import com.yandex.mapkit.MapKit;
 import com.yandex.mapkit.MapKitFactory;
 import com.yandex.mapkit.geometry.Point;
 import com.yandex.mapkit.layers.ObjectEvent;
 import com.yandex.mapkit.map.CameraPosition;
 import com.yandex.mapkit.map.CompositeIcon;
 import com.yandex.mapkit.map.IconStyle;
+import com.yandex.mapkit.map.MapWindow;
 import com.yandex.mapkit.map.RotationType;
 import com.yandex.mapkit.mapview.MapView;
 import com.yandex.mapkit.user_location.UserLocationLayer;
@@ -37,12 +39,12 @@ public class UserLocationActivity extends Activity implements UserLocationObject
         MapKitFactory.initialize(this);
         setContentView(R.layout.user_location);
         super.onCreate(savedInstanceState);
-        mapView = (MapView) findViewById(R.id.mapview);
+        mapView = findViewById(R.id.mapview);
         mapView.getMap().setRotateGesturesEnabled(false);
         mapView.getMap().move(new CameraPosition(new Point(0, 0), 14, 0, 0));
 
-        userLocationLayer = mapView.getMap().getUserLocationLayer();
-        userLocationLayer.setEnabled(true);
+        MapKit mapKit = MapKitFactory.getInstance();
+        userLocationLayer = mapKit.createUserLocationLayer(mapView.getMapWindow());
         userLocationLayer.setHeadingEnabled(true);
 
         userLocationLayer.setObjectListener(this);
