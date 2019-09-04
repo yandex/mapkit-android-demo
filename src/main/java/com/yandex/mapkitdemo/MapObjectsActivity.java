@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.yandex.mapkit.MapKitFactory;
 import com.yandex.mapkit.geometry.Circle;
@@ -15,7 +16,9 @@ import com.yandex.mapkit.geometry.Polygon;
 import com.yandex.mapkit.geometry.Polyline;
 import com.yandex.mapkit.map.CameraPosition;
 import com.yandex.mapkit.map.CircleMapObject;
+import com.yandex.mapkit.map.MapObject;
 import com.yandex.mapkit.map.MapObjectCollection;
+import com.yandex.mapkit.map.MapObjectTapListener;
 import com.yandex.mapkit.map.PatternRepeatMode;
 import com.yandex.mapkit.map.PlacemarkMapObject;
 import com.yandex.mapkit.map.PolygonMapObject;
@@ -116,9 +119,7 @@ public class MapObjectsActivity extends Activity {
         triangle.setStrokeWidth(1.0f);
         triangle.setZIndex(100.0f);
 
-        CircleMapObject circle = mapObjects.addCircle(
-                new Circle(CIRCLE_CENTER, 100), Color.GREEN, 2, Color.RED);
-        circle.setZIndex(100.0f);
+        createTappableCircle();
 
         ArrayList<Point> polylinePoints = new ArrayList<>();
         polylinePoints.add(new Point(
@@ -141,6 +142,55 @@ public class MapObjectsActivity extends Activity {
         mark.setDraggable(true);
 
         createPlacemarkMapObjectWithViewProvider();
+    }
+
+    // Strong reference to the listener.
+    private MapObjectTapListener circleMapObjectTapListener = new MapObjectTapListener() {
+        @Override
+        public boolean onMapObjectTap(MapObject mapObject, Point point) {
+            if (mapObject instanceof CircleMapObject) {
+                CircleMapObject circle = (CircleMapObject)mapObject;
+
+                float randomRadius = 100.0f + 50.0f * new Random().nextFloat();
+
+                Circle curGeometry = circle.getGeometry();
+                Circle newGeometry = new Circle(curGeometry.getCenter(), randomRadius);
+                circle.setGeometry(newGeometry);
+
+                Object userData = circle.getUserData();
+                if (userData instanceof CircleMapObjectUserData) {
+                    CircleMapObjectUserData circleUserData = (CircleMapObjectUserData)userData;
+
+                    Toast toast = Toast.makeText(
+                            getApplicationContext(),
+                            "Circle with id " + circleUserData.id + " and description '"
+                                    + circleUserData.description + "' tapped",
+                            Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+            }
+            return true;
+        }
+    };
+
+    private class CircleMapObjectUserData {
+        final int id;
+        final String description;
+
+        CircleMapObjectUserData(int id, String description) {
+            this.id = id;
+            this.description = description;
+        }
+    }
+
+    private void createTappableCircle() {
+        CircleMapObject circle = mapObjects.addCircle(
+                new Circle(CIRCLE_CENTER, 100), Color.GREEN, 2, Color.RED);
+        circle.setZIndex(100.0f);
+        circle.setUserData(new CircleMapObjectUserData(42, "Tappable circle"));
+
+        // Client code must retain strong reference to the listener.
+        circle.addTapListener(circleMapObjectTapListener);
     }
 
     private void createPlacemarkMapObjectWithViewProvider() {
