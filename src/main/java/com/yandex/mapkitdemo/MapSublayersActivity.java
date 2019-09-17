@@ -30,8 +30,7 @@ import com.yandex.runtime.image.AnimatedImageProvider;
 import java.util.ArrayList;
 
 /**
- * This example shows how to add simple objects such as polygons, circles and polylines to the map.
- * It also shows how to display images instead.
+ * This example shows how to reorder sublayers and use conflict resolving.
  */
 public class MapSublayersActivity extends Activity {
     /**
