@@ -19,6 +19,14 @@
                 android:targetClass="com.yandex.mapkitdemo.MapObjectsActivity" />
         </Preference>
         <Preference
+            android:key="map_sublayers_test"
+            android:title="@string/map_sublayers">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:targetPackage="@string/package_name"
+                android:targetClass="com.yandex.mapkitdemo.MapSublayersActivity" />
+        </Preference>
+        <Preference
             android:key="masstransit_test"
             android:title="@string/driving">
             <intent

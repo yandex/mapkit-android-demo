@@ -37,6 +37,10 @@
             android:configChanges="orientation|screenSize"
             android:theme="@android:style/Theme.NoTitleBar" />
         <activity
+            android:name=".MapSublayersActivity"
+            android:configChanges="orientation|screenSize"
+            android:theme="@android:style/Theme.NoTitleBar" />
+        <activity
             android:name=".SearchActivity"
             android:configChanges="orientation|screenSize"
             android:theme="@android:style/Theme.NoTitleBar" />
