@@ -109,10 +109,10 @@ public class MapSublayersActivity extends Activity {
 
                 if (buildingsSublayerIndex < mapObjectGeometrySublayerIndex) {
                     sublayerManager.moveAfter(buildingsSublayerIndex, mapObjectGeometrySublayerIndex);
-                    switchSublayersOrder.setText(getString(R.string.sublayer_buildings_after_mo_geometry));
+                    switchSublayersOrder.setText(getString(R.string.sublayer_buildings_before_mo_geometry));
                 } else {
                     sublayerManager.moveAfter(mapObjectGeometrySublayerIndex, buildingsSublayerIndex);
-                    switchSublayersOrder.setText(getString(R.string.sublayer_buildings_before_mo_geometry));
+                    switchSublayersOrder.setText(getString(R.string.sublayer_buildings_after_mo_geometry));
                 }
             }
         });
