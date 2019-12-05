@@ -16,7 +16,7 @@
     <string name="masstransit_routing">Masstransit routing</string>
     <string name="geo_json_test">Geo JSON</string>
     <string name="clustering">Clustering</string>
-
+    <string name="jams">Jams</string>
     <string name="cluster_tap_message">Tapped cluster with %d items</string>
 
     <string name="not_found_error_message">Not found</string>
