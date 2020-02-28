@@ -17,7 +17,7 @@ import com.yandex.mapkit.geometry.Polygon;
 import com.yandex.mapkit.map.CameraPosition;
 import com.yandex.mapkit.map.IconStyle;
 import com.yandex.mapkit.map.InputListener;
-import com.yandex.mapkit.map.LayerNames;
+import com.yandex.mapkit.map.LayerIds;
 import com.yandex.mapkit.map.Map;
 import com.yandex.mapkit.map.MapObjectCollection;
 import com.yandex.mapkit.map.PolygonMapObject;
@@ -92,7 +92,7 @@ public class MapSublayersActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Integer buildingsSublayerIndex =
-                        sublayerManager.findFirstOf(LayerNames.getBuildingsLayerName(), SublayerFeatureType.MODELS);
+                        sublayerManager.findFirstOf(LayerIds.getBuildingsLayerId(), SublayerFeatureType.MODELS);
                 if (buildingsSublayerIndex == null) {
                     Toast.makeText(getApplicationContext(),
                             "Buildings sublayer not found.", Toast.LENGTH_SHORT).show();
@@ -100,7 +100,7 @@ public class MapSublayersActivity extends Activity {
                 }
 
                 Integer mapObjectGeometrySublayerIndex =
-                        sublayerManager.findFirstOf(LayerNames.getMapObjectsLayerName(), SublayerFeatureType.GROUND);
+                        sublayerManager.findFirstOf(LayerIds.getBuildingsLayerId(), SublayerFeatureType.GROUND);
                 if (mapObjectGeometrySublayerIndex == null) {
                     Toast.makeText(getApplicationContext(),
                             "MapObject ground sublayer not found!", Toast.LENGTH_SHORT).show();
@@ -119,7 +119,7 @@ public class MapSublayersActivity extends Activity {
 
         // Example of conflict resolving
         Integer mapObjectPlacemarkSublayerIndex =
-                sublayerManager.findFirstOf(LayerNames.getMapObjectsLayerName(), SublayerFeatureType.PLACEMARKS);
+                sublayerManager.findFirstOf(LayerIds.getBuildingsLayerId(), SublayerFeatureType.PLACEMARKS);
         if (mapObjectPlacemarkSublayerIndex != null) {
             Sublayer sublayer = sublayerManager.get(mapObjectPlacemarkSublayerIndex);
 

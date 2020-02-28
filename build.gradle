@@ -9,7 +9,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.4.2'
+        classpath 'com.android.tools.build:gradle:3.6.0'
     }
 }
 
@@ -17,19 +17,19 @@ apply plugin: "com.android.application"
 
 android {
     dependencies {
-        implementation 'com.yandex.android:mapkit:3.4.0'
-        implementation 'com.yandex.android:search:3.4.0'
-        implementation 'com.yandex.android:directions:3.4.0'
-        implementation 'com.yandex.android:transport:3.4.0'
-        implementation 'com.yandex.android:places:3.4.0'
+        implementation 'com.yandex.android:mapkit:3.5.0'
+        implementation 'com.yandex.android:search:3.5.0'
+        implementation 'com.yandex.android:directions:3.5.0'
+        implementation 'com.yandex.android:transport:3.5.0'
+        implementation 'com.yandex.android:places:3.5.0'
     }
 
-    compileSdkVersion 28
-    buildToolsVersion "28.0.3"
+    compileSdkVersion 29
+    buildToolsVersion "29.0.3"
 
     defaultConfig {
         minSdkVersion 15
-        targetSdkVersion 28
+        targetSdkVersion 29
     }
 
     sourceSets {

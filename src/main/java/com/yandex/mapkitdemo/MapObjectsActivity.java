@@ -19,7 +19,6 @@ import com.yandex.mapkit.map.CircleMapObject;
 import com.yandex.mapkit.map.MapObject;
 import com.yandex.mapkit.map.MapObjectCollection;
 import com.yandex.mapkit.map.MapObjectTapListener;
-import com.yandex.mapkit.map.PatternRepeatMode;
 import com.yandex.mapkit.map.PlacemarkMapObject;
 import com.yandex.mapkit.map.PolygonMapObject;
 import com.yandex.mapkit.map.PolylineMapObject;
@@ -100,7 +99,7 @@ public class MapObjectsActivity extends Activity {
                 new Polygon(new LinearRing(rectPoints), new ArrayList<LinearRing>()));
         rect.setStrokeColor(Color.TRANSPARENT);
         rect.setFillColor(Color.TRANSPARENT);
-        rect.setAnimatedImage(animatedImage, 32.0f, PatternRepeatMode.REPEAT);
+        rect.setAnimatedImage(animatedImage, 32.0f);
 
         ArrayList<Point> trianglePoints = new ArrayList<>();
         trianglePoints.add(new Point(
