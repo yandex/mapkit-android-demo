@@ -3,6 +3,7 @@ package com.yandex.mapkitdemo;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.yandex.mapkit.MapKitFactory;
 import com.yandex.mapkit.RawTile;
@@ -26,7 +27,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Map;
-import java.util.logging.Logger;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -43,7 +43,8 @@ public class GeoJsonActivity extends Activity {
     private final Point CAMERA_TARGET = new Point(59.952, 30.318);
     private final int MAX_ZOOM = 30;
 
-    private Logger LOGGER = Logger.getLogger("mapkitdemo.geojson");
+    private static final String TAG = "GeoJsonActivity";
+
     private Projection projection;
     private ResourceUrlProvider urlProvider;
     private TileProvider tileProvider;
@@ -74,8 +75,7 @@ public class GeoJsonActivity extends Activity {
             createGeoJsonLayer();
         }
         catch (IOException ex) {
-            LOGGER.severe("Tile provider or GeoJSON layer not created");
-            LOGGER.severe(ex.toString());
+            Log.e(TAG, "Tile provider or GeoJSON layer not created", ex);
             return;
         }
     }
@@ -119,10 +119,9 @@ public class GeoJsonActivity extends Activity {
             while ((line = reader.readLine()) != null) {
                 builder.append(line);
             }
-        } catch (Exception ex) {
+        } catch (IOException ex) {
             reader.close();
-            LOGGER.severe("Cannot read JSON resource " + name);
-            LOGGER.severe(ex.toString());
+            Log.e(TAG, "Cannot read JSON resource " + name);
             throw ex;
         }
 
