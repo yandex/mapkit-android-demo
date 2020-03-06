@@ -39,8 +39,8 @@ public class GeoJsonActivity extends Activity {
      * Replace "your_api_key" with a valid developer key.
      * You can get it at the https://developer.tech.yandex.ru/ website.
      */
-    private final String MAPKIT_API_KEY = "e37f7be8-32fd-4842-afd2-763fc604a43b";
-    private final Point CAMERA_TARGET = new Point(59.5,30.5);
+    private final String MAPKIT_API_KEY = "your_api_key";
+    private final Point CAMERA_TARGET = new Point(59.952, 30.318);
     private final int MAX_ZOOM = 30;
 
     private Logger LOGGER = Logger.getLogger("mapkitdemo.geojson");
@@ -57,7 +57,7 @@ public class GeoJsonActivity extends Activity {
         super.onCreate(savedInstanceState);
         mapView = (MapView)findViewById(R.id.mapview);
 
-        mapView.getMap().move(new CameraPosition(CAMERA_TARGET, 5.f, 0.f, 0.f));
+        mapView.getMap().move(new CameraPosition(CAMERA_TARGET, 15.f, 0.f, 0.f));
         mapView.getMap().setMapType(MapType.VECTOR_MAP);
 
         // Client code must retain strong references to providers and projection
@@ -122,6 +122,7 @@ public class GeoJsonActivity extends Activity {
         } catch (Exception ex) {
             reader.close();
             LOGGER.severe("Cannot read JSON resource " + name);
+            LOGGER.severe(ex.toString());
             throw ex;
         }
 
@@ -140,8 +141,6 @@ public class GeoJsonActivity extends Activity {
             @NonNull
             @Override
             public RawTile load(@NonNull TileId tileId, @NonNull Version version, @NonNull String etag) {
-                LOGGER.severe("Requested tile " + tileId.getX() + " " + tileId.getY() + " " + tileId.getZ());
-
                 int tileSize = 1 << (MAX_ZOOM - tileId.getZ());
 
                 int left = tileId.getX() * tileSize;
