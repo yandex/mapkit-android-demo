@@ -1,0 +1,31 @@
+[
+  {
+    "tags": { "all": "point" },
+    "style": {
+      "icon-image": "assets/animation.png",
+      "icon-offset": [1.0, 0.0]
+    }
+  },
+  {
+    "tags": { "all": "line" },
+    "style": {
+      "line-color": "00f",
+      "line-opacity": 0.5,
+      "line-width": 5
+    }
+  },
+  {
+    "tags": { "all": "polygon" },
+    "style": {
+      "fill-color": "#f00",
+      "fill-opacity": 0.5
+    }
+  },
+  {
+    "tags": { "all": "textured-polygon" },
+    "style": {
+      "fill-pattern": "assets/animation.png",
+      "fill-pattern-width": 10
+    }
+  }
+]
