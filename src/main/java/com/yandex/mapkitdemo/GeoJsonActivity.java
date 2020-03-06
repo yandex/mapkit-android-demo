@@ -11,6 +11,7 @@ import com.yandex.mapkit.Version;
 import com.yandex.mapkit.geometry.Point;
 import com.yandex.mapkit.geometry.geo.Projection;
 import com.yandex.mapkit.geometry.geo.Projections;
+import com.yandex.mapkit.geometry.geo.XYPoint;
 import com.yandex.mapkit.layers.Layer;
 import com.yandex.mapkit.layers.LayerOptions;
 import com.yandex.mapkit.map.CameraPosition;
@@ -18,12 +19,16 @@ import com.yandex.mapkit.map.MapType;
 import com.yandex.mapkit.mapview.MapView;
 import com.yandex.mapkit.resource_url_provider.ResourceUrlProvider;
 import com.yandex.mapkit.tiles.TileProvider;
+import com.yandex.mapkit.ZoomRange;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Map;
 import java.util.logging.Logger;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * This example shows how to add layer with simple objects such as points, polylines, polygons
@@ -34,8 +39,9 @@ public class GeoJsonActivity extends Activity {
      * Replace "your_api_key" with a valid developer key.
      * You can get it at the https://developer.tech.yandex.ru/ website.
      */
-    private final String MAPKIT_API_KEY = "your_api_key";
-    private final Point CAMERA_TARGET = new Point(59.952, 30.318);
+    private final String MAPKIT_API_KEY = "e37f7be8-32fd-4842-afd2-763fc604a43b";
+    private final Point CAMERA_TARGET = new Point(59.5,30.5);
+    private final int MAX_ZOOM = 30;
 
     private Logger LOGGER = Logger.getLogger("mapkitdemo.geojson");
     private Projection projection;
@@ -51,8 +57,7 @@ public class GeoJsonActivity extends Activity {
         super.onCreate(savedInstanceState);
         mapView = (MapView)findViewById(R.id.mapview);
 
-        mapView.getMap().move(
-                new CameraPosition(CAMERA_TARGET, 15.0f, 0.0f, 0.0f));
+        mapView.getMap().move(new CameraPosition(CAMERA_TARGET, 5.f, 0.f, 0.f));
         mapView.getMap().setMapType(MapType.VECTOR_MAP);
 
         // Client code must retain strong references to providers and projection
@@ -66,13 +71,13 @@ public class GeoJsonActivity extends Activity {
         };
         try {
             tileProvider = createTileProvider();
+            createGeoJsonLayer();
         }
         catch (IOException ex) {
-            LOGGER.severe("Tile provider not created: cancel creation of geo json layer");
+            LOGGER.severe("Tile provider or GeoJSON layer not created");
+            LOGGER.severe(ex.toString());
             return;
         }
-
-        createGeoJsonLayer();
     }
 
     @Override
@@ -89,23 +94,23 @@ public class GeoJsonActivity extends Activity {
         mapView.onStart();
     }
 
-    private void createGeoJsonLayer() {
-        Layer layer = mapView.getMap().addLayer(
+    private void createGeoJsonLayer() throws IOException {
+        Layer layer = mapView.getMap().addGeoJSONLayer(
                 "geo_json_layer",
-                "application/geo-json",
+                style(),
                 new LayerOptions(),
                 tileProvider,
                 urlProvider,
-                projection);
+                projection,
+                new ArrayList<ZoomRange>());
 
-        layer.invalidate("0.0.0");
+        layer.invalidate("0");
     }
 
-    private TileProvider createTileProvider() throws IOException
-    {
+    private String getJsonResource(String name) throws IOException {
         final StringBuilder builder = new StringBuilder();
         final int resourceIdentifier =
-                getResources().getIdentifier("geo_json_example","raw", getPackageName());
+                getResources().getIdentifier(name,"raw", getPackageName());
         InputStream is = getResources().openRawResource(resourceIdentifier);
         BufferedReader reader = new BufferedReader(new InputStreamReader(is));
 
@@ -116,16 +121,76 @@ public class GeoJsonActivity extends Activity {
             }
         } catch (Exception ex) {
             reader.close();
-            LOGGER.severe("Cannot read GeoJSON file");
+            LOGGER.severe("Cannot read JSON resource " + name);
             throw ex;
         }
 
-        final String rawJson = builder.toString();
+        return builder.toString();
+    }
+
+    private String style() throws IOException {
+        return getJsonResource("geo_json_style_example");
+    }
+
+    private TileProvider createTileProvider() throws IOException
+    {
+        final String jsonTemplate = getJsonResource("geo_json_example_template");
+
         return new TileProvider() {
             @NonNull
             @Override
             public RawTile load(@NonNull TileId tileId, @NonNull Version version, @NonNull String etag) {
-                return new RawTile(version, etag, RawTile.State.OK, rawJson.getBytes());
+                LOGGER.severe("Requested tile " + tileId.getX() + " " + tileId.getY() + " " + tileId.getZ());
+
+                int tileSize = 1 << (MAX_ZOOM - tileId.getZ());
+
+                int left = tileId.getX() * tileSize;
+                int right = left + tileSize;
+                int bottom = tileId.getY() * tileSize;
+                int top = bottom + tileSize;
+
+                Point leftBottom = projection.xyToWorld(new XYPoint(left, bottom), MAX_ZOOM);
+                Point rightTop = projection.xyToWorld(new XYPoint(right, top), MAX_ZOOM);
+
+                double tileLeft = leftBottom.getLongitude();
+                double tileRight = rightTop.getLongitude();
+                double tileBottom = leftBottom.getLatitude();
+                double tileTop = rightTop.getLatitude();
+
+                HashMap<String, Double> map = new HashMap<String, Double>();
+
+                map.put("@POINT_X@", 0.7 * tileLeft   + 0.3 * tileRight);
+                map.put("@POINT_Y@", 0.7 * tileBottom + 0.3 * tileTop);
+
+                map.put("@LINE_X0@", 0.9 * tileLeft   + 0.1 * tileRight);
+                map.put("@LINE_Y0@", 0.9 * tileBottom + 0.1 * tileTop);
+                map.put("@LINE_X1@", 0.9 * tileLeft   + 0.1 * tileRight);
+                map.put("@LINE_Y1@", 0.1 * tileBottom + 0.9 * tileTop);
+                map.put("@LINE_X2@", 0.1 * tileLeft   + 0.9 * tileRight);
+                map.put("@LINE_Y2@", 0.1 * tileBottom + 0.9 * tileTop);
+                map.put("@LINE_X3@", 0.1 * tileLeft   + 0.9 * tileRight);
+                map.put("@LINE_Y3@", 0.9 * tileBottom + 0.1 * tileTop);
+
+                map.put("@POLYGON_X0@", 0.2 * tileLeft   + 0.8 * tileRight);
+                map.put("@POLYGON_Y0@", 0.8 * tileBottom + 0.2 * tileTop);
+                map.put("@POLYGON_X1@", 0.5 * tileLeft   + 0.5 * tileRight);
+                map.put("@POLYGON_Y1@", 0.5 * tileBottom + 0.5 * tileTop);
+                map.put("@POLYGON_X2@", 0.2 * tileLeft   + 0.8 * tileRight);
+                map.put("@POLYGON_Y2@", 0.2 * tileBottom + 0.8 * tileTop);
+
+                map.put("@TEXTURED_POLYGON_X0@", 0.8 * tileLeft   + 0.2 * tileRight);
+                map.put("@TEXTURED_POLYGON_Y0@", 0.2 * tileBottom + 0.8 * tileTop);
+                map.put("@TEXTURED_POLYGON_X1@", 0.2 * tileLeft   + 0.8 * tileRight);
+                map.put("@TEXTURED_POLYGON_Y1@", 0.2 * tileBottom + 0.8 * tileTop);
+                map.put("@TEXTURED_POLYGON_X2@", 0.5 * tileLeft   + 0.5 * tileRight);
+                map.put("@TEXTURED_POLYGON_Y2@", 0.5 * tileBottom + 0.5 * tileTop);
+
+                String json = jsonTemplate;
+                for (Map.Entry<String, Double> entry : map.entrySet()) {
+                    json = json.replace(entry.getKey(), String.valueOf(entry.getValue()));
+                }
+
+                return new RawTile(version, etag, RawTile.State.OK, json.getBytes());
             }
         };
     }
