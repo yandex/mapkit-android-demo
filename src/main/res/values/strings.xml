@@ -4,6 +4,7 @@
     <string name="user_location">User Location</string>
     <string name="driving">Driving</string>
     <string name="mapobjects">Map Objects</string>
+    <string name="customization">Customization</string>
 
     <string name="map_sublayers">Map Sublayers</string>
     <string name="sublayer_buildings_before_mo_geometry">Render Buildings before Map Object Geometry</string>
