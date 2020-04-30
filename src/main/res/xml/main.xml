@@ -106,6 +106,13 @@
                 android:targetPackage="@string/package_name"
                 android:targetClass="com.yandex.mapkitdemo.ClusteringActivity" />
         </Preference>
-
+        <Preference
+            android:key="jams"
+            android:title="@string/jams">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:targetPackage="@string/package_name"
+                android:targetClass="com.yandex.mapkitdemo.JamsActivity" />
+        </Preference>
     </PreferenceCategory>
 </PreferenceScreen>
