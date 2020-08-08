@@ -23,7 +23,7 @@ public class SelectionActivity extends Activity implements GeoObjectTapListener,
      * Replace "your_api_key" with a valid developer key.
      * You can get it at the https://developer.tech.yandex.ru/ website.
      */
-    private final String MAPKIT_API_KEY = "0dfe3cfc-261d-4a74-a746-e7cdc258e66c";
+    private final String MAPKIT_API_KEY = "your_api_key";
     private final Point TARGET_LOCATION = new Point(59.936760, 30.314673);
 
     private MapView mapView;
