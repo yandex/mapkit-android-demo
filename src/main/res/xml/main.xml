@@ -114,5 +114,13 @@
                 android:targetPackage="@string/package_name"
                 android:targetClass="com.yandex.mapkitdemo.JamsActivity" />
         </Preference>
+        <Preference
+            android:key="selection"
+            android:title="@string/selection">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:targetPackage="@string/package_name"
+                android:targetClass="com.yandex.mapkitdemo.SelectionActivity" />
+        </Preference>
     </PreferenceCategory>
 </PreferenceScreen>
