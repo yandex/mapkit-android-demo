@@ -16,7 +16,7 @@ import com.yandex.mapkit.map.Map;
 import com.yandex.mapkit.mapview.MapView;
 
 /**
- * This example show how to activate selection.
+ * This example shows how to activate selection.
  */
 public class SelectionActivity extends Activity implements GeoObjectTapListener, InputListener {
     /**
