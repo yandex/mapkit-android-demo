@@ -76,6 +76,10 @@
             android:name=".JamsActivity"
             android:configChanges="orientation|screenSize"
             android:theme="@android:style/Theme.NoTitleBar" />
+        <activity
+            android:name=".SelectionActivity"
+            android:configChanges="orientation|screenSize"
+            android:theme="@android:style/Theme.NoTitleBar" />
     </application>
 
 </manifest>
