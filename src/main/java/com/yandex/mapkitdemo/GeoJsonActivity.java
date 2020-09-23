@@ -2,8 +2,8 @@ package com.yandex.mapkitdemo;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.util.Log;
+import androidx.annotation.NonNull;
 
 import com.yandex.mapkit.MapKitFactory;
 import com.yandex.mapkit.RawTile;
@@ -62,7 +62,7 @@ public class GeoJsonActivity extends Activity {
         mapView.getMap().setMapType(MapType.VECTOR_MAP);
 
         // Client code must retain strong references to providers and projection
-        projection = Projections.createWgs84Mercator();
+        projection = Projections.getWgs84Mercator();
         urlProvider = new ResourceUrlProvider() {
             @NonNull
             @Override

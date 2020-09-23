@@ -9,7 +9,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.6.0'
+        classpath 'com.android.tools.build:gradle:4.0.1'
     }
 }
 
@@ -17,11 +17,12 @@ apply plugin: "com.android.application"
 
 android {
     dependencies {
-        implementation 'com.yandex.android:mapkit:3.5.0'
-        implementation 'com.yandex.android:search:3.5.0'
-        implementation 'com.yandex.android:directions:3.5.0'
-        implementation 'com.yandex.android:transport:3.5.0'
-        implementation 'com.yandex.android:places:3.5.0'
+        /* lite version provides only map and some core services
+         * full version provides the rest of maps API
+         * routing, panoramas, search and etc.
+         * implementation 'com.yandex.android:maps.mobile:4.0.0-lite'
+         */
+        implementation 'com.yandex.android:maps.mobile:4.0.0-full'
     }
 
     compileSdkVersion 29
@@ -42,6 +43,5 @@ android {
 }
 
 dependencies {
-    implementation 'com.android.support:appcompat-v7:28.+'
-    implementation 'com.android.support.constraint:constraint-layout:+'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.1'
 }

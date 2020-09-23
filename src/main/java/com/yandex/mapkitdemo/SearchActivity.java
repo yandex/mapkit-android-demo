@@ -13,7 +13,7 @@ import com.yandex.mapkit.MapKitFactory;
 import com.yandex.mapkit.geometry.Point;
 import com.yandex.mapkit.map.CameraListener;
 import com.yandex.mapkit.map.CameraPosition;
-import com.yandex.mapkit.map.CameraUpdateSource;
+import com.yandex.mapkit.map.CameraUpdateReason;
 import com.yandex.mapkit.map.Map;
 import com.yandex.mapkit.map.MapObjectCollection;
 import com.yandex.mapkit.map.VisibleRegionUtils;
@@ -131,7 +131,7 @@ public class SearchActivity extends Activity implements Session.SearchListener, 
     public void onCameraPositionChanged(
             Map map,
             CameraPosition cameraPosition,
-            CameraUpdateSource cameraUpdateSource,
+            CameraUpdateReason cameraUpdateReason,
             boolean finished) {
         if (finished) {
             submitQuery(searchEdit.getText().toString());

@@ -47,7 +47,7 @@ public class CustomLayerActivity extends Activity {
             }
         };
         resourceUrlProvider = new DefaultUrlProvider();
-        projection = Projections.createWgs84Mercator();
+        projection = Projections.getWgs84Mercator();
 
         mapView = (MapView)findViewById(R.id.mapview);
         mapView.getMap().setMapType(MapType.NONE);

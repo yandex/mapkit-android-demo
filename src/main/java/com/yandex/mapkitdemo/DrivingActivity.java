@@ -7,18 +7,19 @@ import android.widget.Toast;
 import java.util.List;
 import java.util.ArrayList;
 
-import com.yandex.mapkit.MapKitFactory;
 import com.yandex.mapkit.directions.DirectionsFactory;
-import com.yandex.mapkit.directions.driving.DrivingRouter;
 import com.yandex.mapkit.directions.driving.DrivingOptions;
-import com.yandex.mapkit.directions.driving.DrivingSession;
 import com.yandex.mapkit.directions.driving.DrivingRoute;
-import com.yandex.mapkit.RequestPoint;
-import com.yandex.mapkit.RequestPointType;
+import com.yandex.mapkit.directions.driving.DrivingRouter;
+import com.yandex.mapkit.directions.driving.DrivingSession;
+import com.yandex.mapkit.directions.driving.VehicleOptions;
 import com.yandex.mapkit.geometry.Point;
 import com.yandex.mapkit.map.CameraPosition;
 import com.yandex.mapkit.map.MapObjectCollection;
+import com.yandex.mapkit.MapKitFactory;
 import com.yandex.mapkit.mapview.MapView;
+import com.yandex.mapkit.RequestPoint;
+import com.yandex.mapkit.RequestPointType;
 import com.yandex.runtime.Error;
 import com.yandex.runtime.network.NetworkError;
 import com.yandex.runtime.network.RemoteError;
@@ -97,7 +98,8 @@ public class DrivingActivity extends Activity implements DrivingSession.DrivingR
     }
 
     private void submitRequest() {
-        DrivingOptions options = new DrivingOptions();
+        DrivingOptions drivingOptions = new DrivingOptions();
+        VehicleOptions vehicleOptions = new VehicleOptions();
         ArrayList<RequestPoint> requestPoints = new ArrayList<>();
         requestPoints.add(new RequestPoint(
                 ROUTE_START_LOCATION,
@@ -107,6 +109,6 @@ public class DrivingActivity extends Activity implements DrivingSession.DrivingR
                 ROUTE_END_LOCATION,
                 RequestPointType.WAYPOINT,
                 null));
-        drivingSession = drivingRouter.requestRoutes(requestPoints, options, this);
+        drivingSession = drivingRouter.requestRoutes(requestPoints, drivingOptions, vehicleOptions, this);
     }
 }

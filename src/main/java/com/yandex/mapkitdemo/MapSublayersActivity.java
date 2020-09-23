@@ -3,10 +3,10 @@ package com.yandex.mapkitdemo;
 import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
+import androidx.annotation.NonNull;
 
 import com.yandex.mapkit.ConflictResolutionMode;
 import com.yandex.mapkit.MapKitFactory;
