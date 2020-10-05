@@ -89,5 +89,96 @@
         }
       }
     ]
+  },
+  "night": {
+    "layers": [
+      {
+        "id": "Point",
+        "type": "label",
+        "minzoom": 0,
+        "maxzoom": 21,
+        "source-layer": "",
+        "filter": [
+          "any",
+          [
+            "==",
+            "layer",
+            "point"
+          ]
+        ],
+        "style": {
+          "label-target": "point",
+          "icon-scale": 2,
+          "icon-image": "assets/animation.png",
+          "text-field": "text",
+          "text-size": 12,
+          "alt-text-field": "alt-text",
+          "alt-text-size": 8,
+          "text-offset": 10,
+          "text-anchor": ["bottom", "right"]
+        }
+      },
+      {
+        "id": "BlueLine",
+        "minzoom": 0,
+        "maxzoom": 21,
+        "type": "line",
+        "source-layer": "",
+        "filter": [
+          "any",
+          [
+            "==",
+            "layer",
+            "blue-line"
+          ]
+        ],
+        "style": {
+          "line-color": "#00ffff",
+          "line-opacity": 1.0,
+          "line-width": 5,
+          "line-border-width": 2,
+          "line-border-color": "#ffffff",
+          "line-border-opacity": 0.5
+        }
+      },
+      {
+        "id": "RedPolygon",
+        "minzoom": 0,
+        "maxzoom": 21,
+        "type": "fill",
+        "source-layer": "",
+        "filter": [
+          "any",
+          [
+            "==",
+            "layer",
+            "red-polygon"
+          ]
+        ],
+        "style": {
+          "fill-color": "#ff00ff",
+          "fill-opacity": 0.5
+        }
+      },
+      {
+        "id": "TexturedPolygon",
+        "type": "fill",
+        "minzoom": 0,
+        "maxzoom": 21,
+        "source-layer": "",
+        "filter": [
+          "any",
+          [
+            "==",
+            "layer",
+            "textured-polygon"
+          ]
+        ],
+        "style": {
+          "fill-pattern-scale": 2,
+          "fill-pattern": "assets/image.png"
+        }
+      }
+    ]
   }
 }
