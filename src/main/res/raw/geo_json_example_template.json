@@ -3,31 +3,41 @@
   "features": [
     {
       "type": "Feature",
-      "geometry": {
+      "geometry":
+      {
         "type": "Point",
         "coordinates": [@POINT_X@, @POINT_Y@]
       },
-      "properties": {
-        "tags": ["point"]
-      }
+      "properties":
+      {
+        "layer": "point",
+        "text": "Text",
+        "alt-text": "Alt text"
+      },
+      "id": "Point"
     },
     {
       "type": "Feature",
-      "geometry": {
+      "geometry":
+      {
         "type": "LineString",
         "coordinates": [
           [@LINE_X0@, @LINE_Y0@],
           [@LINE_X1@, @LINE_Y1@],
           [@LINE_X2@, @LINE_Y2@],
-          [@LINE_X3@, @LINE_Y3@]]
+          [@LINE_X3@, @LINE_Y3@]
+        ]
       },
-      "properties": {
-        "tags": ["line"]
-      }
+      "properties":
+      {
+        "layer": "blue-line"
+      },
+      "id": "Polyline"
     },
     {
       "type": "Feature",
-      "geometry": {
+      "geometry":
+      {
         "type": "Polygon",
         "coordinates": [[
           [@POLYGON_X0@, @POLYGON_Y0@],
@@ -36,13 +46,16 @@
           [@POLYGON_X0@, @POLYGON_Y0@]
         ]]
       },
-      "properties": {
-        "tags": ["polygon"]
-      }
+      "properties":
+      {
+        "layer": "red-polygon"
+      },
+      "id": "Polygon"
     },
     {
       "type": "Feature",
-      "geometry": {
+      "geometry":
+      {
         "type": "Polygon",
         "coordinates": [[
           [@TEXTURED_POLYGON_X0@, @TEXTURED_POLYGON_Y0@],
@@ -51,9 +64,11 @@
           [@TEXTURED_POLYGON_X0@, @TEXTURED_POLYGON_Y0@]
         ]]
       },
-      "properties": {
-        "tags": ["textured-polygon"]
-      }
+      "properties":
+      {
+        "layer": "textured-polygon"
+      },
+      "id": "TexturedPolygon"
     }
   ]
 }

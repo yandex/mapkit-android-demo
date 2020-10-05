@@ -98,7 +98,7 @@ public class GeoJsonActivity extends Activity {
         Layer layer = mapView.getMap().addGeoJSONLayer(
                 "geo_json_layer",
                 style(),
-                new LayerOptions(),
+                new LayerOptions().setNightModeAvailable(true),
                 tileProvider,
                 urlProvider,
                 projection,
