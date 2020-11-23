@@ -94,7 +94,7 @@ public class UserLocationActivity extends Activity implements UserLocationObject
                         .setScale(0.5f)
         );
 
-        userLocationView.getAccuracyCircle().setFillColor(Color.BLUE);
+        userLocationView.getAccuracyCircle().setFillColor(Color.BLUE & 0x99ffffff);
     }
 
     @Override
