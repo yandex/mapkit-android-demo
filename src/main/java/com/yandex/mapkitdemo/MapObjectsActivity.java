@@ -16,6 +16,7 @@ import com.yandex.mapkit.geometry.Polygon;
 import com.yandex.mapkit.geometry.Polyline;
 import com.yandex.mapkit.map.CameraPosition;
 import com.yandex.mapkit.map.CircleMapObject;
+import com.yandex.mapkit.map.IconStyle;
 import com.yandex.mapkit.map.MapObject;
 import com.yandex.mapkit.map.MapObjectCollection;
 import com.yandex.mapkit.map.MapObjectTapListener;
@@ -46,6 +47,7 @@ public class MapObjectsActivity extends Activity {
     private final Point POLYLINE_CENTER = CAMERA_TARGET;
     private final Point CIRCLE_CENTER = new Point(59.956, 30.323);
     private final Point DRAGGABLE_PLACEMARK_CENTER = new Point(59.948, 30.323);
+    private final Point ANIMATED_PLACEMARK_CENTER = new Point(59.948, 30.318);
     private final double OBJECT_SIZE = 0.0015;
 
     private MapView mapView;
@@ -141,6 +143,7 @@ public class MapObjectsActivity extends Activity {
         mark.setDraggable(true);
 
         createPlacemarkMapObjectWithViewProvider();
+        createAnimatedPlacemark();
     }
 
     // Strong reference to the listener.
@@ -222,5 +225,13 @@ public class MapObjectsActivity extends Activity {
                 animationHandler.postDelayed(this, delayToShowRandomText);
             }
         }, delayToShowInitialText);
+    }
+
+    private void createAnimatedPlacemark() {
+        AnimatedImageProvider imageProvider =
+                AnimatedImageProvider.fromAsset(this,"animation.png");
+        PlacemarkMapObject animatedPlacemark =
+                mapObjects.addPlacemark(ANIMATED_PLACEMARK_CENTER, imageProvider, new IconStyle());
+        animatedPlacemark.useAnimation().play();
     }
 }
