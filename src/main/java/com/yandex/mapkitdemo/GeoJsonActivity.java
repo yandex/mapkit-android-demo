@@ -18,7 +18,8 @@ import com.yandex.mapkit.layers.LayerOptions;
 import com.yandex.mapkit.map.CameraPosition;
 import com.yandex.mapkit.map.MapType;
 import com.yandex.mapkit.mapview.MapView;
-import com.yandex.mapkit.resource_url_provider.ResourceUrlProvider;
+import com.yandex.mapkit.images.ImageUrlProvider;
+import com.yandex.mapkit.images.ImageDataDescriptor;
 import com.yandex.mapkit.tiles.TileProvider;
 import com.yandex.mapkit.ZoomRange;
 
@@ -46,7 +47,7 @@ public class GeoJsonActivity extends Activity {
     private static final String TAG = "GeoJsonActivity";
 
     private Projection projection;
-    private ResourceUrlProvider urlProvider;
+    private ImageUrlProvider urlProvider;
     private TileProvider tileProvider;
     private MapView mapView;
 
@@ -63,11 +64,11 @@ public class GeoJsonActivity extends Activity {
 
         // Client code must retain strong references to providers and projection
         projection = Projections.getWgs84Mercator();
-        urlProvider = new ResourceUrlProvider() {
+        urlProvider = new ImageUrlProvider() {
             @NonNull
             @Override
-            public String formatUrl(@NonNull String s) {
-                return String.format("https://raw.githubusercontent.com/yandex/mapkit-android-demo/master/src/main/%s", s);
+            public String formatUrl(@NonNull ImageDataDescriptor desc) {
+                return String.format("https://raw.githubusercontent.com/yandex/mapkit-android-demo/master/src/main/%s", desc.getImageId());
             }
         };
         try {

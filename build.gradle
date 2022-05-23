@@ -9,7 +9,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.0.1'
+        classpath 'com.android.tools.build:gradle:7.1.3'
     }
 }
 
@@ -20,17 +20,18 @@ android {
         /* lite version provides only map and some core services
          * full version provides the rest of maps API
          * routing, panoramas, search and etc.
-         * implementation 'com.yandex.android:maps.mobile:4.0.0-lite'
+         * implementation 'com.yandex.android:maps.mobile:4.1.0-lite'
          */
-        implementation 'com.yandex.android:maps.mobile:4.0.0-full'
+        implementation 'com.yandex.android:maps.mobile:4.1.0-full'
+        implementation 'com.google.android.gms:play-services-location:18.0.0'
     }
 
-    compileSdkVersion 29
-    buildToolsVersion "29.0.3"
+    compileSdkVersion 31
+    buildToolsVersion "31.0.0"
 
     defaultConfig {
-        minSdkVersion 15
-        targetSdkVersion 29
+        minSdkVersion 21
+        targetSdkVersion 31
     }
 
     sourceSets {

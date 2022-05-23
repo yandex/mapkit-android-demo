@@ -10,7 +10,7 @@ import com.yandex.mapkit.layers.Layer;
 import com.yandex.mapkit.layers.LayerOptions;
 import com.yandex.mapkit.map.MapType;
 import com.yandex.mapkit.tiles.UrlProvider;
-import com.yandex.mapkit.resource_url_provider.DefaultUrlProvider;
+import com.yandex.mapkit.images.DefaultImageUrlProvider;
 import com.yandex.mapkit.geometry.geo.Projection;
 import com.yandex.mapkit.geometry.geo.Projections;
 import com.yandex.mapkit.mapview.MapView;
@@ -29,7 +29,7 @@ public class CustomLayerActivity extends Activity {
     private final String MAPKIT_API_KEY = "your_api_key";
 
     private UrlProvider urlProvider;
-    private DefaultUrlProvider resourceUrlProvider;
+    private DefaultImageUrlProvider imageUrlProvider;
     private Projection projection;
     private MapView mapView;
 
@@ -46,7 +46,7 @@ public class CustomLayerActivity extends Activity {
                 return "https://maps-ios-pods-public.s3.yandex.net/mapkit_logo.png";
             }
         };
-        resourceUrlProvider = new DefaultUrlProvider();
+        imageUrlProvider = new DefaultImageUrlProvider();
         projection = Projections.getWgs84Mercator();
 
         mapView = (MapView)findViewById(R.id.mapview);
@@ -56,7 +56,7 @@ public class CustomLayerActivity extends Activity {
                 "image/png",
                 new LayerOptions(),
                 urlProvider,
-                resourceUrlProvider,
+                imageUrlProvider,
                 projection);
         l.invalidate("0.0.0");
     }

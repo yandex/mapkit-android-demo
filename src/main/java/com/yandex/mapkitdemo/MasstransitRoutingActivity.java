@@ -16,7 +16,7 @@ import com.yandex.mapkit.map.MapObjectCollection;
 import com.yandex.mapkit.map.PolylineMapObject;
 import com.yandex.mapkit.mapview.MapView;
 import com.yandex.mapkit.transport.TransportFactory;
-import com.yandex.mapkit.transport.masstransit.MasstransitOptions;
+import com.yandex.mapkit.transport.masstransit.TransitOptions;
 import com.yandex.mapkit.transport.masstransit.MasstransitRouter;
 import com.yandex.mapkit.transport.masstransit.Route;
 import com.yandex.mapkit.transport.masstransit.Section;
@@ -73,10 +73,7 @@ public class MasstransitRoutingActivity extends Activity
         mapObjects = mapView.getMap().getMapObjects().addCollection();
 
 
-        MasstransitOptions options = new MasstransitOptions(
-                new ArrayList<String>(),
-                new ArrayList<String>(),
-                new TimeOptions());
+        TransitOptions options = new TransitOptions();
         List<RequestPoint> points = new ArrayList<RequestPoint>();
         points.add(new RequestPoint(ROUTE_START_LOCATION, RequestPointType.WAYPOINT, null));
         points.add(new RequestPoint(ROUTE_END_LOCATION, RequestPointType.WAYPOINT, null));
