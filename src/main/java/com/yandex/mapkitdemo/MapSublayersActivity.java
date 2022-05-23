@@ -119,15 +119,14 @@ public class MapSublayersActivity extends Activity {
 
         // Example of conflict resolving
         Integer mapObjectPlacemarkSublayerIndex =
-                sublayerManager.findFirstOf(LayerIds.getBuildingsLayerId(), SublayerFeatureType.PLACEMARKS);
+            sublayerManager.findFirstOf(
+                LayerIds.getBuildingsLayerId(),
+                SublayerFeatureType.PLACEMARKS_AND_LABELS);
         if (mapObjectPlacemarkSublayerIndex != null) {
             Sublayer sublayer = sublayerManager.get(mapObjectPlacemarkSublayerIndex);
 
-            // The placemarks from lower sublayers will be displaced in case of conflict
-            sublayer.setModeAgainstPlacemarks(ConflictResolutionMode.MAJOR);
-
-            // The labels from lower sublayers will be displaced in case of conflict
-            sublayer.setModeAgainstLabels(ConflictResolutionMode.MAJOR);
+            // The placemarks and labels from lower sublayers will be displaced in case of conflict
+            sublayer.setConflictResolutionMode(ConflictResolutionMode.MAJOR);
         }
 
         // Client code must retain strong reference to the listener.

@@ -1,4 +1,4 @@
 # Yandex MapKit Demo Application
 
-* [Documentation](https://tech.yandex.ru/mapkit/doc/3.x/concepts/about-docpage/)
-* [Quickstart](https://tech.yandex.ru/mapkit/doc/3.x/concepts/android/quickstart-docpage/)
+* [Documentation](https://yandex.ru/dev/maps/mapkit/doc/intro/concepts/about.html)
+* [Quickstart](https://yandex.ru/dev/maps/mapkit/doc/android-quickstart/concepts/android/quickstart.html)
