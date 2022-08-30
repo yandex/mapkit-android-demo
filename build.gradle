@@ -20,9 +20,9 @@ android {
         /* lite version provides only map and some core services
          * full version provides the rest of maps API
          * routing, panoramas, search and etc.
-         * implementation 'com.yandex.android:maps.mobile:4.1.0-lite'
+         * implementation 'com.yandex.android:maps.mobile:4.2.0-lite'
          */
-        implementation 'com.yandex.android:maps.mobile:4.1.0-full'
+        implementation 'com.yandex.android:maps.mobile:4.2.0-full'
         implementation 'com.google.android.gms:play-services-location:18.0.0'
     }
 
@@ -39,6 +39,23 @@ android {
             manifest.srcFile 'src/main/AndroidManifest.xml'
             java.srcDirs = ['src/main/java']
             res.srcDirs = ['src/main/res']
+        }
+    }
+
+    if (project.properties["with_sign"]) {
+        signingConfigs {
+            release {
+                storeFile file(project.properties['keystorePath'])
+                storePassword project.properties['keystorePass']
+                keyAlias project.properties['keyAlias']
+                keyPassword project.properties['keyPass']
+            }
+        }
+
+        buildTypes {
+            release {
+                signingConfig signingConfigs.release
+            }
         }
     }
 }
