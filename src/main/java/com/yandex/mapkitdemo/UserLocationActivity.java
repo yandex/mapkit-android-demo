@@ -27,11 +27,6 @@ import com.yandex.runtime.image.ImageProvider;
  * This example shows how to display and customize user location arrow on the map.
  */
 public class UserLocationActivity extends Activity implements UserLocationObjectListener {
-    /**
-     * Replace "your_api_key" with a valid developer key.
-     * You can get it at the https://developer.tech.yandex.ru/ website.
-     */
-    private final String MAPKIT_API_KEY = "your_api_key";
     private static final int PERMISSIONS_REQUEST_FINE_LOCATION = 1;
 
     private MapView mapView;
@@ -39,8 +34,6 @@ public class UserLocationActivity extends Activity implements UserLocationObject
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        MapKitFactory.setApiKey(MAPKIT_API_KEY);
-        MapKitFactory.initialize(this);
         setContentView(R.layout.user_location);
         super.onCreate(savedInstanceState);
         mapView = findViewById(R.id.mapview);

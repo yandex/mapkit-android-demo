@@ -36,11 +36,6 @@ import java.util.Random;
  * It also shows how to display images instead.
  */
 public class MapObjectsActivity extends Activity {
-    /**
-     * Replace "your_api_key" with a valid developer key.
-     * You can get it at the https://developer.tech.yandex.ru/ website.
-     */
-    private final String MAPKIT_API_KEY = "your_api_key";
     private final Point CAMERA_TARGET = new Point(59.952, 30.318);
     private final Point ANIMATED_RECTANGLE_CENTER = new Point(59.956, 30.313);
     private final Point TRIANGLE_CENTER = new Point(59.948, 30.313);
@@ -56,11 +51,9 @@ public class MapObjectsActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        MapKitFactory.setApiKey(MAPKIT_API_KEY);
-        MapKitFactory.initialize(this);
         setContentView(R.layout.map_objects);
         super.onCreate(savedInstanceState);
-        mapView = (MapView)findViewById(R.id.mapview);
+        mapView = findViewById(R.id.mapview);
         mapView.getMap().move(
                 new CameraPosition(CAMERA_TARGET, 15.0f, 0.0f, 0.0f));
         mapObjects = mapView.getMap().getMapObjects().addCollection();

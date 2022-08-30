@@ -22,12 +22,6 @@ import com.yandex.mapkit.mapview.MapView;
  * just provide a URL for the static image.
  */
 public class CustomLayerActivity extends Activity {
-    /**
-     * Replace "your_api_key" with a valid developer key.
-     * You can get it at the https://developer.tech.yandex.ru/ website.
-     */
-    private final String MAPKIT_API_KEY = "your_api_key";
-
     private UrlProvider urlProvider;
     private DefaultImageUrlProvider imageUrlProvider;
     private Projection projection;
@@ -35,17 +29,11 @@ public class CustomLayerActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        MapKitFactory.setApiKey(MAPKIT_API_KEY);
         MapKitFactory.initialize(this);
         setContentView(R.layout.custom_layer);
         super.onCreate(savedInstanceState);
 
-        urlProvider = new UrlProvider() {
-            @Override
-            public String formatUrl(TileId tileId, Version version) {
-                return "https://maps-ios-pods-public.s3.yandex.net/mapkit_logo.png";
-            }
-        };
+        urlProvider = (tileId, version) -> "https://maps-ios-pods-public.s3.yandex.net/mapkit_logo.png";
         imageUrlProvider = new DefaultImageUrlProvider();
         projection = Projections.getWgs84Mercator();
 

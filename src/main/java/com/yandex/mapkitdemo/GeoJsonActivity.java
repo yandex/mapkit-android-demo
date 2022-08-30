@@ -36,11 +36,6 @@ import java.util.HashMap;
  * to the map using GeoJSON format.
  */
 public class GeoJsonActivity extends Activity {
-    /**
-     * Replace "your_api_key" with a valid developer key.
-     * You can get it at the https://developer.tech.yandex.ru/ website.
-     */
-    private final String MAPKIT_API_KEY = "your_api_key";
     private final Point CAMERA_TARGET = new Point(59.952, 30.318);
     private final int MAX_ZOOM = 30;
 
@@ -53,11 +48,9 @@ public class GeoJsonActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        MapKitFactory.setApiKey(MAPKIT_API_KEY);
-        MapKitFactory.initialize(this);
         setContentView(R.layout.geo_json);
         super.onCreate(savedInstanceState);
-        mapView = (MapView)findViewById(R.id.mapview);
+        mapView = findViewById(R.id.mapview);
 
         mapView.getMap().move(new CameraPosition(CAMERA_TARGET, 15.f, 0.f, 0.f));
         mapView.getMap().setMapType(MapType.VECTOR_MAP);

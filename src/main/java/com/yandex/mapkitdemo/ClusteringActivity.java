@@ -35,12 +35,6 @@ import java.util.Random;
  * This example shows how to add a collection of clusterized placemarks to the map.
  */
 public class ClusteringActivity extends Activity implements ClusterListener, ClusterTapListener {
-    /**
-     * Replace "your_api_key" with a valid developer key.
-     * You can get it at the https://developer.tech.yandex.ru/ website.
-     */
-    private final String MAPKIT_API_KEY = "your_api_key";
-
     private MapView mapView;
     private static final float FONT_SIZE = 15;
     private static final float MARGIN_SIZE = 3;
@@ -109,12 +103,10 @@ public class ClusteringActivity extends Activity implements ClusterListener, Clu
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        MapKitFactory.setApiKey(MAPKIT_API_KEY);
-        MapKitFactory.initialize(this);
         setContentView(R.layout.clustering);
         super.onCreate(savedInstanceState);
 
-        mapView = (MapView) findViewById(R.id.mapview);
+        mapView = findViewById(R.id.mapview);
         mapView.getMap().move(new CameraPosition(
                 CLUSTER_CENTERS.get(0), 3, 0, 0));
         ImageProvider imageProvider = ImageProvider.fromResource(

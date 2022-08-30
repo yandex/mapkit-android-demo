@@ -41,11 +41,6 @@ import java.util.List;
  */
 public class MasstransitRoutingActivity extends Activity
     implements Session.RouteListener {
-    /**
-     * Replace "your_api_key" with a valid developer key.
-     * You can get it at the https://developer.tech.yandex.ru/ website.
-     */
-    private final String MAPKIT_API_KEY = "your_api_key";
     private final Point TARGET_LOCATION = new Point(55.752078, 37.592664);
 
     private final Point ROUTE_START_LOCATION = new Point(55.699671, 37.567286);
@@ -57,8 +52,6 @@ public class MasstransitRoutingActivity extends Activity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        MapKitFactory.setApiKey(MAPKIT_API_KEY);
-        MapKitFactory.initialize(this);
         TransportFactory.initialize(this);
 
         setContentView(R.layout.map);
