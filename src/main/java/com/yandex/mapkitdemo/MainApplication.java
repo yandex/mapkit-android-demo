@@ -16,7 +16,5 @@ public class MainApplication extends Application {
         super.onCreate();
         // Set the api key before calling initialize on MapKitFactory.
         MapKitFactory.setApiKey(MAPKIT_API_KEY);
-        // Initialize the library to load required native libraries.
-        MapKitFactory.initialize(this);
     }
 }

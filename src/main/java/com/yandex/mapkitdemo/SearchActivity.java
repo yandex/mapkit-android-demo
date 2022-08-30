@@ -35,12 +35,6 @@ import com.yandex.runtime.network.RemoteError;
  * https://tech.yandex.ru/mapkit/doc/3.x/concepts/conditions-docpage/#conditions__limits
  */
 public class SearchActivity extends Activity implements Session.SearchListener, CameraListener {
-    /**
-     * Replace "your_api_key" with a valid developer key.
-     * You can get it at the https://developer.tech.yandex.ru/ website.
-     */
-    private final String MAPKIT_API_KEY = "your_api_key";
-
     private MapView mapView;
     private EditText searchEdit;
     private SearchManager searchManager;
@@ -56,8 +50,6 @@ public class SearchActivity extends Activity implements Session.SearchListener, 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        MapKitFactory.setApiKey(MAPKIT_API_KEY);
-        MapKitFactory.initialize(this);
         SearchFactory.initialize(this);
 
         setContentView(R.layout.search);
@@ -65,10 +57,10 @@ public class SearchActivity extends Activity implements Session.SearchListener, 
 
         searchManager = SearchFactory.getInstance().createSearchManager(SearchManagerType.COMBINED);
 
-        mapView = (MapView)findViewById(R.id.mapview);
+        mapView = findViewById(R.id.mapview);
         mapView.getMap().addCameraListener(this);
 
-        searchEdit = (EditText)findViewById(R.id.search_edit);
+        searchEdit = findViewById(R.id.search_edit);
         searchEdit.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {

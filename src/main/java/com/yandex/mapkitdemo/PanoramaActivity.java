@@ -22,11 +22,6 @@ import com.yandex.runtime.network.RemoteError;
  * Learn more at https://tech.yandex.ru/mapkit/doc/3.x/concepts/conditions-docpage/#conditions__limits
  */
 public class PanoramaActivity extends Activity implements PanoramaService.SearchListener {
-    /**
-     * Replace "your_api_key" with a valid developer key.
-     * You can get it at the https://developer.tech.yandex.ru/ website.
-     */
-    private final String MAPKIT_API_KEY = "your_api_key";
     private final Point SEARCH_LOCATION = new Point(55.733330, 37.587649);
 
     private PanoramaView panoramaView;
@@ -35,12 +30,10 @@ public class PanoramaActivity extends Activity implements PanoramaService.Search
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        MapKitFactory.setApiKey(MAPKIT_API_KEY);
-        MapKitFactory.initialize(this);
         PlacesFactory.initialize(this);
         setContentView(R.layout.panorama);
         super.onCreate(savedInstanceState);
-        panoramaView = (PanoramaView)findViewById(R.id.panoview);
+        panoramaView = findViewById(R.id.panoview);
 
         panoramaService = PlacesFactory.getInstance().createPanoramaService();
         searchSession = panoramaService.findNearest(SEARCH_LOCATION, this);

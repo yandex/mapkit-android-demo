@@ -33,13 +33,7 @@ import java.util.ArrayList;
  * This example shows how to reorder sublayers and use conflict resolving.
  */
 public class MapSublayersActivity extends Activity {
-    /**
-     * Replace "your_api_key" with a valid developer key.
-     * You can get it at the https://developer.tech.yandex.ru/ website.
-     */
-    private final String MAPKIT_API_KEY = "your_api_key";
     private final Point CAMERA_TARGET = new Point(59.951029, 30.317181);
-
     private MapView mapView;
     private SublayerManager sublayerManager;
     private MapObjectCollection mapObjects;
@@ -60,8 +54,6 @@ public class MapSublayersActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        MapKitFactory.setApiKey(MAPKIT_API_KEY);
-        MapKitFactory.initialize(this);
         setContentView(R.layout.map_sublayers);
         super.onCreate(savedInstanceState);
         mapView = findViewById(R.id.mapview);

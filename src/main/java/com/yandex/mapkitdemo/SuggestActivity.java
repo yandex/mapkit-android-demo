@@ -32,11 +32,6 @@ import java.util.List;
  * This example shows how to request a suggest for search requests.
  */
 public class SuggestActivity extends Activity implements SuggestSession.SuggestListener {
-    /**
-     * Replace "your_api_key" with a valid developer key.
-     * You can get it at the https://developer.tech.yandex.ru/ website.
-     */
-    private final String MAPKIT_API_KEY = "your_api_key";
     private final int RESULT_NUMBER_LIMIT = 5;
 
     private SearchManager searchManager;
@@ -57,8 +52,6 @@ public class SuggestActivity extends Activity implements SuggestSession.SuggestL
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        MapKitFactory.setApiKey(MAPKIT_API_KEY);
-        MapKitFactory.initialize(this);
         SearchFactory.initialize(this);
         setContentView(R.layout.suggest);
         super.onCreate(savedInstanceState);

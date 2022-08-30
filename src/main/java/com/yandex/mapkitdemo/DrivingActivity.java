@@ -30,11 +30,6 @@ import com.yandex.runtime.network.RemoteError;
  * https://tech.yandex.ru/mapkit/doc/3.x/concepts/conditions-docpage/#conditions__limits
  */
 public class DrivingActivity extends Activity implements DrivingSession.DrivingRouteListener {
-    /**
-     * Replace "your_api_key" with a valid developer key.
-     * You can get it at the https://developer.tech.yandex.ru/ website.
-     */
-    private final String MAPKIT_API_KEY = "your_api_key";
     private final Point ROUTE_START_LOCATION = new Point(59.959194, 30.407094);
     private final Point ROUTE_END_LOCATION = new Point(55.733330, 37.587649);
     private final Point SCREEN_CENTER = new Point(
@@ -48,14 +43,12 @@ public class DrivingActivity extends Activity implements DrivingSession.DrivingR
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        MapKitFactory.setApiKey(MAPKIT_API_KEY);
-        MapKitFactory.initialize(this);
         DirectionsFactory.initialize(this);
 
         setContentView(R.layout.driving);
         super.onCreate(savedInstanceState);
 
-        mapView = (MapView)findViewById(R.id.mapview);
+        mapView = findViewById(R.id.mapview);
         mapView.getMap().move(new CameraPosition(
                 SCREEN_CENTER, 5, 0, 0));
         drivingRouter = DirectionsFactory.getInstance().createDrivingRouter();

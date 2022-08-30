@@ -17,12 +17,6 @@ import com.yandex.mapkit.traffic.TrafficLevel;
 import com.yandex.mapkit.traffic.TrafficListener;
 
 public class JamsActivity extends Activity implements TrafficListener {
-    /**
-     * Replace "your_api_key" with a valid developer key.
-     * You can get it at the https://developer.tech.yandex.ru/ website.
-     */
-    private final String MAPKIT_API_KEY = "your_api_key";
-
     private TextView levelText;
     private ImageButton levelIcon;
     private TrafficLevel trafficLevel = null;
@@ -34,18 +28,15 @@ public class JamsActivity extends Activity implements TrafficListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        MapKitFactory.setApiKey(MAPKIT_API_KEY);
-        MapKitFactory.initialize(this);
-
         setContentView(R.layout.jams);
         super.onCreate(savedInstanceState);
 
-        mapView = (MapView)findViewById(R.id.mapview);
+        mapView = findViewById(R.id.mapview);
         mapView.getMap().move(
                 new CameraPosition(new Point(59.945933, 30.320045), 14.0f, 0.0f, 0.0f));
 
-        levelText = (TextView) findViewById(R.id.traffic_light_text);
-        levelIcon = (ImageButton) findViewById(R.id.traffic_light);
+        levelText = findViewById(R.id.traffic_light_text);
+        levelIcon = findViewById(R.id.traffic_light);
         traffic = MapKitFactory.getInstance().createTrafficLayer(mapView.getMapWindow());
         traffic.setTrafficVisible(true);
         traffic.addTrafficListener(this);
