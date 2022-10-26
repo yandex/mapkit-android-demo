@@ -20,9 +20,9 @@ android {
         /* lite version provides only map and some core services
          * full version provides the rest of maps API
          * routing, panoramas, search and etc.
-         * implementation 'com.yandex.android:maps.mobile:4.2.1-lite'
+         * implementation 'com.yandex.android:maps.mobile:4.2.2-lite'
          */
-        implementation 'com.yandex.android:maps.mobile:4.2.1-full'
+        implementation 'com.yandex.android:maps.mobile:4.2.2-full'
         implementation 'com.google.android.gms:play-services-location:20.0.0'
     }
 
