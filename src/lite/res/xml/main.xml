@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+        android:title="@string/app_name">
+        <Preference
+            android:key="map_test"
+            android:title="@string/map">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:targetPackage="@string/package_name"
+                android:targetClass="com.yandex.mapkitdemo.MapActivity" />
+        </Preference>
+        <Preference
+            android:key="mapobjects_test"
+            android:title="@string/mapobjects">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:targetPackage="@string/package_name"
+                android:targetClass="com.yandex.mapkitdemo.MapObjectsActivity" />
+        </Preference>
+        <Preference
+            android:key="map_sublayers_test"
+            android:title="@string/map_sublayers">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:targetPackage="@string/package_name"
+                android:targetClass="com.yandex.mapkitdemo.MapSublayersActivity" />
+        </Preference>
+        <Preference
+            android:key="map_customization_test"
+            android:title="@string/customization">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:targetPackage="@string/package_name"
+                android:targetClass="com.yandex.mapkitdemo.CustomizationActivity" />
+        </Preference>
+        <Preference
+            android:key="user_location_test"
+            android:title="@string/user_location">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:targetPackage="@string/package_name"
+                android:targetClass="com.yandex.mapkitdemo.UserLocationActivity" />
+        </Preference>
+        <Preference
+            android:key="custom_layer_test"
+            android:title="@string/custom_layer">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:targetPackage="@string/package_name"
+                android:targetClass="com.yandex.mapkitdemo.CustomLayerActivity" />
+        </Preference>
+        <Preference
+            android:key="geo_json_test"
+            android:title="@string/geo_json_test">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:targetPackage="@string/package_name"
+                android:targetClass="com.yandex.mapkitdemo.GeoJsonActivity" />
+        </Preference>
+        <Preference
+            android:key="clustering"
+            android:title="@string/clustering">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:targetPackage="@string/package_name"
+                android:targetClass="com.yandex.mapkitdemo.ClusteringActivity" />
+        </Preference>
+        <Preference
+            android:key="jams"
+            android:title="@string/jams">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:targetPackage="@string/package_name"
+                android:targetClass="com.yandex.mapkitdemo.JamsActivity" />
+        </Preference>
+        <Preference
+            android:key="selection"
+            android:title="@string/selection">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:targetPackage="@string/package_name"
+                android:targetClass="com.yandex.mapkitdemo.SelectionActivity" />
+        </Preference>
+    </PreferenceCategory>
+</PreferenceScreen>

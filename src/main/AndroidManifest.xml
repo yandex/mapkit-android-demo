@@ -3,7 +3,7 @@
     package="com.yandex.mapkitdemo"
     android:installLocation="internalOnly"
     android:versionCode="1"
-    android:versionName="1.0">
+    android:versionName='1.0'>
 
     <application
         android:name=".MainApplication"
@@ -30,10 +30,6 @@
             android:configChanges="orientation|screenSize"
             android:theme="@android:style/Theme.NoTitleBar" />
         <activity
-            android:name=".DrivingActivity"
-            android:configChanges="orientation|screenSize"
-            android:theme="@android:style/Theme.NoTitleBar" />
-        <activity
             android:name=".MapObjectsActivity"
             android:configChanges="orientation|screenSize"
             android:theme="@android:style/Theme.NoTitleBar" />
@@ -46,23 +42,7 @@
             android:configChanges="orientation|screenSize"
             android:theme="@android:style/Theme.NoTitleBar" />
         <activity
-            android:name=".SearchActivity"
-            android:configChanges="orientation|screenSize"
-            android:theme="@android:style/Theme.NoTitleBar" />
-        <activity
-            android:name=".SuggestActivity"
-            android:configChanges="orientation|screenSize"
-            android:theme="@android:style/Theme.NoTitleBar" />
-        <activity
-            android:name=".PanoramaActivity"
-            android:configChanges="orientation|screenSize"
-            android:theme="@android:style/Theme.NoTitleBar" />
-        <activity
             android:name=".CustomLayerActivity"
-            android:configChanges="orientation|screenSize"
-            android:theme="@android:style/Theme.NoTitleBar" />
-        <activity
-            android:name=".MasstransitRoutingActivity"
             android:configChanges="orientation|screenSize"
             android:theme="@android:style/Theme.NoTitleBar" />
         <activity

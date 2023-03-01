@@ -16,16 +16,6 @@ buildscript {
 apply plugin: "com.android.application"
 
 android {
-    dependencies {
-        /* lite version provides only map and some core services
-         * full version provides the rest of maps API
-         * routing, panoramas, search and etc.
-         * implementation 'com.yandex.android:maps.mobile:4.2.2-lite'
-         */
-        implementation 'com.yandex.android:maps.mobile:4.2.2-full'
-        implementation 'com.google.android.gms:play-services-location:20.0.0'
-    }
-
     compileSdkVersion 31
     buildToolsVersion "31.0.0"
 
@@ -34,11 +24,25 @@ android {
         targetSdkVersion 31
     }
 
+    flavorDimensions "versionName"
+    productFlavors {
+        full {
+            dimension "versionName"
+        }
+        lite {
+            dimension "versionName"
+        }
+    }
+
     sourceSets {
-        main {
-            manifest.srcFile 'src/main/AndroidManifest.xml'
+        full {
+            manifest.srcFile 'src/full/AndroidManifest.xml'
+            java.srcDirs = ['src/main/java', 'src/full/java']
+            res.srcDirs = ['src/main/res', 'src/full/res']
+        }
+        lite {
             java.srcDirs = ['src/main/java']
-            res.srcDirs = ['src/main/res']
+            res.srcDirs = ['src/main/res', 'src/lite/res']
         }
     }
 
@@ -61,5 +65,10 @@ android {
 }
 
 dependencies {
+    // lite version provides only map and some core services.
+    liteImplementation 'com.yandex.android:maps.mobile:4.3.0-lite'
+    // full version provides the rest of maps API routing, panoramas, search and etc.
+    fullImplementation 'com.yandex.android:maps.mobile:4.3.0-full'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.1'
+    implementation 'com.google.android.gms:play-services-location:20.0.0'
 }
