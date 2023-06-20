@@ -1,5 +1,4 @@
-# Yandex MapKit Demo Applications
+# Yandex MapKit Demo Application
 
-**Project structure:**
-1. ```mapkit-demo``` - project that demonstrates the use of all the full and lite MapKit SDK APIs.
-2. ```mapkit-samples``` - project with several sample apps with examples of use MapKit SDK lite API.
+* [Documentation](https://yandex.ru/dev/maps/mapkit/doc/intro/concepts/about.html)
+* [Quickstart](https://yandex.ru/dev/maps/mapkit/doc/android-quickstart/concepts/android/quickstart.html)
