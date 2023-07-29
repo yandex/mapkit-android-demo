@@ -6,6 +6,7 @@ plugins {
 android {
     namespace 'com.yandex.mapkitdemo'
     compileSdk 33
+    buildToolsVersion "33.0.0"
 
     defaultConfig {
         minSdk 21

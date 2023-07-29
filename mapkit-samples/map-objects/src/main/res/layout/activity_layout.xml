@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.yandex.mapkitdemo.Activity">
+    tools:context=".Activity">
 
     <com.yandex.mapkit.mapview.MapView
         android:id="@+id/mapview"
@@ -15,39 +15,50 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:orientation="horizontal"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp" >
-
-        <Button
-            android:id="@+id/button_change_visibility"
+        android:orientation="vertical">
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="visibility" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:orientation="horizontal"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp" >
 
-        <Button
-            android:id="@+id/button_focus_polyline"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="polyline" />
+            <Button
+                android:id="@+id/button_change_visibility"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="visibility" />
 
-        <Button
-            android:id="@+id/button_focus_polygon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="polygon" />
+            <Button
+                android:id="@+id/button_focus_polyline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="polyline" />
 
-        <Button
-            android:id="@+id/button_geometry"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Off geometry" />
+            <Button
+                android:id="@+id/button_focus_polygon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="polygon" />
+
+            <Button
+                android:id="@+id/button_geometry"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Off geometry" />
+
+        </LinearLayout>
 
     </LinearLayout>
+
+    <include
+        android:id="@+id/mapkit_version"
+        layout="@layout/mapkit_version_layout"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

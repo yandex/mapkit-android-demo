@@ -19,3 +19,5 @@ rootProject.name = "mapkit-samples"
 include ':common'
 include ':map-objects'
 include ':map-with-placemark'
+include ':map-interaction'
+include ':map-search'
