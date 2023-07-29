@@ -15,4 +15,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <include
+        android:id="@+id/mapkit_version"
+        layout="@layout/mapkit_version_layout"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

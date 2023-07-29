@@ -4,12 +4,12 @@ plugins {
 }
 
 android {
-    namespace 'com.yandex.mapkitdemo.objects'
+    namespace 'com.yandex.mapkitdemo.interaction'
     compileSdk 33
     buildToolsVersion "33.0.0"
 
     defaultConfig {
-        applicationId "com.yandex.mapkitdemo.objects"
+        applicationId "com.yandex.mapkitdemo.interaction"
         minSdk 21
         targetSdk 33
         versionCode 1
@@ -25,6 +25,10 @@ android {
 
     kotlinOptions {
         jvmTarget = '1.8'
+    }
+
+    buildFeatures {
+        viewBinding true
     }
 
     if (project.properties["with_sign"]) {
