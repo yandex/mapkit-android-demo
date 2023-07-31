@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.yandex.mapkit.mapview.MapView
+        android:id="@+id/mapview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/edit_query"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Search"
+                android:inputType="text"
+                android:lines="1" />
+
+            <Button
+                android:id="@+id/button_reset"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="reset" />
+
+            <Button
+                android:id="@+id/button_search"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="search" />
+
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/list_suggests"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+
+        <TextView
+            android:id="@+id/text_search_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal" />
+
+        <LinearLayout
+            android:id="@+id/layout_category_buttons"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|start"
+            android:layout_margin="12dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/button_search_coffee"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Coffee" />
+
+            <Button
+                android:id="@+id/button_search_mall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Mall" />
+
+            <Button
+                android:id="@+id/button_search_hotel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Hotel" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <include
+        android:id="@+id/mapkit_version"
+        layout="@layout/mapkit_version_layout"/>
+
+</FrameLayout>

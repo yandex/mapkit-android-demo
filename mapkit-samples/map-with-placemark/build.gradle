@@ -4,11 +4,12 @@ plugins {
 }
 
 android {
-    namespace 'com.yandex.mapkitdemo'
+    namespace 'com.yandex.mapkitdemo.placemark'
     compileSdk 33
+    buildToolsVersion "33.0.0"
 
     defaultConfig {
-        applicationId "com.yandex.mapkitdemo"
+        applicationId "com.yandex.mapkitdemo.placemark"
         minSdk 21
         targetSdk 33
         versionCode 1
@@ -25,6 +26,23 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+
+    if (project.properties["with_sign"]) {
+        signingConfigs {
+            release {
+                storeFile file(project.properties['keystorePath'])
+                storePassword project.properties['keystorePass']
+                keyAlias project.properties['keyAlias']
+                keyPassword project.properties['keyPass']
+            }
+        }
+
+        buildTypes {
+            release {
+                signingConfig signingConfigs.release
+            }
+        }
+    }
 }
 
 dependencies {
@@ -35,5 +53,5 @@ dependencies {
     implementation "androidx.constraintlayout:constraintlayout:${rootProject.ext.constraintlayoutVersion}"
 
     // Add MapKit SDK lite dependency
-    implementation "com.yandex.android:maps.mobile:${rootProject.ext.mapkitVersion}"
+    implementation "com.yandex.android:maps.mobile:${rootProject.ext.mapkitLiteVersion}"
 }

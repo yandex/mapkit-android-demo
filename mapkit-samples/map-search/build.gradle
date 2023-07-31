@@ -4,12 +4,12 @@ plugins {
 }
 
 android {
-    namespace 'com.yandex.mapkitdemo.objects'
+    namespace 'com.yandex.mapkitdemo.search'
     compileSdk 33
     buildToolsVersion "33.0.0"
 
     defaultConfig {
-        applicationId "com.yandex.mapkitdemo.objects"
+        applicationId "com.yandex.mapkitdemo.search"
         minSdk 21
         targetSdk 33
         versionCode 1
@@ -25,6 +25,10 @@ android {
 
     kotlinOptions {
         jvmTarget = '1.8'
+    }
+
+    buildFeatures {
+        viewBinding true
     }
 
     if (project.properties["with_sign"]) {
@@ -49,9 +53,12 @@ dependencies {
     implementation project(":common")
 
     implementation "androidx.core:core-ktx:${rootProject.ext.corektxVersion}"
+    implementation "androidx.activity:activity-ktx:${rootProject.ext.activityktxVersion}"
     implementation "androidx.appcompat:appcompat:${rootProject.ext.appcompatVersion}"
     implementation "androidx.constraintlayout:constraintlayout:${rootProject.ext.constraintlayoutVersion}"
+    implementation "androidx.recyclerview:recyclerview:${rootProject.ext.recyclerVersion}"
+    implementation "androidx.fragment:fragment-ktx:${rootProject.ext.fragmentKtxVersion}"
 
-    // Add MapKit SDK lite dependency
-    implementation "com.yandex.android:maps.mobile:${rootProject.ext.mapkitLiteVersion}"
+    // Add MapKit SDK full dependency
+    implementation "com.yandex.android:maps.mobile:${rootProject.ext.mapkitFullVersion}"
 }
