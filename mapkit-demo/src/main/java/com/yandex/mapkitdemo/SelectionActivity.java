@@ -1,5 +1,7 @@
 package com.yandex.mapkitdemo;
 
+import static com.yandex.mapkitdemo.ConstantsUtils.DEFAULT_POINT;
+
 import android.app.Activity;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
@@ -19,7 +21,6 @@ import com.yandex.mapkit.mapview.MapView;
  * This example shows how to activate selection.
  */
 public class SelectionActivity extends Activity implements GeoObjectTapListener, InputListener {
-    private final Point TARGET_LOCATION = new Point(59.936760, 30.314673);
     private MapView mapView;
 
     @Override
@@ -28,9 +29,9 @@ public class SelectionActivity extends Activity implements GeoObjectTapListener,
         super.onCreate(savedInstanceState);
         mapView = findViewById(R.id.mapview);
 
-        // And to show what can be done with it, we move the camera to the center of Saint Petersburg.
+        // And to show what can be done with it, we move the camera to the center of the target location.
         mapView.getMap().move(
-                new CameraPosition(TARGET_LOCATION, 17.0f, 0.0f, 0.0f),
+                new CameraPosition(DEFAULT_POINT, 17.0f, 0.0f, 0.0f),
                 new Animation(Animation.Type.SMOOTH, 1),
                 null);
 
@@ -62,7 +63,7 @@ public class SelectionActivity extends Activity implements GeoObjectTapListener,
                 .getItem(GeoObjectSelectionMetadata.class);
 
         if (selectionMetadata != null) {
-            mapView.getMap().selectGeoObject(selectionMetadata.getId(), selectionMetadata.getLayerId());
+            mapView.getMap().selectGeoObject(selectionMetadata);
         }
 
         return selectionMetadata != null;

@@ -1,5 +1,7 @@
 package com.yandex.mapkitdemo;
 
+import static com.yandex.mapkitdemo.ConstantsUtils.LOGO_URL;
+
 import android.app.Activity;
 import android.os.Bundle;
 
@@ -8,6 +10,7 @@ import com.yandex.mapkit.TileId;
 import com.yandex.mapkit.Version;
 import com.yandex.mapkit.layers.Layer;
 import com.yandex.mapkit.layers.LayerOptions;
+import com.yandex.mapkit.layers.TileFormat;
 import com.yandex.mapkit.map.MapType;
 import com.yandex.mapkit.tiles.UrlProvider;
 import com.yandex.mapkit.images.DefaultImageUrlProvider;
@@ -33,7 +36,7 @@ public class CustomLayerActivity extends Activity {
         setContentView(R.layout.custom_layer);
         super.onCreate(savedInstanceState);
 
-        urlProvider = (tileId, version) -> "https://maps-ios-pods-public.s3.yandex.net/mapkit_logo.png";
+        urlProvider = (tileId, version) -> LOGO_URL;
         imageUrlProvider = new DefaultImageUrlProvider();
         projection = Projections.getWgs84Mercator();
 
@@ -41,12 +44,12 @@ public class CustomLayerActivity extends Activity {
         mapView.getMap().setMapType(MapType.NONE);
         Layer l = mapView.getMap().addLayer(
                 "mapkit_logo",
-                "image/png",
+                TileFormat.PNG,
                 new LayerOptions(),
                 urlProvider,
                 imageUrlProvider,
                 projection);
-        l.invalidate("0.0.0");
+        l.dataSourceLayer().invalidate("0.0.0");
     }
 
     @Override

@@ -1,5 +1,7 @@
 package com.yandex.mapkitdemo;
 
+import static com.yandex.mapkitdemo.ConstantsUtils.DEFAULT_POINT;
+
 import android.os.Bundle;
 import android.app.Activity;
 import android.util.Log;
@@ -23,7 +25,6 @@ import java.io.InputStreamReader;
  * Note: When working on your projects, remember to request the required permissions.
  */
 public class CustomizationActivity extends Activity {
-    private final Point TARGET_LOCATION = new Point(59.945933, 30.320045);
     private static final String TAG = "CustomizationActivity";
     private MapView mapView;
 
@@ -44,8 +45,8 @@ public class CustomizationActivity extends Activity {
             Log.e(TAG, "Failed to read customization style", e);
         }
 
-        // And to show what can be done with it, we move the camera to the center of Saint Petersburg.
-        map.move(new CameraPosition(TARGET_LOCATION, 15.0f, 0.0f, 0.0f));
+        // And to show what can be done with it, we move the camera to the center of the target location.
+        map.move(new CameraPosition(DEFAULT_POINT, 15.0f, 0.0f, 0.0f));
     }
 
     private String readRawResource(String name) throws IOException {

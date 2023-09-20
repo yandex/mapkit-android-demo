@@ -3,6 +3,14 @@
     <PreferenceCategory
         android:title="@string/app_name">
         <Preference
+            android:key="about"
+            android:title="@string/about">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="@string/package_name"
+            android:targetClass="com.yandex.mapkitdemo.AboutActivity" />
+        </Preference>
+        <Preference
             android:key="map_test"
             android:title="@string/map">
             <intent
@@ -17,14 +25,6 @@
                 android:action="android.intent.action.VIEW"
                 android:targetPackage="@string/package_name"
                 android:targetClass="com.yandex.mapkitdemo.MapObjectsActivity" />
-        </Preference>
-        <Preference
-            android:key="map_sublayers_test"
-            android:title="@string/map_sublayers">
-            <intent
-                android:action="android.intent.action.VIEW"
-                android:targetPackage="@string/package_name"
-                android:targetClass="com.yandex.mapkitdemo.MapSublayersActivity" />
         </Preference>
         <Preference
             android:key="map_customization_test"
@@ -49,14 +49,6 @@
                 android:action="android.intent.action.VIEW"
                 android:targetPackage="@string/package_name"
                 android:targetClass="com.yandex.mapkitdemo.CustomLayerActivity" />
-        </Preference>
-        <Preference
-            android:key="geo_json_test"
-            android:title="@string/geo_json_test">
-            <intent
-                android:action="android.intent.action.VIEW"
-                android:targetPackage="@string/package_name"
-                android:targetClass="com.yandex.mapkitdemo.GeoJsonActivity" />
         </Preference>
         <Preference
             android:key="clustering"

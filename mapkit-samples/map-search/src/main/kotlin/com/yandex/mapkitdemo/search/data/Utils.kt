@@ -24,12 +24,4 @@ fun SpannableString.toSpannable(@ColorInt color: Int): Spannable {
     return spannableString
 }
 
-fun <T : View, V> T.goneOrRun(value: V?, block: T.(V) -> Unit) {
-    if (value == null) {
-        this.isVisible = false
-    } else {
-        this.block(value)
-    }
-}
-
 fun <T> List<T>.takeIfNotEmpty(): List<T>? = takeIf { it.isNotEmpty() }

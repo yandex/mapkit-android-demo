@@ -19,7 +19,6 @@ import com.yandex.runtime.network.RemoteError;
  * in the PanoramaView object. User is not limited to viewing the panorama found and can
  * use arrows to navigate.
  * Note: Nearest panorama search API calls count towards MapKit daily usage limits.
- * Learn more at https://tech.yandex.ru/mapkit/doc/3.x/concepts/conditions-docpage/#conditions__limits
  */
 public class PanoramaActivity extends Activity implements PanoramaService.SearchListener {
     private final Point SEARCH_LOCATION = new Point(55.733330, 37.587649);

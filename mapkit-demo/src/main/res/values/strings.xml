@@ -1,21 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="about">About</string>/string
     <string name="map">Map</string>/string
     <string name="user_location">User Location</string>
     <string name="driving">Driving</string>
     <string name="mapobjects">Map Objects</string>
     <string name="customization">Customization</string>
 
-    <string name="map_sublayers">Map Sublayers</string>
-    <string name="sublayer_buildings_before_mo_geometry">Render Buildings before Map Object Geometry</string>
-    <string name="sublayer_buildings_after_mo_geometry">Render Buildings after Map Object Geometry</string>
-
     <string name="search">Search</string>
     <string name="suggest">Suggest</string>
     <string name="panorama">Panorama</string>
     <string name="custom_layer">Custom Layer</string>
     <string name="masstransit_routing">Masstransit routing</string>
-    <string name="geo_json_test">Geo JSON</string>
     <string name="clustering">Clustering</string>
     <string name="jams">Jams</string>
     <string name="selection">Selection</string>
@@ -28,4 +24,6 @@
 
     <string name="app_name">MapKit Demo</string>
     <string name="package_name">com.yandex.mapkitdemo</string>
+
+    <string name="mapkit_version_label">MapKit version</string>
 </resources>

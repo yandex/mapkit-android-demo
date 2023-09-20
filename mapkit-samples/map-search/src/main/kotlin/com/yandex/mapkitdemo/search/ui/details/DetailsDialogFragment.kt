@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
-import com.yandex.mapkitdemo.search.data.goneOrRun
+import com.yandex.mapkitdemo.common.goneOrRun
 import com.yandex.mapkitdemo.search.databinding.LayoutDetailsDialogBinding
 
 class DetailsDialogFragment : DialogFragment() {

@@ -22,6 +22,10 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".AboutActivity"
+            android:configChanges="orientation|screenSize"
+            android:theme="@android:style/Theme.NoTitleBar" />
+        <activity
             android:name=".MapActivity"
             android:configChanges="orientation|screenSize"
             android:theme="@android:style/Theme.NoTitleBar" />
@@ -38,15 +42,7 @@
             android:configChanges="orientation|screenSize"
             android:theme="@android:style/Theme.NoTitleBar" />
         <activity
-            android:name=".MapSublayersActivity"
-            android:configChanges="orientation|screenSize"
-            android:theme="@android:style/Theme.NoTitleBar" />
-        <activity
             android:name=".CustomLayerActivity"
-            android:configChanges="orientation|screenSize"
-            android:theme="@android:style/Theme.NoTitleBar" />
-        <activity
-            android:name=".GeoJsonActivity"
             android:configChanges="orientation|screenSize"
             android:theme="@android:style/Theme.NoTitleBar" />
         <activity

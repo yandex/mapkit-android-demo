@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:padding="12dp">
+
+    <TextView
+        android:id="@+id/text_error"
+        style="@style/TextAppearance.AppCompat.Title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Region not found" />
+
+    <LinearLayout
+        android:id="@+id/layout_region_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/text_region_id"
+            style="@style/TextAppearance.AppCompat.Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Region id: 42" />
+
+        <TextView
+            android:id="@+id/text_name"
+            style="@style/TextAppearance.AppCompat.Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Region name: England" />
+
+        <TextView
+            android:id="@+id/text_country"
+            style="@style/TextAppearance.AppCompat.Subhead"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Country: England" />
+
+        <TextView
+            android:id="@+id/text_cities"
+            style="@style/TextAppearance.AppCompat.Subhead"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Cities: London, Lambeth, Westminster, Southwark" />
+
+        <TextView
+            android:id="@+id/text_parent_id"
+            style="@style/TextAppearance.AppCompat.Subhead"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Parent id: null" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/text_center"
+                style="@style/TextAppearance.AppCompat.Subhead"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                tools:text="Center: (25.4324, 43.4234)" />
+
+            <Button
+                android:id="@+id/button_show_on_map"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="show" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="24dp"
+            android:background="@color/silver" />
+
+        <TextView
+            android:id="@+id/text_state"
+            style="@style/TextAppearance.AppCompat.Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="State: AVAILABLE" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/button_start"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="start" />
+
+            <Button
+                android:id="@+id/button_stop"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="stop" />
+
+            <Button
+                android:id="@+id/button_pause"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="pause" />
+
+            <Button
+                android:id="@+id/button_drop"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="drop" />
+        </LinearLayout>
+
+        <ProgressBar
+            android:id="@+id/view_progress_bar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="12dp" />
+
+        <TextView
+            android:id="@+id/text_size"
+            style="@style/TextAppearance.AppCompat.Subhead"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="13 MB" />
+
+        <TextView
+            android:id="@+id/text_release_time"
+            style="@style/TextAppearance.AppCompat.Subhead"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Release time: 01/01/22" />
+
+        <TextView
+            android:id="@+id/text_downloaded_release_time"
+            style="@style/TextAppearance.AppCompat.Subhead"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Downloaded release time: 01/01/22" />
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,5 +1,7 @@
 package com.yandex.mapkitdemo;
 
+import static com.yandex.mapkitdemo.ConstantsUtils.DEFAULT_POINT;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -31,8 +33,7 @@ import com.yandex.runtime.network.RemoteError;
 
 /**
  * This example shows how to add and interact with a layer that displays search results on the map.
- * Note: search API calls count towards MapKit daily usage limits. Learn more at
- * https://tech.yandex.ru/mapkit/doc/3.x/concepts/conditions-docpage/#conditions__limits
+ * Note: search API calls count towards MapKit daily usage limits.
  */
 public class SearchActivity extends Activity implements Session.SearchListener, CameraListener {
     private MapView mapView;
@@ -73,7 +74,7 @@ public class SearchActivity extends Activity implements Session.SearchListener, 
         });
 
         mapView.getMap().move(
-                new CameraPosition(new Point(59.945933, 30.320045), 14.0f, 0.0f, 0.0f));
+                new CameraPosition(DEFAULT_POINT, 14.0f, 0.0f, 0.0f));
 
         submitQuery(searchEdit.getText().toString());
     }
@@ -96,13 +97,14 @@ public class SearchActivity extends Activity implements Session.SearchListener, 
     public void onSearchResponse(Response response) {
         MapObjectCollection mapObjects = mapView.getMap().getMapObjects();
         mapObjects.clear();
-
+        final ImageProvider searchResultImageProvider = ImageProvider.fromResource(this, R.drawable.search_result);
         for (GeoObjectCollection.Item searchResult : response.getCollection().getChildren()) {
-            Point resultLocation = searchResult.getObj().getGeometry().get(0).getPoint();
+            final Point resultLocation = searchResult.getObj().getGeometry().get(0).getPoint();
             if (resultLocation != null) {
-                mapObjects.addPlacemark(
-                        resultLocation,
-                        ImageProvider.fromResource(this, R.drawable.search_result));
+                mapObjects.addPlacemark(placemark -> {
+                    placemark.setGeometry(resultLocation);
+                    placemark.setIcon(searchResultImageProvider);
+                });
             }
         }
     }

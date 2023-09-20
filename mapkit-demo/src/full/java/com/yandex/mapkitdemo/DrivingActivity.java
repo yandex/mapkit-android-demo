@@ -1,5 +1,9 @@
 package com.yandex.mapkitdemo;
 
+
+import static com.yandex.mapkitdemo.ConstantsUtils.DRIVING_ROUTE_END_LOCATION;
+import static com.yandex.mapkitdemo.ConstantsUtils.DRIVING_ROUTE_START_LOCATION;
+
 import android.os.Bundle;
 import android.app.Activity;
 import android.widget.Toast;
@@ -26,15 +30,12 @@ import com.yandex.runtime.network.RemoteError;
 
 /**
  * This example shows how to build routes between two points and display them on the map.
- * Note: Routing API calls count towards MapKit daily usage limits. Learn more at
- * https://tech.yandex.ru/mapkit/doc/3.x/concepts/conditions-docpage/#conditions__limits
+ * Note: Routing API calls count towards MapKit daily usage limits.
  */
 public class DrivingActivity extends Activity implements DrivingSession.DrivingRouteListener {
-    private final Point ROUTE_START_LOCATION = new Point(59.959194, 30.407094);
-    private final Point ROUTE_END_LOCATION = new Point(55.733330, 37.587649);
     private final Point SCREEN_CENTER = new Point(
-            (ROUTE_START_LOCATION.getLatitude() + ROUTE_END_LOCATION.getLatitude()) / 2,
-            (ROUTE_START_LOCATION.getLongitude() + ROUTE_END_LOCATION.getLongitude()) / 2);
+            (DRIVING_ROUTE_START_LOCATION.getLatitude() + DRIVING_ROUTE_END_LOCATION.getLatitude()) / 2,
+            (DRIVING_ROUTE_START_LOCATION.getLongitude() + DRIVING_ROUTE_END_LOCATION.getLongitude()) / 2);
 
     private MapView mapView;
     private MapObjectCollection mapObjects;
@@ -95,12 +96,14 @@ public class DrivingActivity extends Activity implements DrivingSession.DrivingR
         VehicleOptions vehicleOptions = new VehicleOptions();
         ArrayList<RequestPoint> requestPoints = new ArrayList<>();
         requestPoints.add(new RequestPoint(
-                ROUTE_START_LOCATION,
+                DRIVING_ROUTE_START_LOCATION,
                 RequestPointType.WAYPOINT,
+                null,
                 null));
         requestPoints.add(new RequestPoint(
-                ROUTE_END_LOCATION,
+                DRIVING_ROUTE_START_LOCATION,
                 RequestPointType.WAYPOINT,
+                null,
                 null));
         drivingSession = drivingRouter.requestRoutes(requestPoints, drivingOptions, vehicleOptions, this);
     }

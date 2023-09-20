@@ -1,8 +1,9 @@
 package com.yandex.mapkitdemo;
 
+import static com.yandex.mapkitdemo.ConstantsUtils.DEFAULT_POINT;
+
 import android.app.Activity;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -11,15 +12,17 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+
 import com.yandex.mapkit.MapKitFactory;
-import com.yandex.mapkit.search.SuggestOptions;
-import com.yandex.mapkit.search.SuggestSession;
 import com.yandex.mapkit.geometry.BoundingBox;
 import com.yandex.mapkit.geometry.Point;
 import com.yandex.mapkit.search.SearchFactory;
 import com.yandex.mapkit.search.SearchManager;
 import com.yandex.mapkit.search.SearchManagerType;
 import com.yandex.mapkit.search.SuggestItem;
+import com.yandex.mapkit.search.SuggestOptions;
+import com.yandex.mapkit.search.SuggestSession;
 import com.yandex.mapkit.search.SuggestType;
 import com.yandex.runtime.Error;
 import com.yandex.runtime.network.NetworkError;
@@ -40,11 +43,10 @@ public class SuggestActivity extends Activity implements SuggestSession.SuggestL
     private ArrayAdapter resultAdapter;
     private List<String> suggestResult;
 
-    private final Point CENTER = new Point(55.75, 37.62);
     private final double BOX_SIZE = 0.2;
     private final BoundingBox BOUNDING_BOX = new BoundingBox(
-        new Point(CENTER.getLatitude() - BOX_SIZE, CENTER.getLongitude() - BOX_SIZE),
-        new Point(CENTER.getLatitude() + BOX_SIZE, CENTER.getLongitude() + BOX_SIZE));
+        new Point(DEFAULT_POINT.getLatitude() - BOX_SIZE, DEFAULT_POINT.getLongitude() - BOX_SIZE),
+        new Point(DEFAULT_POINT.getLatitude() + BOX_SIZE, DEFAULT_POINT.getLongitude() + BOX_SIZE));
     private final SuggestOptions SEARCH_OPTIONS =  new SuggestOptions().setSuggestTypes(
         SuggestType.GEO.value |
         SuggestType.BIZ.value |
@@ -94,10 +96,10 @@ public class SuggestActivity extends Activity implements SuggestSession.SuggestL
     }
 
     @Override
-    public void onResponse(@NonNull List<SuggestItem> suggest) {
+    public void onResponse(@NonNull List<SuggestItem> items) {
         suggestResult.clear();
-        for (int i = 0; i < Math.min(RESULT_NUMBER_LIMIT, suggest.size()); i++) {
-            suggestResult.add(suggest.get(i).getDisplayText());
+        for (int i = 0; i < Math.min(RESULT_NUMBER_LIMIT, items.size()); i++) {
+            suggestResult.add(items.get(i).getDisplayText());
         }
         resultAdapter.notifyDataSetChanged();
         suggestResultView.setVisibility(View.VISIBLE);

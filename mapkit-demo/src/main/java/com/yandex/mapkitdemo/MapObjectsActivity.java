@@ -1,5 +1,13 @@
 package com.yandex.mapkitdemo;
 
+import static com.yandex.mapkitdemo.ConstantsUtils.ANIMATED_PLACEMARK_CENTER;
+import static com.yandex.mapkitdemo.ConstantsUtils.ANIMATED_RECTANGLE_CENTER;
+import static com.yandex.mapkitdemo.ConstantsUtils.CIRCLE_CENTER;
+import static com.yandex.mapkitdemo.ConstantsUtils.DEFAULT_POINT;
+import static com.yandex.mapkitdemo.ConstantsUtils.DRAGGABLE_PLACEMARK_CENTER;
+import static com.yandex.mapkitdemo.ConstantsUtils.POLYLINE_CENTER;
+import static com.yandex.mapkitdemo.ConstantsUtils.TRIANGLE_CENTER;
+
 import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -20,6 +28,7 @@ import com.yandex.mapkit.map.IconStyle;
 import com.yandex.mapkit.map.MapObject;
 import com.yandex.mapkit.map.MapObjectCollection;
 import com.yandex.mapkit.map.MapObjectTapListener;
+import com.yandex.mapkit.map.PlacemarkAnimation;
 import com.yandex.mapkit.map.PlacemarkMapObject;
 import com.yandex.mapkit.map.PolygonMapObject;
 import com.yandex.mapkit.map.PolylineMapObject;
@@ -36,13 +45,6 @@ import java.util.Random;
  * It also shows how to display images instead.
  */
 public class MapObjectsActivity extends Activity {
-    private final Point CAMERA_TARGET = new Point(59.952, 30.318);
-    private final Point ANIMATED_RECTANGLE_CENTER = new Point(59.956, 30.313);
-    private final Point TRIANGLE_CENTER = new Point(59.948, 30.313);
-    private final Point POLYLINE_CENTER = CAMERA_TARGET;
-    private final Point CIRCLE_CENTER = new Point(59.956, 30.323);
-    private final Point DRAGGABLE_PLACEMARK_CENTER = new Point(59.948, 30.323);
-    private final Point ANIMATED_PLACEMARK_CENTER = new Point(59.948, 30.318);
     private final double OBJECT_SIZE = 0.0015;
 
     private MapView mapView;
@@ -55,7 +57,7 @@ public class MapObjectsActivity extends Activity {
         super.onCreate(savedInstanceState);
         mapView = findViewById(R.id.mapview);
         mapView.getMap().move(
-                new CameraPosition(CAMERA_TARGET, 15.0f, 0.0f, 0.0f));
+                new CameraPosition(DEFAULT_POINT, 15.0f, 0.0f, 0.0f));
         mapObjects = mapView.getMap().getMapObjects().addCollection();
         animationHandler = new Handler();
         createMapObjects();
@@ -94,7 +96,7 @@ public class MapObjectsActivity extends Activity {
                 new Polygon(new LinearRing(rectPoints), new ArrayList<LinearRing>()));
         rect.setStrokeColor(Color.TRANSPARENT);
         rect.setFillColor(Color.TRANSPARENT);
-        rect.setAnimatedImage(animatedImage, 32.0f);
+        rect.setPattern(animatedImage, 1.f);
 
         ArrayList<Point> trianglePoints = new ArrayList<>();
         trianglePoints.add(new Point(
@@ -130,7 +132,8 @@ public class MapObjectsActivity extends Activity {
         polyline.setStrokeColor(Color.BLACK);
         polyline.setZIndex(100.0f);
 
-        PlacemarkMapObject mark = mapObjects.addPlacemark(DRAGGABLE_PLACEMARK_CENTER);
+        PlacemarkMapObject mark = mapObjects.addPlacemark();
+        mark.setGeometry(DRAGGABLE_PLACEMARK_CENTER);
         mark.setOpacity(0.5f);
         mark.setIcon(ImageProvider.fromResource(this, R.drawable.mark));
         mark.setDraggable(true);
@@ -179,9 +182,11 @@ public class MapObjectsActivity extends Activity {
     }
 
     private void createTappableCircle() {
-        CircleMapObject circle = mapObjects.addCircle(
-                new Circle(CIRCLE_CENTER, 100), Color.GREEN, 2, Color.RED);
-        circle.setZIndex(100.0f);
+        CircleMapObject circle = mapObjects.addCircle(new Circle(CIRCLE_CENTER, 100));
+        circle.setStrokeColor(Color.GREEN);
+        circle.setStrokeWidth(2.f);
+        circle.setFillColor(Color.RED);
+        circle.setZIndex(100.f);
         circle.setUserData(new CircleMapObjectUserData(42, "Tappable circle"));
 
         // Client code must retain strong reference to the listener.
@@ -198,8 +203,9 @@ public class MapObjectsActivity extends Activity {
         textView.setText("Hello, World!");
 
         final ViewProvider viewProvider = new ViewProvider(textView);
-        final PlacemarkMapObject viewPlacemark =
-                mapObjects.addPlacemark(new Point(59.946263, 30.315181), viewProvider);
+        final PlacemarkMapObject viewPlacemark = mapObjects.addPlacemark();
+        viewPlacemark.setGeometry(new Point(59.946263, 30.315181));
+        viewPlacemark.setView(viewProvider);
 
         final Random random = new Random();
         final int delayToShowInitialText = 5000;  // milliseconds
@@ -221,10 +227,13 @@ public class MapObjectsActivity extends Activity {
     }
 
     private void createAnimatedPlacemark() {
-        AnimatedImageProvider imageProvider =
+        final AnimatedImageProvider imageProvider =
                 AnimatedImageProvider.fromAsset(this,"animation.png");
-        PlacemarkMapObject animatedPlacemark =
-                mapObjects.addPlacemark(ANIMATED_PLACEMARK_CENTER, imageProvider, new IconStyle());
-        animatedPlacemark.useAnimation().play();
+
+        mapObjects.addPlacemark(placemark -> {
+            placemark.setGeometry(ANIMATED_PLACEMARK_CENTER);
+            final PlacemarkAnimation animatedIcon = placemark.useAnimation();
+            animatedIcon.setIcon(imageProvider, new IconStyle(), animatedIcon::play);
+        });
     }
 }

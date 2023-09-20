@@ -1,5 +1,9 @@
 package com.yandex.mapkitdemo;
 
+import static com.yandex.mapkitdemo.ConstantsUtils.MASSTRANSIT_POINT;
+import static com.yandex.mapkitdemo.ConstantsUtils.MASSTRANSIT_ROUTE_END_LOCATION;
+import static com.yandex.mapkitdemo.ConstantsUtils.MASSTRANSIT_ROUTE_START_LOCATION;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.widget.Toast;
@@ -36,16 +40,10 @@ import java.util.List;
 /**
  * This example shows how to build public transport routes between two points,
  * and how to handle route sections and vehicle types lists
- * Note: Masstransit routing API calls count towards MapKit daily usage limits. Learn more at
- * https://tech.yandex.ru/mapkit/doc/3.x/concepts/conditions-docpage/#conditions__limits
+ * Note: Masstransit routing API calls count towards MapKit daily usage limits.
  */
 public class MasstransitRoutingActivity extends Activity
     implements Session.RouteListener {
-    private final Point TARGET_LOCATION = new Point(55.752078, 37.592664);
-
-    private final Point ROUTE_START_LOCATION = new Point(55.699671, 37.567286);
-    private final Point ROUTE_END_LOCATION = new Point(55.790621, 37.558571);
-
     private MapView mapView;
     private MapObjectCollection mapObjects;
     private MasstransitRouter mtRouter;
@@ -58,9 +56,9 @@ public class MasstransitRoutingActivity extends Activity
         super.onCreate(savedInstanceState);
         mapView = (MapView)findViewById(R.id.mapview);
 
-        // And to show what can be done with it, we move the camera to the center of Saint Petersburg.
+        // And to show what can be done with it, we move the camera to the center of the target location.
         mapView.getMap().move(
-                new CameraPosition(TARGET_LOCATION, 12.0f, 0.0f, 0.0f),
+                new CameraPosition(MASSTRANSIT_POINT, 12.0f, 0.0f, 0.0f),
                 new Animation(Animation.Type.SMOOTH, 5),
                 null);
 
@@ -69,8 +67,10 @@ public class MasstransitRoutingActivity extends Activity
 
         TransitOptions options = new TransitOptions(FilterVehicleTypes.NONE.value, new TimeOptions());
         List<RequestPoint> points = new ArrayList<RequestPoint>();
-        points.add(new RequestPoint(ROUTE_START_LOCATION, RequestPointType.WAYPOINT, null));
-        points.add(new RequestPoint(ROUTE_END_LOCATION, RequestPointType.WAYPOINT, null));
+        points.add(new RequestPoint(
+                MASSTRANSIT_ROUTE_START_LOCATION, RequestPointType.WAYPOINT, null, null));
+        points.add(new RequestPoint(
+                MASSTRANSIT_ROUTE_END_LOCATION, RequestPointType.WAYPOINT, null, null));
         mtRouter = TransportFactory.getInstance().createMasstransitRouter();
         mtRouter.requestRoutes(points, options, this);
     }

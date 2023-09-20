@@ -14,7 +14,6 @@ import com.yandex.mapkit.search.Session
 import com.yandex.mapkit.search.Session.SearchListener
 import com.yandex.mapkit.search.SuggestItem
 import com.yandex.mapkit.search.SuggestOptions
-import com.yandex.mapkit.search.SuggestResponse
 import com.yandex.mapkit.search.SuggestSession
 import com.yandex.mapkit.search.SuggestType
 import com.yandex.mapkitdemo.search.data.toBoundingBox
@@ -121,7 +120,7 @@ class MapViewModel : ViewModel() {
 
     private fun submitUriSearch(uri: String) {
         searchSession?.cancel()
-        searchManager.searchByURI(
+        searchSession = searchManager.searchByURI(
             uri,
             SearchOptions(),
             searchSessionListener
@@ -165,8 +164,8 @@ class MapViewModel : ViewModel() {
     }
 
     private val suggestSessionListener = object : SuggestSession.SuggestListener {
-        override fun onResponse(responce: SuggestResponse) {
-            val suggestItems = responce.items.take(SUGGEST_NUMBER_LIMIT)
+        override fun onResponse(items: List<SuggestItem>) {
+            val suggestItems = items.take(SUGGEST_NUMBER_LIMIT)
                 .map {
                     SuggestHolderItem(
                         title = it.title,

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/mapFragment">
+
+    <fragment
+        android:id="@+id/mapFragment"
+        android:name="com.yandex.mapkitdemo.offline.ui.map.MapFragment"
+        android:label="MapFragment">
+
+        <argument
+            android:name="latitude"
+            android:defaultValue="-1"
+            app:argType="float" />
+
+        <argument
+            android:name="longitude"
+            android:defaultValue="-1"
+            app:argType="float" />
+
+        <action
+            android:id="@+id/action_mapFragment_to_regionsListFragment"
+            app:destination="@id/regionsListFragment" />
+
+        <action
+            android:id="@+id/action_mapFragment_to_optionsFragment"
+            app:destination="@id/optionsFragment" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/regionFragment"
+        android:name="com.yandex.mapkitdemo.offline.ui.region.RegionFragment"
+        android:label="RegionFragment">
+
+        <argument
+            android:name="regionId"
+            app:argType="integer" />
+
+        <action
+            android:id="@+id/action_regionFragment_to_mapFragment"
+            app:destination="@id/mapFragment" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/regionsListFragment"
+        android:name="com.yandex.mapkitdemo.offline.ui.regionslist.RegionsListFragment"
+        android:label="RegionsListFragment">
+
+        <action
+            android:id="@+id/action_regionsListFragment_to_regionFragment"
+            app:destination="@id/regionFragment" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/optionsFragment"
+        android:name="com.yandex.mapkitdemo.offline.ui.options.OptionsFragment"
+        android:label="OptionsFragment" />
+
+</navigation>

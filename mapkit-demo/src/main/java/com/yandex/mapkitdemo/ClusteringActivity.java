@@ -1,5 +1,7 @@
 package com.yandex.mapkitdemo;
 
+import static com.yandex.mapkitdemo.ConstantsUtils.CLUSTER_CENTERS;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.content.Context;
@@ -40,13 +42,6 @@ public class ClusteringActivity extends Activity implements ClusterListener, Clu
     private static final float MARGIN_SIZE = 3;
     private static final float STROKE_SIZE = 3;
     private static final int PLACEMARKS_NUMBER = 2000;
-    private final List<Point> CLUSTER_CENTERS = Arrays.asList(
-            new Point(55.756, 37.618),
-            new Point(59.956, 30.313),
-            new Point(56.838, 60.597),
-            new Point(43.117, 131.900),
-            new Point(56.852, 53.204)
-    );
 
     public class TextImageProvider extends ImageProvider {
         @Override
