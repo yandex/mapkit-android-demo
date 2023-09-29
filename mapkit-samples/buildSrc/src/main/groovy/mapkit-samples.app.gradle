@@ -1,0 +1,56 @@
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+}
+
+android {
+    compileSdk 33
+    buildToolsVersion "33.0.0"
+
+    defaultConfig {
+        minSdk 21
+        targetSdk 33
+        versionCode 1
+        versionName "1.0"
+
+        buildConfigField "String", "MAPKIT_API_KEY", "\"${mapkitApiKey}\""
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+
+    buildFeatures {
+        viewBinding true
+    }
+
+    if (project.properties["with_sign"]) {
+        signingConfigs {
+            release {
+                storeFile file(project.properties['keystorePath'])
+                storePassword project.properties['keystorePass']
+                keyAlias project.properties['keyAlias']
+                keyPassword project.properties['keyPass']
+            }
+        }
+
+        buildTypes {
+            release {
+                signingConfig signingConfigs.release
+            }
+        }
+    }
+}
+
+dependencies {
+    implementation project(":common")
+
+    implementation "androidx.core:core-ktx:${rootProject.ext.corektxVersion}"
+    implementation "androidx.appcompat:appcompat:${rootProject.ext.appcompatVersion}"
+    implementation "androidx.constraintlayout:constraintlayout:${rootProject.ext.constraintlayoutVersion}"
+}

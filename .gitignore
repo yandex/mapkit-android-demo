@@ -5,3 +5,4 @@
 *.iml
 *.properties
 !gradle.properties
+!gradle-wrapper.properties

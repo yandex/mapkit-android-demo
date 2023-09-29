@@ -9,13 +9,12 @@ plugins {
 ext {
     corektxVersion = "1.7.0"
     constraintlayoutVersion = "2.1.3"
-    activityktxVersion = "1.5.0"
     appcompatVersion = "1.6.1"
     fragmentKtxVersion = "1.5.5"
     recyclerVersion = "1.1.0"
     navigationVersion = "2.5.3"
-    mapkitLiteVersion = "4.3.2-lite"
-    mapkitFullVersion = "4.3.2-full"
+    mapkitLiteVersion = "4.4.0-lite"
+    mapkitFullVersion = "4.4.0-full"
 
     mapkitApiKey = getMapkitApiKey()
 }
