@@ -1,0 +1,32 @@
+<resources>
+    <string name="alert_dialog_permission_location_title">Open settings to provide locations permissions</string>
+    <string name="alert_dialog_permission_notification_title">Open settings to provide notifications permissions</string>
+    <string name="alert_dialog_add_single_point">Build route to point?</string>
+    <string name="alert_dialog_add_various_point">Add point to the route?</string>
+    <string name="alert_dialog_cancel_route">Cancel the route?</string>
+    <string name="alert_dialog_ok">Ok</string>
+    <string name="alert_dialog_cancel">Cancel</string>
+    <string name="alert_dialog_yes">Yes</string>
+    <string name="alert_dialog_no">No</string>
+    <string name="alert_dialog_to_point">To</string>
+    <string name="alert_dialog_via_point">Via</string>
+    <string name="route_variants_close">Close</string>
+    <string name="route_variants_go">Go</string>
+    <string name="settings_screen_settings">Settings</string>
+    <string name="settings_screen_vehicle_options">Vehicle Options</string>
+    <string name="settings_screen_road_events">Road Events</string>
+    <string name="settings_screen_road_events_layer">Road Events On Layer</string>
+    <string name="settings_screen_road_events_route">Road Events On Route</string>
+    <string name="settings_screen_annotated_events">Annotated Events</string>
+    <string name="settings_screen_driving_options">Driving Options</string>
+    <string name="settings_screen_camera">Camera</string>
+    <string name="settings_screen_map">Map</string>
+    <string name="settings_screen_simulation">Simulation</string>
+    <string name="settings_checklist_jams_mode">Jams Mode</string>
+    <string name="settings_checklist_vehicle_type">Vehicle Type</string>
+    <string name="settings_checklist_eco_class">Eco class</string>
+    <string name="settings_checklist_annotation_language">Annotation Language</string>
+    <string name="settings_checklist_style_mode">Map Style Mode</string>
+    <string name="settings_screen_guidance">Guidance</string>
+    <string name="settings_screen_sound_annotations">Sound Annotations</string>
+</resources>

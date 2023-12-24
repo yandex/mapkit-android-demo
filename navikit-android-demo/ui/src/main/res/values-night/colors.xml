@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="bg_primary">#242528</color>
+    <color name="bg_additional">#111111</color>
+    <color name="bg_separator">#3d3e43</color>
+    <color name="icons_primary">#cccccc</color>
+    <color name="alert">#ff5b4d</color>
+    <color name="text_primary">#FFFFFFFF</color>
+</resources>

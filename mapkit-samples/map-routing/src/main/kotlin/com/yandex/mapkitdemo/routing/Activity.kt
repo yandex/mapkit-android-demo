@@ -13,6 +13,7 @@ import com.yandex.mapkit.directions.DirectionsFactory
 import com.yandex.mapkit.directions.driving.DrivingOptions
 import com.yandex.mapkit.directions.driving.DrivingRoute
 import com.yandex.mapkit.directions.driving.DrivingRouter
+import com.yandex.mapkit.directions.driving.DrivingRouterType
 import com.yandex.mapkit.directions.driving.DrivingSession
 import com.yandex.mapkit.directions.driving.DrivingSession.DrivingRouteListener
 import com.yandex.mapkit.directions.driving.VehicleOptions
@@ -90,7 +91,7 @@ class Activity : AppCompatActivity() {
         placemarksCollection = map.mapObjects.addCollection()
         routesCollection = map.mapObjects.addCollection()
 
-        drivingRouter = DirectionsFactory.getInstance().createDrivingRouter()
+        drivingRouter = DirectionsFactory.getInstance().createDrivingRouter(DrivingRouterType.COMBINED)
 
         findViewById<Button>(R.id.button_clear_route).setOnClickListener {
             routePoints = emptyList()

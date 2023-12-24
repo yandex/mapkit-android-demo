@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/settings_control_item_background"
+    android:paddingHorizontal="12dp"
+    android:orientation="vertical">
+
+    <TextView
+        android:text="Speed Limits"
+        style="@style/TextAppearance.Material3.TitleMedium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"/>
+
+    <TextView
+        android:id="@+id/text_limits_urban"
+        style="@style/TextAppearance.Material3.BodyMedium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="Urban 32 - 64"/>
+        
+    <TextView
+        android:id="@+id/text_limits_rural"
+        style="@style/TextAppearance.Material3.BodyMedium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="Rural 32 - 64"/>
+        
+    <TextView
+        android:id="@+id/text_limits_expressway"
+        style="@style/TextAppearance.Material3.BodyMedium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="Expressway 32 - 64"/>
+
+</LinearLayout>

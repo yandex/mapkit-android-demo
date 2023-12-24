@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout">
+
+    <ImageButton
+        android:id="@+id/button_zoom_plus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:alpha="0.7"
+        android:background="@drawable/map_buttons_background"
+        android:padding="12dp"
+        android:src="@drawable/plus"
+        app:layout_constraintBottom_toTopOf="@id/button_zoom_minus"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <ImageButton
+        android:id="@+id/button_zoom_minus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="12dp"
+        android:alpha="0.7"
+        android:background="@drawable/map_buttons_background"
+        android:padding="12dp"
+        android:src="@drawable/minus"
+        app:layout_constraintBottom_toTopOf="@id/button_settings"
+        app:layout_constraintEnd_toEndOf="@id/button_zoom_plus"
+        app:layout_constraintTop_toBottomOf="@id/button_zoom_plus" />
+
+    <ImageButton
+        android:id="@+id/button_overview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginEnd="12dp"
+        android:alpha="0.7"
+        android:background="@drawable/map_buttons_background"
+        android:padding="6dp"
+        android:src="@drawable/route"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/button_settings"
+        app:layout_constraintEnd_toStartOf="@id/button_find_me" />
+
+    <ImageButton
+        android:id="@+id/button_find_me"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginEnd="12dp"
+        android:alpha="0.7"
+        android:background="@drawable/map_buttons_background"
+        android:padding="6dp"
+        android:src="@drawable/navigation"
+        app:layout_constraintBottom_toBottomOf="@id/button_settings"
+        app:layout_constraintEnd_toStartOf="@id/button_settings" />
+
+    <ImageButton
+        android:id="@+id/button_settings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:alpha="0.7"
+        android:background="@drawable/map_buttons_background"
+        android:padding="6dp"
+        android:src="@drawable/settings"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+</merge>

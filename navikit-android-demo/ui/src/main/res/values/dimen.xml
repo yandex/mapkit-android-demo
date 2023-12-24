@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="placemark_in_guidance_padding">88dp</dimen>
+    <dimen name="focus_rect_padding">24dp</dimen>
+    <dimen name="yandex_logo_padding">6dp</dimen>
+    <dimen name="settings_item_height">64dp</dimen>
+    <dimen name="guidance_top_padding">64dp</dimen>
+</resources>

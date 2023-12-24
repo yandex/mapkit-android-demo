@@ -20,8 +20,8 @@ import com.yandex.mapkit.geometry.Point;
 import com.yandex.mapkit.search.SearchFactory;
 import com.yandex.mapkit.search.SearchManager;
 import com.yandex.mapkit.search.SearchManagerType;
-import com.yandex.mapkit.search.SuggestItem;
 import com.yandex.mapkit.search.SuggestOptions;
+import com.yandex.mapkit.search.SuggestResponse;
 import com.yandex.mapkit.search.SuggestSession;
 import com.yandex.mapkit.search.SuggestType;
 import com.yandex.runtime.Error;
@@ -96,10 +96,10 @@ public class SuggestActivity extends Activity implements SuggestSession.SuggestL
     }
 
     @Override
-    public void onResponse(@NonNull List<SuggestItem> items) {
+    public void onResponse(@NonNull SuggestResponse suggest) {
         suggestResult.clear();
-        for (int i = 0; i < Math.min(RESULT_NUMBER_LIMIT, items.size()); i++) {
-            suggestResult.add(items.get(i).getDisplayText());
+        for (int i = 0; i < Math.min(RESULT_NUMBER_LIMIT, suggest.getItems().size()); i++) {
+            suggestResult.add(suggest.getItems().get(i).getDisplayText());
         }
         resultAdapter.notifyDataSetChanged();
         suggestResultView.setVisibility(View.VISIBLE);

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/settings_item_height"
+    android:background="@drawable/settings_control_item_background"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/text_title"
+        style="@style/TextAppearance.Material3.TitleMedium"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.7" />
+
+    <EditText
+        android:id="@+id/edit_parameter"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.3"
+        android:imeOptions="actionDone"
+        android:inputType="numberDecimal" />
+
+</LinearLayout>

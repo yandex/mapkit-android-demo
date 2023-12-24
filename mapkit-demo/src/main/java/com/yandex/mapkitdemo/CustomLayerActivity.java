@@ -36,7 +36,7 @@ public class CustomLayerActivity extends Activity {
         setContentView(R.layout.custom_layer);
         super.onCreate(savedInstanceState);
 
-        urlProvider = (tileId, version) -> LOGO_URL;
+        urlProvider = (tileId, version, features) -> LOGO_URL;
         imageUrlProvider = new DefaultImageUrlProvider();
         projection = Projections.getWgs84Mercator();
 

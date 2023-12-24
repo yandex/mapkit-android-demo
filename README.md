@@ -14,13 +14,15 @@ There are two Android projects in the repository:
 
     - [`map-with-placemark`](mapkit-samples/map-with-placemark): A simple MapKit SDK application with [Getting started with MapKit for Android](https://yandex.ru/dev/mapkit/doc/en/android/generated/getting_started) information.
 
-    - [`map-objects`](mapkit-samples/map-objects): Using the [Map Objects API](https://yandex.ru/dev/mapkit/doc/en/android/generated/tutorials/map_objects) to add objects to the map.
+    - [`map-objects`](mapkit-samples/map-objects): Using the [Map Objects](https://yandex.ru/dev/mapkit/doc/en/android/generated/tutorials/map_objects) API to add objects to the map.
 
     - [`map-interaction`](mapkit-samples/map-interaction): Examples from the [Map Interaction](https://yandex.ru/dev/mapkit/doc/en/android/generated/tutorials/map_interaction) tutorial.
 
     - [`map-search`](mapkit-samples/map-search): Examples of how to use the [Search](https://yandex.ru/dev/mapkit/doc/en/android/generated/tutorials/map_search) and [Geosuggest](https://yandex.ru/dev/mapkit/doc/en/android/generated/tutorials/map_suggest) functionality.
 
     - [`map-routing`](mapkit-samples/map-routing): About the [Routes](https://yandex.ru/dev/mapkit/doc/en/android/generated/tutorials/map_routes) and [Routing](https://yandex.ru/dev/mapkit/doc/en/android/generated/tutorials/map_routing) API.
+
+    - [`map-offline`](mapkit-samples/map-offline): Examples of using the [Offline Maps](https://yandex.ru/dev/mapkit/doc/en/android/generated/tutorials/map_offline) API for working with MapKit's maps without the internet.
 
 2. [__`mapkit-demo`__](mapkit-demo): A demo application in Java that contains the basic functionality of the lite and full MapKit SDK versions. It is not supported with Tutorials documentation, unlike the `mapkit-samples` project.
 
@@ -78,6 +80,6 @@ If you have problems or suggestions while using MapKit, visit the [contact](http
 |:-|:-|
 | ![](_assets/map_interaction_demo.gif) | ![](_assets/map_search_demo.gif) |
 
-| [map-routing](mapkit-samples/map-routing)<br> Building routes using requested map points. |
-|:-|
-| ![](_assets/map_routing_demo.gif) |
+| [map-routing](mapkit-samples/map-routing)<br> Building routes using requested map points. | [map-offline](mapkit-samples/map-offline) <br> How to download offline maps to use<br> them without the internet. |
+|:-|:-|
+| ![](_assets/map_routing_demo.gif) | ![](_assets/map_offline_demo.gif) |

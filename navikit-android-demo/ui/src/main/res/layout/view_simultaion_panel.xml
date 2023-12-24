@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:gravity="center_vertical">
+
+        <ImageButton
+            android:id="@+id/button_speed_minus"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_gravity="center"
+            android:alpha="0.7"
+            android:background="@drawable/map_buttons_background"
+            android:padding="6dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/minus" />
+
+        <TextView
+            android:id="@+id/text_simulation_speed"
+            style="@style/TextAppearance.Material3.TitleMedium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="4dp"
+            tools:text="35 km/h" />
+
+        <ImageButton
+            android:id="@+id/button_speed_plus"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_gravity="center"
+            android:alpha="0.7"
+            android:background="@drawable/map_buttons_background"
+            android:padding="6dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/plus" />
+
+    </LinearLayout>
+
+</merge>
