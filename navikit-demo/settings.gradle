@@ -1,0 +1,29 @@
+pluginManagement {
+    repositories {
+        google()
+        mavenCentral()
+        gradlePluginPortal()
+
+    }
+}
+
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        mavenCentral()
+        flatDir {
+            dirs 'libs'
+        }
+    }
+}
+
+rootProject.name = "navikit-demo"
+include ':app'
+include ':com.yandex.navikitdemo.di'
+project(':com.yandex.navikitdemo.di').projectDir = file('di')
+include ':com.yandex.navikitdemo.ui'
+project(':com.yandex.navikitdemo.ui').projectDir = file('ui')
+include ':com.yandex.navikitdemo.domain'
+project(':com.yandex.navikitdemo.domain').projectDir = file('domain')
+

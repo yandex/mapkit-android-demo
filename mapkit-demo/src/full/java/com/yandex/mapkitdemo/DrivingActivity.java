@@ -46,7 +46,6 @@ public class DrivingActivity extends Activity implements DrivingSession.DrivingR
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         DirectionsFactory.initialize(this);
-
         setContentView(R.layout.driving);
         super.onCreate(savedInstanceState);
 

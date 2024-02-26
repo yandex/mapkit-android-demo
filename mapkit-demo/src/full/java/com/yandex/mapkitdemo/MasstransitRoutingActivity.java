@@ -51,7 +51,6 @@ public class MasstransitRoutingActivity extends Activity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         TransportFactory.initialize(this);
-
         setContentView(R.layout.map);
         super.onCreate(savedInstanceState);
         mapView = (MapView)findViewById(R.id.mapview);

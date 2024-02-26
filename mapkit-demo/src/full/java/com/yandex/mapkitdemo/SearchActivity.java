@@ -52,7 +52,6 @@ public class SearchActivity extends Activity implements Session.SearchListener, 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         SearchFactory.initialize(this);
-
         setContentView(R.layout.search);
         super.onCreate(savedInstanceState);
 
