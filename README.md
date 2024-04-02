@@ -1,14 +1,16 @@
-# Yandex MapKit Demo Apps
+# Yandex MapKit and NaviKit Demo Apps
 
-Yandex MapKit is a cross-platform library that lets you use the capabilities of Yandex Maps in mobile applications for iOS and Android. Learn more about the MapKit SDK on the [documentation](https://yandex.ru/dev/mapkit/doc/en/?from=github-demo) page.
+Yandex MapKit and NaviKit are cross-platform libraries that let you use the capabilities of Yandex Maps in mobile applications for iOS and Android. Learn more about the MapKit and NaviKit SDKs on the [documentation](https://yandex.ru/dev/mapkit/doc/en/?from=github-demo) page.
 
-Visit the [Getting started](https://yandex.ru/dev/mapkit/doc/en/android/generated/getting_started) page for quick start development with the MapKit SDK.
+For a quick start development with the MapKit and NaviKit SDKs visit the following pages:
+- [Getting started with MapKit SDK](https://yandex.ru/dev/mapkit/doc/en/android/generated/getting_started)
+- [Getting started with NaviKit SDK](https://yandex.ru/dev/mapkit/doc/en/android/generated/navigation/getting_started)
 
-The current repository contains sample code for how to use the MapKit SDK for Android applications.
+The current repository contains sample code for how to use the MapKit and NaviKit SDKs for Android applications.
 
 ## Project structures
 
-There are two Android projects in the repository:
+There are three Android projects in the repository:
 
 1. [__`mapkit-samples`__](mapkit-samples): Contains several Android applications with sample code in Kotlin, all of which are demonstrated in the MapKit SDK Tutorials documentation.
 
@@ -26,6 +28,8 @@ There are two Android projects in the repository:
 
 2. [__`mapkit-demo`__](mapkit-demo): A demo application in Java that contains the basic functionality of the lite and full MapKit SDK versions. It is not supported with Tutorials documentation, unlike the `mapkit-samples` project.
 
+3. [__`navikit-demo`__](navikit-demo): A demo application showcasing the basic navigation features you can implement with NaviKit SDK.
+
 ## Build locally
 
 1. Clone the repository: 
@@ -33,7 +37,7 @@ There are two Android projects in the repository:
     git clone https://github.com/yandex/mapkit-android-demo.git
     ```
 
-2. Demo applications use the MapKit SDK, which requires __API key__. You can get a free MapKit __API key__ in the [Get the MapKit API Key](https://yandex.ru/dev/mapkit/doc/en/android/generated/getting_started#key) documentation.
+2. MapKit SDK demo application and samples require __API key__. You can get a free MapKit __API key__ in the [Get the MapKit API Key](https://yandex.ru/dev/mapkit/doc/en/android/generated/getting_started#key) documentation. The instruction on how to obtain NaviKit __API key__ is described in the [documentation] (https://yandex.ru/dev/mapkit/doc/en/android/generated/navigation/getting_started#get-key). 
  
 3. Depending on the project you want to build, follow the steps in the following sections.
 
@@ -66,9 +70,23 @@ There are two Android projects in the repository:
     ./gradlew assembleFullRelease  # Lite and full 
     ```
 
+### navikit-demo
+
+1. Open or create the __project's__ `local.properties` file. Add the following property with your __API key__ value in place of the `YOUR_API_KEY` placeholder:
+    
+    ```properties
+    MAPKIT_API_KEY=YOUR_API_KEY
+    ```
+
+2. Run the __app__ target in Android Studio or use the CLI build with gradle wrapper:
+
+    ```sh
+    ./gradlew assembleRelease
+    ```
+
 ## Support
 
-If you have problems or suggestions while using MapKit, visit the [contact](https://yandex.ru/dev/mapkit/doc/en/feedback/) page.
+If you have problems or suggestions while using MapKit or NaviKit SDK, visit the [contact](https://yandex.ru/dev/mapkit/doc/en/feedback/) page.
 
 ## Sample overview
 
