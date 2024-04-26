@@ -2,9 +2,7 @@ package com.yandex.mapkitdemo;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.widget.TextView;
-import java.util.concurrent.ExecutionException;
 
 import com.yandex.mapkit.MapKitFactory;
 

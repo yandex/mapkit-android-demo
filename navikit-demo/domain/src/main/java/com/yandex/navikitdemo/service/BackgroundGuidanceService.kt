@@ -13,7 +13,7 @@ import com.yandex.navikitdemo.domain.helpers.NavigationSuspenderManager
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
-private const val BG_NOTIFICATION_ID = 1
+private const val BG_NOTIFICATION_ID = 10
 
 @AndroidEntryPoint
 class BackgroundGuidanceService : Service() {

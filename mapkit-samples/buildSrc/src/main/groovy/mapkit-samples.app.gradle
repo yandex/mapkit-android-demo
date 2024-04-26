@@ -29,6 +29,19 @@ android {
         viewBinding true
     }
 
+    buildTypes {
+        release {
+            kotlinOptions {
+                allWarningsAsErrors = true
+            }
+
+            tasks.withType(JavaCompile).configureEach {
+                options.compilerArgs += '-Xlint:all'
+                options.compilerArgs += '-Werror'
+            }
+        }
+    }
+
     if (project.properties["with_sign"]) {
         signingConfigs {
             release {

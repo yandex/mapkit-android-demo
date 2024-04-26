@@ -45,12 +45,12 @@ class SettingsManagerImpl @Inject constructor(
     // Annotations
     override val annotatedEvents = buildMap {
         AnnotatedEventsType.values().forEach {
-            this[it] = boolean("annotatedEvents_$it", true)
+            this[it] = boolean("annotatedEvents_$it", it == AnnotatedEventsType.EVERYTHING)
         }
     }
     override val annotatedRoadEvents = buildMap {
         AnnotatedRoadEventsType.values().forEach {
-            this[it] = boolean("annotatedRoadEvents_$it", true)
+            this[it] = boolean("annotatedRoadEvents_$it", it == AnnotatedRoadEventsType.EVERYTHING)
         }
     }
     override val annotationLanguage =
@@ -81,10 +81,13 @@ class SettingsManagerImpl @Inject constructor(
     // Guidance
     override val alternatives = boolean("alternatives", true)
     override val simulation = boolean("simulation", true)
-    override val simulationSpeed = float("simulationSpeed", 20f)
+    override val simulationSpeed = float(
+        "simulationSpeed", DEFAULT_SIMULATION_SPEED.toFloat(),
+        range = MIN_SIMULATION_SPEED..MAX_SIMULATION_SPEED
+    )
     override val background = boolean("background", true)
     override val speedLimitTolerance = float("speedLimitTolerance", 0.8f)
-    override val restoreGuidanceState = boolean("restoreGuidanceState", true)
+    override val restoreGuidanceState = boolean("restoreGuidanceState", false)
     override val serializedNavigation = string("serializedNavigation")
 
     private fun createRoadEventsSettings(baseKey: String): Map<EventTag, SettingModel<Boolean>> {
@@ -95,15 +98,20 @@ class SettingsManagerImpl @Inject constructor(
         }
     }
 
-    private fun float(key: String, default: Float): SettingModel<Float> {
+    private fun float(
+        key: String,
+        default: Float,
+        range: ClosedFloatingPointRange<Float>? = null,
+    ): SettingModel<Float> {
         return object : SettingModel<Float> {
             private var valueImpl = MutableStateFlow(value)
 
             override var value: Float
                 get() = keyValueStorage.readFloat(key, default)
                 set(value) {
-                    keyValueStorage.putFloat(key, value)
-                    valueImpl.value = value
+                    val actualValue = range?.let { value.coerceIn(it) } ?: value
+                    keyValueStorage.putFloat(key, actualValue)
+                    valueImpl.value = actualValue
                 }
 
             override fun changes(): Flow<Float> = valueImpl

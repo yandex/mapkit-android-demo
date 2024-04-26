@@ -3,12 +3,6 @@ package com.yandex.navikitdemo.domain.models
 import com.yandex.mapkit.navigation.automotive.AnnotatedEvents
 import com.yandex.mapkit.navigation.automotive.AnnotatedRoadEvents
 
-
-// In MapKit SDK AnnotatedEvents and AnnotatedRoadEvents enums
-// contain cases that correspond to several annotation types,
-// such as: ROUTE_ACTIONS, TRAFFIC_CONTROLS, and EVERYTHING.
-// That's why we create wrapper enums, to display in settings only
-// separate annotation types.
 enum class AnnotatedEventsType(val mapkitEnum: AnnotatedEvents) {
     MANOEUVRES(AnnotatedEvents.MANOEUVRES),
     FASTER_ALTERNATIVE(AnnotatedEvents.FASTER_ALTERNATIVE),
@@ -22,6 +16,8 @@ enum class AnnotatedEventsType(val mapkitEnum: AnnotatedEvents) {
     SPEED_BUMPS(AnnotatedEvents.SPEED_BUMPS),
     RAILWAY_CROSSINGS(AnnotatedEvents.RAILWAY_CROSSINGS),
     LANES(AnnotatedEvents.LANES),
+    ROUTE_ACTIONS(AnnotatedEvents.ROUTE_ACTIONS),
+    EVERYTHING(AnnotatedEvents.EVERYTHING),
 }
 
 enum class AnnotatedRoadEventsType(val mapkitEnum: AnnotatedRoadEvents) {
@@ -37,4 +33,6 @@ enum class AnnotatedRoadEventsType(val mapkitEnum: AnnotatedRoadEvents) {
     CROSS_ROAD_CONTROL(AnnotatedRoadEvents.CROSS_ROAD_CONTROL),
     MOBILE_CONTROL(AnnotatedRoadEvents.MOBILE_CONTROL),
     SPEED_LIMIT_CONTROL(AnnotatedRoadEvents.SPEED_LIMIT_CONTROL),
+    TRAFFIC_CONTROLS(AnnotatedRoadEvents.TRAFFIC_CONTROLS),
+    EVERYTHING(AnnotatedRoadEvents.EVERYTHING),
 }

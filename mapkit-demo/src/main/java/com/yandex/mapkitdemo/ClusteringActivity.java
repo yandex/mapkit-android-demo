@@ -4,9 +4,7 @@ import static com.yandex.mapkitdemo.ConstantsUtils.CLUSTER_CENTERS;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.content.Context;
 import android.util.DisplayMetrics;
-import android.view.WindowManager;
 import android.widget.Toast;
 
 import android.graphics.Bitmap;
@@ -29,7 +27,6 @@ import com.yandex.mapkit.mapview.MapView;
 import com.yandex.runtime.image.ImageProvider;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -50,11 +47,10 @@ public class ClusteringActivity extends Activity implements ClusterListener, Clu
         }
 
         private final String text;
+
         @Override
         public Bitmap getImage() {
-            DisplayMetrics metrics = new DisplayMetrics();
-            WindowManager manager = (WindowManager)getSystemService(Context.WINDOW_SERVICE);
-            manager.getDefaultDisplay().getMetrics(metrics);
+            DisplayMetrics metrics = getResources().getDisplayMetrics();
 
             Paint textPaint = new Paint();
             textPaint.setTextSize(FONT_SIZE * metrics.density);
@@ -65,7 +61,7 @@ public class ClusteringActivity extends Activity implements ClusterListener, Clu
             float widthF = textPaint.measureText(text);
             FontMetrics textMetrics = textPaint.getFontMetrics();
             float heightF = Math.abs(textMetrics.bottom) + Math.abs(textMetrics.top);
-            float textRadius = (float)Math.sqrt(widthF * widthF + heightF * heightF) / 2;
+            float textRadius = (float) Math.sqrt(widthF * widthF + heightF * heightF) / 2;
             float internalRadius = textRadius + MARGIN_SIZE * metrics.density;
             float externalRadius = internalRadius + STROKE_SIZE * metrics.density;
 
@@ -102,15 +98,15 @@ public class ClusteringActivity extends Activity implements ClusterListener, Clu
         super.onCreate(savedInstanceState);
 
         mapView = findViewById(R.id.mapview);
-        mapView.getMap().move(new CameraPosition(
+        mapView.getMapWindow().getMap().move(new CameraPosition(
                 CLUSTER_CENTERS.get(0), 3, 0, 0));
         ImageProvider imageProvider = ImageProvider.fromResource(
-            ClusteringActivity.this, R.drawable.search_result);
+                ClusteringActivity.this, R.drawable.search_result);
 
         // Note that application must retain strong references to both
         // cluster listener and cluster tap listener
         ClusterizedPlacemarkCollection clusterizedCollection =
-                mapView.getMap().getMapObjects().addClusterizedPlacemarkCollection(this);
+                mapView.getMapWindow().getMap().getMapObjects().addClusterizedPlacemarkCollection(this);
 
         List<Point> points = createPoints(PLACEMARKS_NUMBER);
         clusterizedCollection.addPlacemarks(points, imageProvider, new IconStyle());

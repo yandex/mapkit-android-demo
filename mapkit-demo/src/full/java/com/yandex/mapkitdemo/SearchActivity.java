@@ -44,21 +44,20 @@ public class SearchActivity extends Activity implements Session.SearchListener, 
     private void submitQuery(String query) {
         searchSession = searchManager.submit(
                 query,
-                VisibleRegionUtils.toPolygon(mapView.getMap().getVisibleRegion()),
+                VisibleRegionUtils.toPolygon(mapView.getMapWindow().getMap().getVisibleRegion()),
                 new SearchOptions(),
                 this);
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        SearchFactory.initialize(this);
         setContentView(R.layout.search);
         super.onCreate(savedInstanceState);
 
         searchManager = SearchFactory.getInstance().createSearchManager(SearchManagerType.COMBINED);
 
         mapView = findViewById(R.id.mapview);
-        mapView.getMap().addCameraListener(this);
+        mapView.getMapWindow().getMap().addCameraListener(this);
 
         searchEdit = findViewById(R.id.search_edit);
         searchEdit.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -72,7 +71,7 @@ public class SearchActivity extends Activity implements Session.SearchListener, 
             }
         });
 
-        mapView.getMap().move(
+        mapView.getMapWindow().getMap().move(
                 new CameraPosition(DEFAULT_POINT, 14.0f, 0.0f, 0.0f));
 
         submitQuery(searchEdit.getText().toString());
@@ -94,7 +93,7 @@ public class SearchActivity extends Activity implements Session.SearchListener, 
 
     @Override
     public void onSearchResponse(Response response) {
-        MapObjectCollection mapObjects = mapView.getMap().getMapObjects();
+        MapObjectCollection mapObjects = mapView.getMapWindow().getMap().getMapObjects();
         mapObjects.clear();
         final ImageProvider searchResultImageProvider = ImageProvider.fromResource(this, R.drawable.search_result);
         for (GeoObjectCollection.Item searchResult : response.getCollection().getChildren()) {

@@ -112,7 +112,6 @@ class GuidanceFragment : BaseMapFragment(R.layout.fragment_guidance) {
     override fun onStart() {
         super.onStart()
         viewModel.startGuidanceIfNeeded(navigationLayerManager.selectedRoute)
-        viewModel.startBackgroundGuidanceServiceIfNeeded()
         navigationLayerManager.cameraMode = CameraMode.FOLLOWING
     }
 

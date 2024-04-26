@@ -2,6 +2,7 @@ package com.yandex.navikitdemo
 
 import android.content.res.Resources
 import androidx.lifecycle.ViewModel
+import com.yandex.navikitdemo.domain.NavigationHolder
 import com.yandex.navikitdemo.domain.NavigationManager
 import com.yandex.navikitdemo.domain.SettingsManager
 import com.yandex.navikitdemo.domain.helpers.NavigationClient
@@ -18,6 +19,7 @@ import javax.inject.Inject
 class AppActivityViewModel @Inject constructor(
     private val settingsManager: SettingsManager,
     private val navigationManager: NavigationManager,
+    private val navigationHolder: NavigationHolder,
     private val navigationSuspenderManager: NavigationSuspenderManager,
 ) : ViewModel() {
 
@@ -48,7 +50,7 @@ class AppActivityViewModel @Inject constructor(
             navigationManager.isGuidanceActive
             && settingsManager.restoreGuidanceState.value
         ) {
-            navigationManager.serializeNavigation()
+            navigationHolder.serialize()
         }
     }
 }

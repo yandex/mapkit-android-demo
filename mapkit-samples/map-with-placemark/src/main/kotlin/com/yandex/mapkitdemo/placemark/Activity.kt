@@ -30,14 +30,18 @@ class Activity : AppCompatActivity() {
         mapView = findViewById(R.id.mapview)
 
         val mapkitVersionView = findViewById<LinearLayout>(R.id.mapkit_version)
-        val mapkitVersionTextView = mapkitVersionView.findViewById<TextView>(CommonId.mapkit_version_value)
+        val mapkitVersionTextView =
+            mapkitVersionView.findViewById<TextView>(CommonId.mapkit_version_value)
         mapkitVersionTextView.text = MapKitFactory.getInstance().version
 
         val map = mapView.mapWindow.map
         map.move(POSITION)
 
         val imageProvider = ImageProvider.fromResource(this, CommonDrawables.ic_dollar_pin)
-        val placemarkObject = map.mapObjects.addPlacemark(POINT, imageProvider)
+        val placemarkObject = map.mapObjects.addPlacemark().apply {
+            geometry = POINT
+            setIcon(imageProvider)
+        }
         placemarkObject.addTapListener(placemarkTapListener)
     }
 

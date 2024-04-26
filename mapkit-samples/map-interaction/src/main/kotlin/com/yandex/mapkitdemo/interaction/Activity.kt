@@ -55,7 +55,8 @@ class Activity : AppCompatActivity() {
             map.move(position, SMOOTH_ANIMATION, null)
         }
 
-        val selectionMetadata = it.geoObject.metadataContainer.getItem(GeoObjectSelectionMetadata::class.java)
+        val selectionMetadata =
+            it.geoObject.metadataContainer.getItem(GeoObjectSelectionMetadata::class.java)
         map.selectGeoObject(selectionMetadata)
         showToast("Tapped ${it.geoObject.name} id = ${selectionMetadata.objectId}")
 
@@ -68,7 +69,8 @@ class Activity : AppCompatActivity() {
         binding = ActivityLayoutBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val mapkitVersionTextView = binding.mapkitVersion.findViewById<TextView>(CommonId.mapkit_version_value)
+        val mapkitVersionTextView =
+            binding.mapkitVersion.findViewById<TextView>(CommonId.mapkit_version_value)
         mapkitVersionTextView.text = MapKitFactory.getInstance().version
 
         mapWindow = binding.mapview.mapWindow
@@ -125,11 +127,11 @@ class Activity : AppCompatActivity() {
     }
 
     private fun createPlacemark(point: Point) {
-        placemarkMapObject = map.mapObjects.addPlacemark(
-            point,
-            ImageProvider.fromResource(this@Activity, CommonDrawables.ic_dollar_pin),
-            IconStyle().apply { anchor = PointF(0.5f, 1.0f) }
-        ).apply {
+        placemarkMapObject = map.mapObjects.addPlacemark().apply {
+            geometry = point
+            setIcon(
+                ImageProvider.fromResource(this@Activity, CommonDrawables.ic_dollar_pin),
+                IconStyle().apply { anchor = PointF(0.5f, 1.0f) })
             isDraggable = true
         }
     }

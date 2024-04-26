@@ -24,7 +24,9 @@ class MapViewModel @Inject constructor(
     }
 
     fun clearNavigationSerialization() {
-        settingsManager.serializedNavigation.value = ""
+        if (settingsManager.restoreGuidanceState.value) {
+            settingsManager.serializedNavigation.value = ""
+        }
     }
 
     fun setToPoint(point: Point) {

@@ -29,7 +29,6 @@ public class PanoramaActivity extends Activity implements PanoramaService.Search
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        PlacesFactory.initialize(this);
         setContentView(R.layout.panorama);
         super.onCreate(savedInstanceState);
         panoramaView = findViewById(R.id.panoview);

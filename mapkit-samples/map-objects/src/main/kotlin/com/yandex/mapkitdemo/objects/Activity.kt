@@ -155,7 +155,8 @@ class Activity : AppCompatActivity() {
         val map = mapView.mapWindow.map
 
         val mapkitVersionView = findViewById<LinearLayout>(R.id.mapkit_version)
-        val mapkitVersionTextView = mapkitVersionView.findViewById<TextView>(CommonId.mapkit_version_value)
+        val mapkitVersionTextView =
+            mapkitVersionView.findViewById<TextView>(CommonId.mapkit_version_value)
         mapkitVersionTextView.text = MapKitFactory.getInstance().version
 
         mapView.mapWindow.addSizeChangedListener(mapWindowSizeChangedListener)
@@ -204,29 +205,27 @@ class Activity : AppCompatActivity() {
         GeometryProvider.clusterizedPoints.forEachIndexed { index, point ->
             val type = PlacemarkType.values().random()
             val imageProvider = placemarkTypeToImageProvider[type] ?: return
-            clasterizedCollection.addPlacemark(
-                point,
-                imageProvider,
-                IconStyle().apply {
+            clasterizedCollection.addPlacemark().apply {
+                geometry = point
+                setIcon(imageProvider, IconStyle().apply {
                     anchor = PointF(0.5f, 1.0f)
                     scale = 0.6f
-                }
-            )
-                .apply {
-                    // If we want to make placemarks draggable, we should call
-                    // clasterizedCollection.clusterPlacemarks on onMapObjectDragEnd
-                    isDraggable = true
-                    setDragListener(pinDragListener)
-                    // Put any data in MapObject
-                    userData = PlacemarkUserData("Data_$index", type)
-                    this.addTapListener(placemarkTapListener)
-                }
+                })
+                // If we want to make placemarks draggable, we should call
+                // clasterizedCollection.clusterPlacemarks on onMapObjectDragEnd
+                isDraggable = true
+                setDragListener(pinDragListener)
+                // Put any data in MapObject
+                userData = PlacemarkUserData("Data_$index", type)
+                addTapListener(placemarkTapListener)
+            }
         }
 
         clasterizedCollection.clusterPlacemarks(CLUSTER_RADIUS, CLUSTER_MIN_ZOOM)
 
         // Composite placemark with text
-        val placemark = collection.addPlacemark(GeometryProvider.compositeIconPoint).apply {
+        val placemark = collection.addPlacemark().apply {
+            geometry = GeometryProvider.compositeIconPoint
             addTapListener(singlePlacemarkTapListener)
             // Set text near the placemark with the custom TextStyle
 
@@ -262,12 +261,13 @@ class Activity : AppCompatActivity() {
         }
 
         // Add an animated icon
-        collection.addPlacemark(
-            GeometryProvider.animatedImagePoint,
-            AnimatedImageProvider.fromAsset(this, "animation.png"),
-            IconStyle().apply { scale = 0.6f }
-        ).apply {
-            useAnimation().play()
+        collection.addPlacemark().apply {
+            geometry = GeometryProvider.animatedImagePoint
+            useAnimation().apply {
+                setIcon(
+                    AnimatedImageProvider.fromAsset(this@Activity, "animation.png"),
+                    IconStyle().apply { scale = 0.6f })
+            }.play()
             addTapListener(animatedPlacemarkTapListener)
         }
 

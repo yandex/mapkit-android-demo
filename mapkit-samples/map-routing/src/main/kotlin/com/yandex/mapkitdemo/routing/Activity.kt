@@ -78,14 +78,14 @@ class Activity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         MapKitFactory.initialize(this)
-        DirectionsFactory.initialize(this)
         setContentView(R.layout.activity_layout)
         mapView = findViewById(R.id.mapview)
         map = mapView.mapWindow.map
         map.addInputListener(inputListener)
 
         val mapkitVersionView = findViewById<LinearLayout>(R.id.mapkit_version)
-        val mapkitVersionTextView = mapkitVersionView.findViewById<TextView>(CommonId.mapkit_version_value)
+        val mapkitVersionTextView =
+            mapkitVersionView.findViewById<TextView>(CommonId.mapkit_version_value)
         mapkitVersionTextView.text = MapKitFactory.getInstance().version
 
         placemarksCollection = map.mapObjects.addCollection()
@@ -126,14 +126,13 @@ class Activity : AppCompatActivity() {
 
         val imageProvider = ImageProvider.fromResource(this, R.drawable.bullet)
         routePoints.forEach {
-            placemarksCollection.addPlacemark(
-                it,
-                imageProvider,
-                IconStyle().apply {
+            placemarksCollection.addPlacemark().apply {
+                geometry = it
+                setIcon(imageProvider, IconStyle().apply {
                     scale = 0.5f
                     zIndex = 20f
-                }
-            )
+                })
+            }
         }
 
         if (routePoints.size < 2) return

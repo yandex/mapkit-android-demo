@@ -1,8 +1,8 @@
 package com.yandex.navikitdemo.data.helpers
 
-import com.yandex.mapkit.navigation.automotive.Navigation
 import com.yandex.mapkit.road_events_layer.RoadEventsLayer
 import com.yandex.navikitdemo.domain.AnnotationsManager
+import com.yandex.navikitdemo.domain.NavigationHolder
 import com.yandex.navikitdemo.domain.NavigationLayerManager
 import com.yandex.navikitdemo.domain.NavigationManager
 import com.yandex.navikitdemo.domain.NavigationStyleManager
@@ -27,10 +27,10 @@ class SettingsBinderManagerImpl @Inject constructor(
     private val roadEventsLayer: RoadEventsLayer,
     private val navigationLayerManager: NavigationLayerManager,
     private val navigationStyleManager: NavigationStyleManager,
-    private val navigation: Navigation,
     private val annotationsManager: AnnotationsManager,
     private val backgroundServiceManager: BackgroundServiceManager,
     private val navigationManager: NavigationManager,
+    private val navigationHolder: NavigationHolder,
 ) : SettingsBinderManager {
 
     override fun applySettingsChanges(scope: CoroutineScope) {
@@ -85,19 +85,23 @@ class SettingsBinderManagerImpl @Inject constructor(
         settings.balloonsGeometry.changes()
             .onEach { navigationLayerManager.setShowBalloonsGeometry(it) }
             .launchIn(this)
+
+        navigationHolder.navigation
+            .onEach { navigationLayerManager.recreateNavigationLayer() }
+            .launchIn(this)
     }
 
     private fun CoroutineScope.navigation() {
         settings.annotationLanguage.changes()
-            .onEach { navigation.annotationLanguage = it }
+            .onEach { navigationManager.setAnnotationLanguage(it) }
             .launchIn(this)
 
         settings.alternatives.changes()
-            .onEach { navigation.guidance.isEnableAlternatives = it }
+            .onEach { navigationManager.setEnabledAlternatives(it) }
             .launchIn(this)
 
         settings.speedLimitTolerance.changes()
-            .onEach { navigation.guidance.speedLimitTolerance = it.toDouble() }
+            .onEach { navigationManager.setSpeedLimitTolerance(it.toDouble()) }
             .launchIn(this)
 
         combine(
@@ -105,10 +109,10 @@ class SettingsBinderManagerImpl @Inject constructor(
             settings.avoidUnpaved.changes(),
             settings.avoidPoorConditions.changes(),
         ) { avoidTolls, avoidUnpaved, avoidPoorConditions ->
-            navigation.apply {
-                isAvoidTolls = avoidTolls
-                isAvoidUnpaved = avoidUnpaved
-                isAvoidPoorConditions = avoidPoorConditions
+            navigationManager.apply {
+                setAvoidTolls(avoidTolls)
+                setAvoidUnpaved(avoidUnpaved)
+                setAvoidPoorConditions(avoidPoorConditions)
             }
         }.launchIn(this)
     }
@@ -130,8 +134,6 @@ class SettingsBinderManagerImpl @Inject constructor(
     }
 
     private fun CoroutineScope.annotationsManager() {
-        // AnnotatedEvents and AnnotatedRoadEvents store information about events that
-        // should be annotated using bit masks.
         settings.annotatedEvents
             .map { (event, setting) ->
                 setting.changes().map { event to it }

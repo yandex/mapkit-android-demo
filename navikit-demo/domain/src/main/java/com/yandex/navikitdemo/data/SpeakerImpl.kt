@@ -7,22 +7,24 @@ import com.yandex.mapkit.annotations.LocalizedPhrase
 import com.yandex.navikitdemo.domain.SettingsManager
 import com.yandex.navikitdemo.domain.SpeakerManager
 import dagger.hilt.android.qualifiers.ApplicationContext
-import dagger.hilt.android.scopes.ActivityScoped
-import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import java.util.*
+import java.util.Locale
+import java.util.UUID
 import javax.inject.Inject
+import javax.inject.Singleton
 
-@ActivityScoped
+@Singleton
 class SpeakerImpl @Inject constructor(
     @ApplicationContext context: Context,
-    private val scope: CoroutineScope,
     private val settingsManager: SettingsManager,
 ) : SpeakerManager {
+
+    private val scope = MainScope()
 
     private var ttsInitialized = false
     private val tts = TextToSpeech(context) { status ->
@@ -89,6 +91,7 @@ class SpeakerImpl @Inject constructor(
             AnnotationLanguage.TATAR -> Locale("tt", "RU")
             AnnotationLanguage.PORTUGUESE -> Locale("pt", "PT")
             AnnotationLanguage.LATIN_AMERICAN_SPANISH -> Locale("es-419", "BO")
+            AnnotationLanguage.BASHKIR -> Locale("ba", "RU")
         }
     }
 }

@@ -30,13 +30,13 @@ public class SelectionActivity extends Activity implements GeoObjectTapListener,
         mapView = findViewById(R.id.mapview);
 
         // And to show what can be done with it, we move the camera to the center of the target location.
-        mapView.getMap().move(
+        mapView.getMapWindow().getMap().move(
                 new CameraPosition(DEFAULT_POINT, 17.0f, 0.0f, 0.0f),
                 new Animation(Animation.Type.SMOOTH, 1),
                 null);
 
-        mapView.getMap().addTapListener(this);
-        mapView.getMap().addInputListener(this);
+        mapView.getMapWindow().getMap().addTapListener(this);
+        mapView.getMapWindow().getMap().addInputListener(this);
     }
 
     @Override
@@ -63,7 +63,7 @@ public class SelectionActivity extends Activity implements GeoObjectTapListener,
                 .getItem(GeoObjectSelectionMetadata.class);
 
         if (selectionMetadata != null) {
-            mapView.getMap().selectGeoObject(selectionMetadata);
+            mapView.getMapWindow().getMap().selectGeoObject(selectionMetadata);
         }
 
         return selectionMetadata != null;
@@ -71,7 +71,7 @@ public class SelectionActivity extends Activity implements GeoObjectTapListener,
 
     @Override
     public void onMapTap(@NonNull Map map, @NonNull Point point) {
-        mapView.getMap().deselectGeoObject();
+        mapView.getMapWindow().getMap().deselectGeoObject();
     }
 
     @Override

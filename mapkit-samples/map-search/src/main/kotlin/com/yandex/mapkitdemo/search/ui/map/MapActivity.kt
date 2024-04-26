@@ -66,7 +66,8 @@ class Activity : AppCompatActivity() {
         binding = LayoutActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val mapkitVersionTextView = binding.mapkitVersion.findViewById<TextView>(CommonId.mapkit_version_value)
+        val mapkitVersionTextView =
+            binding.mapkitVersion.findViewById<TextView>(CommonId.mapkit_version_value)
         mapkitVersionTextView.text = MapKitFactory.getInstance().version
 
         map.move(START_POSITION)
@@ -163,11 +164,9 @@ class Activity : AppCompatActivity() {
         val imageProvider = ImageProvider.fromResource(this, R.drawable.search_result)
 
         items.forEach {
-            map.mapObjects.addPlacemark(
-                it.point,
-                imageProvider,
-                IconStyle().apply { scale = 0.5f }
-            ).apply {
+            map.mapObjects.addPlacemark().apply {
+                geometry = it.point
+                setIcon(imageProvider, IconStyle().apply { scale = 0.5f })
                 addTapListener(searchResultPlacemarkTapListener)
                 userData = it.geoObject
             }

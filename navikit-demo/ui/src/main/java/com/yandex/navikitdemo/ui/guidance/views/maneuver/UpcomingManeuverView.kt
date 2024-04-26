@@ -21,7 +21,7 @@ data class UpcomingManeuverViewState(
 )
 
 @AndroidEntryPoint
-class UpcomingManeuverView constructor(
+class UpcomingManeuverView(
     context: Context,
     attributeSet: AttributeSet,
 ) : ConstraintLayout(context, attributeSet) {

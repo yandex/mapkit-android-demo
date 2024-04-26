@@ -88,7 +88,7 @@ class SettingsItemsMapper @Inject constructor(
                 SettingsItem.Toggle("Simulation", settingsManager.simulation),
                 SettingsItem.Details("When enabled starts guidance simulation demo"),
                 SettingsItem.EditFloat("Speed", settingsManager.simulationSpeed),
-                SettingsItem.Details("Simulation speed in meters per second"),
+                SettingsItem.Details("Simulation speed in km/h"),
             )
             SettingsScreen.GUIDANCE -> listOf(
                 SettingsItem.SpeedLimits,

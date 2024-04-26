@@ -40,7 +40,7 @@ public class SuggestActivity extends Activity implements SuggestSession.SuggestL
     private SearchManager searchManager;
     private SuggestSession suggestSession;
     private ListView suggestResultView;
-    private ArrayAdapter resultAdapter;
+    private ArrayAdapter<String> resultAdapter;
     private List<String> suggestResult;
 
     private final double BOX_SIZE = 0.2;
@@ -54,7 +54,6 @@ public class SuggestActivity extends Activity implements SuggestSession.SuggestL
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        SearchFactory.initialize(this);
         setContentView(R.layout.suggest);
         super.onCreate(savedInstanceState);
 
@@ -63,7 +62,7 @@ public class SuggestActivity extends Activity implements SuggestSession.SuggestL
         EditText queryEdit = (EditText)findViewById(R.id.suggest_query);
         suggestResultView = (ListView)findViewById(R.id.suggest_result);
         suggestResult = new ArrayList<>();
-        resultAdapter = new ArrayAdapter(this,
+        resultAdapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_list_item_2,
                 android.R.id.text1,
                 suggestResult);

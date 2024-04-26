@@ -37,8 +37,8 @@ public class UserLocationActivity extends Activity implements UserLocationObject
         setContentView(R.layout.user_location);
         super.onCreate(savedInstanceState);
         mapView = findViewById(R.id.mapview);
-        mapView.getMap().setRotateGesturesEnabled(false);
-        mapView.getMap().move(new CameraPosition(new Point(0, 0), 14, 0, 0));
+        mapView.getMapWindow().getMap().setRotateGesturesEnabled(false);
+        mapView.getMapWindow().getMap().move(new CameraPosition(new Point(0, 0), 14, 0, 0));
 
         requestLocationPermission();
 
@@ -53,11 +53,11 @@ public class UserLocationActivity extends Activity implements UserLocationObject
 
     private void requestLocationPermission() {
         if (ContextCompat.checkSelfPermission(this,
-            "android.permission.ACCESS_FINE_LOCATION")
-            != PackageManager.PERMISSION_GRANTED) {
+                "android.permission.ACCESS_FINE_LOCATION")
+                != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this,
-                new String[]{"android.permission.ACCESS_FINE_LOCATION"},
-                PERMISSIONS_REQUEST_FINE_LOCATION);
+                    new String[]{"android.permission.ACCESS_FINE_LOCATION"},
+                    PERMISSIONS_REQUEST_FINE_LOCATION);
         }
     }
 
@@ -78,8 +78,8 @@ public class UserLocationActivity extends Activity implements UserLocationObject
     @Override
     public void onObjectAdded(UserLocationView userLocationView) {
         userLocationLayer.setAnchor(
-                new PointF((float)(mapView.getWidth() * 0.5), (float)(mapView.getHeight() * 0.5)),
-                new PointF((float)(mapView.getWidth() * 0.5), (float)(mapView.getHeight() * 0.83)));
+                new PointF((float) (mapView.getWidth() * 0.5), (float) (mapView.getHeight() * 0.5)),
+                new PointF((float) (mapView.getWidth() * 0.5), (float) (mapView.getHeight() * 0.83)));
 
         userLocationView.getArrow().setIcon(ImageProvider.fromResource(
                 this, R.drawable.user_arrow));

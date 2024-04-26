@@ -14,10 +14,9 @@ interface NavigationLayerManager {
 
     fun initIfNeeded()
     fun recreateNavigationLayer()
-
     fun refreshStyle()
-    fun setShowBalloonsGeometry(show: Boolean)
 
+    fun setShowBalloonsGeometry(show: Boolean)
     fun setSwitchModesAutomatically(enabled: Boolean)
     fun setAutoRotation(enabled: Boolean)
     fun setAutoZoom(enabled: Boolean)

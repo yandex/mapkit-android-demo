@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.widget.TextView;
 
 import com.yandex.mapkit.MapKitFactory;
-import com.yandex.mapkit.geometry.Point;
 import com.yandex.mapkit.map.CameraPosition;
 import com.yandex.mapkit.mapview.MapView;
 import com.yandex.mapkit.traffic.TrafficLayer;
@@ -34,7 +33,7 @@ public class JamsActivity extends Activity implements TrafficListener {
         super.onCreate(savedInstanceState);
 
         mapView = findViewById(R.id.mapview);
-        mapView.getMap().move(
+        mapView.getMapWindow().getMap().move(
                 new CameraPosition(DEFAULT_POINT, 14.0f, 0.0f, 0.0f));
 
         levelText = findViewById(R.id.traffic_light_text);

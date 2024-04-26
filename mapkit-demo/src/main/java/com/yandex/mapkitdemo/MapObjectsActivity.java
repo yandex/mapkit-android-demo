@@ -12,6 +12,7 @@ import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -56,10 +57,10 @@ public class MapObjectsActivity extends Activity {
         setContentView(R.layout.map_objects);
         super.onCreate(savedInstanceState);
         mapView = findViewById(R.id.mapview);
-        mapView.getMap().move(
+        mapView.getMapWindow().getMap().move(
                 new CameraPosition(DEFAULT_POINT, 15.0f, 0.0f, 0.0f));
-        mapObjects = mapView.getMap().getMapObjects().addCollection();
-        animationHandler = new Handler();
+        mapObjects = mapView.getMapWindow().getMap().getMapObjects().addCollection();
+        animationHandler = new Handler(Looper.myLooper());
         createMapObjects();
     }
 

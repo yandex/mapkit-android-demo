@@ -45,15 +45,14 @@ public class DrivingActivity extends Activity implements DrivingSession.DrivingR
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        DirectionsFactory.initialize(this);
         setContentView(R.layout.driving);
         super.onCreate(savedInstanceState);
 
         mapView = findViewById(R.id.mapview);
-        mapView.getMap().move(new CameraPosition(
+        mapView.getMapWindow().getMap().move(new CameraPosition(
                 SCREEN_CENTER, 5, 0, 0));
         drivingRouter = DirectionsFactory.getInstance().createDrivingRouter(DrivingRouterType.COMBINED);
-        mapObjects = mapView.getMap().getMapObjects().addCollection();
+        mapObjects = mapView.getMapWindow().getMap().getMapObjects().addCollection();
 
         submitRequest();
     }

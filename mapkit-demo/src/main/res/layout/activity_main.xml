@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.fragment.app.FragmentContainerView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/fragment_container_view"
+    android:name="com.yandex.mapkitdemo.PreferenceFragment"
+    android:layout_width="match_parent"
+    android:theme="@style/Theme.AppCompat.Light"
+    android:layout_height="match_parent" />
