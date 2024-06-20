@@ -9,8 +9,10 @@ import com.yandex.navikitdemo.domain.helpers.KeyValueStorage
 import com.yandex.navikitdemo.domain.models.AnnotatedEventsType
 import com.yandex.navikitdemo.domain.models.AnnotatedRoadEventsType
 import com.yandex.navikitdemo.domain.models.EcoClass
+import com.yandex.navikitdemo.domain.models.FuelConnectorType
 import com.yandex.navikitdemo.domain.models.JamsMode
 import com.yandex.navikitdemo.domain.models.StyleMode
+import com.yandex.navikitdemo.domain.models.CarType
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import javax.inject.Inject
@@ -89,6 +91,16 @@ class SettingsManagerImpl @Inject constructor(
     override val speedLimitTolerance = float("speedLimitTolerance", 0.8f)
     override val restoreGuidanceState = boolean("restoreGuidanceState", false)
     override val serializedNavigation = string("serializedNavigation")
+
+
+    // Smart Route Planning Options
+    override val smartRoutePlanningEnabled = boolean("smartRoutePlanningEnabled", false)
+    override val carType = enum("vehicleCarType", CarType.ELECTRIC, CarType::class.java)
+    override val fuelConnectorType =
+        enum("fuelConnectorType", FuelConnectorType.TYPE_2, FuelConnectorType::class.java)
+    override val maxTravelDistance = float("maxTravelDistance", 300f)
+    override val currentRangeLvl = float("currentRangeLvl", 300f)
+    override val thresholdDistance = float("thresholdDistance", 20f)
 
     private fun createRoadEventsSettings(baseKey: String): Map<EventTag, SettingModel<Boolean>> {
         return buildMap {

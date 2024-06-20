@@ -15,6 +15,7 @@ enum class SettingsScreen {
     MAP,
     SIMULATION,
     GUIDANCE,
+    SMART_ROUTE,
 }
 
 fun SettingsScreen.toScreenName(context: Context): String {
@@ -30,5 +31,6 @@ fun SettingsScreen.toScreenName(context: Context): String {
         SettingsScreen.MAP -> R.string.settings_screen_map
         SettingsScreen.SIMULATION -> R.string.settings_screen_simulation
         SettingsScreen.GUIDANCE -> R.string.settings_screen_guidance
+        SettingsScreen.SMART_ROUTE -> R.string.settings_screen_smart_route_planning_options
     }.let { context.getString(it) }
 }

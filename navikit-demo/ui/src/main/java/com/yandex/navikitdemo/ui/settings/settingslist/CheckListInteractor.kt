@@ -4,7 +4,9 @@ import android.content.Context
 import com.yandex.mapkit.annotations.AnnotationLanguage
 import com.yandex.mapkit.directions.driving.VehicleType
 import com.yandex.navikitdemo.domain.SettingsManager
+import com.yandex.navikitdemo.domain.models.CarType
 import com.yandex.navikitdemo.domain.models.EcoClass
+import com.yandex.navikitdemo.domain.models.FuelConnectorType
 import com.yandex.navikitdemo.domain.models.JamsMode
 import com.yandex.navikitdemo.domain.models.StyleMode
 import com.yandex.navikitdemo.ui.R
@@ -17,6 +19,8 @@ enum class CheckListType {
     ECO_CLASS,
     ANNOTATION_LANGUAGE,
     STYLE_MODE,
+    CAR_TYPE,
+    FUEL_CONNECTOR_TYPE,
 }
 
 data class CheckListState(
@@ -57,6 +61,16 @@ class CheckListInteractor @Inject constructor(
                 settingsManager.styleMode.value.toString(),
                 StyleMode.values().map { it.toString() }
             )
+            CheckListType.CAR_TYPE -> CheckListState(
+                context.getString(R.string.settings_checklist_car_type),
+                settingsManager.carType.value.toString(),
+                CarType.values().map { it.toString() }
+            )
+            CheckListType.FUEL_CONNECTOR_TYPE -> CheckListState(
+                context.getString(R.string.settings_checklist_fuel_connector_type),
+                settingsManager.fuelConnectorType.value.toString(),
+                FuelConnectorType.values().map { it.toString() }
+            )
         }
     }
 
@@ -70,6 +84,10 @@ class CheckListInteractor @Inject constructor(
                 AnnotationLanguage.values()[index]
             CheckListType.STYLE_MODE -> settingsManager.styleMode.value =
                 StyleMode.values()[index]
+            CheckListType.CAR_TYPE -> settingsManager.carType.value =
+                CarType.values()[index]
+            CheckListType.FUEL_CONNECTOR_TYPE -> settingsManager.fuelConnectorType.value =
+                FuelConnectorType.values()[index]
         }
     }
 }
