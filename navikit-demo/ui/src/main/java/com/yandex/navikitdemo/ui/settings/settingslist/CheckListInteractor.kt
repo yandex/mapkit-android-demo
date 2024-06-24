@@ -4,7 +4,7 @@ import android.content.Context
 import com.yandex.mapkit.annotations.AnnotationLanguage
 import com.yandex.mapkit.directions.driving.VehicleType
 import com.yandex.navikitdemo.domain.SettingsManager
-import com.yandex.navikitdemo.domain.models.CarType
+import com.yandex.navikitdemo.domain.models.ChargingType
 import com.yandex.navikitdemo.domain.models.EcoClass
 import com.yandex.navikitdemo.domain.models.FuelConnectorType
 import com.yandex.navikitdemo.domain.models.JamsMode
@@ -19,7 +19,7 @@ enum class CheckListType {
     ECO_CLASS,
     ANNOTATION_LANGUAGE,
     STYLE_MODE,
-    CAR_TYPE,
+    CHARGING_TYPE,
     FUEL_CONNECTOR_TYPE,
 }
 
@@ -61,10 +61,10 @@ class CheckListInteractor @Inject constructor(
                 settingsManager.styleMode.value.toString(),
                 StyleMode.values().map { it.toString() }
             )
-            CheckListType.CAR_TYPE -> CheckListState(
+            CheckListType.CHARGING_TYPE -> CheckListState(
                 context.getString(R.string.settings_checklist_car_type),
-                settingsManager.carType.value.toString(),
-                CarType.values().map { it.toString() }
+                settingsManager.chargingType.value.toString(),
+                ChargingType.values().map { it.toString() }
             )
             CheckListType.FUEL_CONNECTOR_TYPE -> CheckListState(
                 context.getString(R.string.settings_checklist_fuel_connector_type),
@@ -84,8 +84,8 @@ class CheckListInteractor @Inject constructor(
                 AnnotationLanguage.values()[index]
             CheckListType.STYLE_MODE -> settingsManager.styleMode.value =
                 StyleMode.values()[index]
-            CheckListType.CAR_TYPE -> settingsManager.carType.value =
-                CarType.values()[index]
+            CheckListType.CHARGING_TYPE -> settingsManager.chargingType.value =
+                ChargingType.values()[index]
             CheckListType.FUEL_CONNECTOR_TYPE -> settingsManager.fuelConnectorType.value =
                 FuelConnectorType.values()[index]
         }

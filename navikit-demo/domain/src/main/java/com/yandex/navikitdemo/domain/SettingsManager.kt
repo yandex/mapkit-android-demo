@@ -9,7 +9,7 @@ import com.yandex.navikitdemo.domain.models.EcoClass
 import com.yandex.navikitdemo.domain.models.FuelConnectorType
 import com.yandex.navikitdemo.domain.models.JamsMode
 import com.yandex.navikitdemo.domain.models.StyleMode
-import com.yandex.navikitdemo.domain.models.CarType
+import com.yandex.navikitdemo.domain.models.ChargingType
 import kotlinx.coroutines.flow.Flow
 
 interface SettingModel<T> {
@@ -76,7 +76,7 @@ interface SettingsManager {
 
     // Smart Route Planning Options
     val smartRoutePlanningEnabled: SettingModel<Boolean>
-    val carType: SettingModel<CarType>
+    val chargingType: SettingModel<ChargingType>
     val fuelConnectorType: SettingModel<FuelConnectorType>
     val maxTravelDistance: SettingModel<Float>
     val currentRangeLvl: SettingModel<Float>

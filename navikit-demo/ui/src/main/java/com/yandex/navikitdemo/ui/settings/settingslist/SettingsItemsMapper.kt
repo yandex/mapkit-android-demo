@@ -103,7 +103,7 @@ class SettingsItemsMapper @Inject constructor(
             )
             SettingsScreen.SMART_ROUTE -> listOf(
                 SettingsItem.Toggle("Enable Smart Route Planning", settingsManager.smartRoutePlanningEnabled),
-                SettingsItem.CheckList(CheckListType.CAR_TYPE),
+                SettingsItem.CheckList(CheckListType.CHARGING_TYPE),
                 SettingsItem.CheckList(CheckListType.FUEL_CONNECTOR_TYPE),
                 SettingsItem.EditFloat("Maximum travel distance (km)", settingsManager.maxTravelDistance),
                 SettingsItem.EditFloat("Travel on the current level (km)", settingsManager.currentRangeLvl),
