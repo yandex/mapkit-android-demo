@@ -9,6 +9,7 @@ import com.yandex.navikitdemo.data.NavigationHolderImpl
 import com.yandex.navikitdemo.data.NavigationManagerImpl
 import com.yandex.navikitdemo.data.NavigationStyleManagerImpl
 import com.yandex.navikitdemo.data.RequestPointsManagerImpl
+import com.yandex.navikitdemo.data.SearchManagerImpl
 import com.yandex.navikitdemo.data.SettingsManagerImpl
 import com.yandex.navikitdemo.data.SimulationManagerImpl
 import com.yandex.navikitdemo.data.SpeakerImpl
@@ -25,6 +26,7 @@ import com.yandex.navikitdemo.domain.NavigationHolder
 import com.yandex.navikitdemo.domain.NavigationManager
 import com.yandex.navikitdemo.domain.NavigationStyleManager
 import com.yandex.navikitdemo.domain.RequestPointsManager
+import com.yandex.navikitdemo.domain.SearchManager
 import com.yandex.navikitdemo.domain.SettingsManager
 import com.yandex.navikitdemo.domain.SimulationManager
 import com.yandex.navikitdemo.domain.SpeakerManager
@@ -60,6 +62,10 @@ abstract class AppModule {
 
     @Binds
     abstract fun navigationManager(impl: NavigationManagerImpl): NavigationManager
+
+
+    @Binds
+    abstract fun searchManager(impl: SearchManagerImpl): SearchManager
 
     @Binds
     abstract fun requestPointsManager(impl: RequestPointsManagerImpl): RequestPointsManager
