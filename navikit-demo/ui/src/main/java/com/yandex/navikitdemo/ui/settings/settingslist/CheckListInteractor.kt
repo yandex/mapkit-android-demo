@@ -41,35 +41,43 @@ class CheckListInteractor @Inject constructor(
                 settingsManager.jamsMode.value.toString(),
                 JamsMode.values().map { it.toString() }
             )
+
             CheckListType.VEHICLE_TYPE -> CheckListState(
                 context.getString(R.string.settings_checklist_vehicle_type),
                 settingsManager.vehicleType.value.toString(),
                 VehicleType.values().map { it.toString() }
             )
+
             CheckListType.ECO_CLASS -> CheckListState(
                 context.getString(R.string.settings_checklist_eco_class),
                 settingsManager.ecoClass.value.toString(),
                 EcoClass.values().map { it.toString() }
             )
+
             CheckListType.ANNOTATION_LANGUAGE -> CheckListState(
                 context.getString(R.string.settings_checklist_annotation_language),
                 settingsManager.annotationLanguage.value.toString(),
                 AnnotationLanguage.values().map { it.toString() }
             )
+
             CheckListType.STYLE_MODE -> CheckListState(
                 context.getString(R.string.settings_checklist_style_mode),
                 settingsManager.styleMode.value.toString(),
                 StyleMode.values().map { it.toString() }
             )
+
             CheckListType.CHARGING_TYPE -> CheckListState(
                 context.getString(R.string.settings_checklist_car_type),
                 settingsManager.chargingType.value.toString(),
                 ChargingType.values().map { it.toString() }
             )
+
             CheckListType.FUEL_CONNECTOR_TYPE -> CheckListState(
                 context.getString(R.string.settings_checklist_fuel_connector_type),
                 settingsManager.fuelConnectorType.value.toString(),
-                FuelConnectorType.values().map { it.toString() }
+                FuelConnectorType.values()
+                    .filter { it.chargingType == settingsManager.chargingType.value }
+                    .map { it.toString() }
             )
         }
     }
@@ -79,13 +87,21 @@ class CheckListInteractor @Inject constructor(
             CheckListType.JAMS -> settingsManager.jamsMode.value = JamsMode.values()[index]
             CheckListType.VEHICLE_TYPE -> settingsManager.vehicleType.value =
                 VehicleType.values()[index]
+
             CheckListType.ECO_CLASS -> settingsManager.ecoClass.value = EcoClass.values()[index]
             CheckListType.ANNOTATION_LANGUAGE -> settingsManager.annotationLanguage.value =
                 AnnotationLanguage.values()[index]
+
             CheckListType.STYLE_MODE -> settingsManager.styleMode.value =
                 StyleMode.values()[index]
-            CheckListType.CHARGING_TYPE -> settingsManager.chargingType.value =
-                ChargingType.values()[index]
+
+            CheckListType.CHARGING_TYPE -> {
+                settingsManager.chargingType.value = ChargingType.values()[index]
+                settingsManager.fuelConnectorType.value = FuelConnectorType.values()
+                    .first { it.chargingType == settingsManager.chargingType.value }
+                //todo updateUi or skip this logic
+            }
+
             CheckListType.FUEL_CONNECTOR_TYPE -> settingsManager.fuelConnectorType.value =
                 FuelConnectorType.values()[index]
         }
