@@ -6,6 +6,7 @@ import com.yandex.mapkit.annotations.AnnotationLanguage
 import com.yandex.mapkit.directions.driving.DrivingRoute
 import com.yandex.mapkit.location.Location
 import com.yandex.mapkit.navigation.automotive.Navigation
+import com.yandex.mapkit.navigation.automotive.NavigationListener
 import com.yandex.mapkit.navigation.automotive.RouteChangeReason
 import com.yandex.mapkit.navigation.automotive.SpeedLimitStatus
 import com.yandex.mapkit.navigation.automotive.SpeedLimitsPolicy
@@ -20,7 +21,9 @@ import com.yandex.navikitdemo.domain.SimulationManager
 import com.yandex.navikitdemo.domain.VehicleOptionsManager
 import com.yandex.navikitdemo.domain.helpers.BackgroundServiceManager
 import com.yandex.navikitdemo.domain.helpers.SimpleGuidanceListener
+import com.yandex.navikitdemo.domain.models.NavigationRouteState
 import com.yandex.navikitdemo.domain.utils.buildFlagsString
+import com.yandex.runtime.Error
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
@@ -74,6 +77,10 @@ class NavigationManagerImpl @Inject constructor(
     override val speedLimitTolerance: Double = navigation.guidance.speedLimitTolerance
     override val speedLimitsPolicy: SpeedLimitsPolicy = navigation.guidance.speedLimitsPolicy
 
+    private val navigationRouteStateImpl =
+        MutableStateFlow<NavigationRouteState>(NavigationRouteState.Off)
+    override val navigationRouteState: Flow<NavigationRouteState> = navigationRouteStateImpl
+
     private val guidanceListener = object : SimpleGuidanceListener() {
         override fun onLocationChanged() {
             if ((System.currentTimeMillis() - lastLocationTime).seconds < LOCATION_UPDATE_TIMEOUT) return
@@ -111,6 +118,33 @@ class NavigationManagerImpl @Inject constructor(
 
         override fun onRoadEventsChanged() = Unit
         override fun onDirectionSignChanged() = Unit
+    }
+
+    private val navigationListener = object : NavigationListener {
+        override fun onRoutesRequestError(error: Error) {
+            navigationRouteStateImpl.value = NavigationRouteState.Error
+        }
+
+        override fun onRoutesRequested(requestPoints: MutableList<RequestPoint>) {
+            navigationRouteStateImpl.value = NavigationRouteState.Loading
+        }
+
+        override fun onAlternativesRequested(p0: DrivingRoute) {
+            navigationRouteStateImpl.value = NavigationRouteState.Loading
+        }
+
+        override fun onUriResolvingRequested(p0: String) {
+            navigationRouteStateImpl.value = NavigationRouteState.Loading
+        }
+
+        override fun onRoutesBuilt() {
+            navigationRouteStateImpl.value = NavigationRouteState.Success
+        }
+
+        override fun onResetRoutes() {
+            navigationRouteStateImpl.value = NavigationRouteState.Off
+        }
+
     }
 
     init {
@@ -196,11 +230,13 @@ class NavigationManagerImpl @Inject constructor(
     private fun recreateNavigation(newInstance: Navigation) {
         navigation.apply {
             suspend()
+            removeListener(navigationListener)
             guidance.removeListener(guidanceListener)
             guidance.windshield.removeListener(windshieldListener)
         }
         navigation = newInstance
         navigation.apply {
+            addListener(navigationListener)
             guidance.addListener(guidanceListener)
             guidance.windshield.addListener(windshieldListener)
             resume()
