@@ -95,7 +95,7 @@ class SettingsManagerImpl @Inject constructor(
 
     // Smart Route Planning Options
     override val smartRoutePlanningEnabled = boolean("smartRoutePlanningEnabled", false)
-    override val chargingType = enum("chargingType", ChargingType.ELECTRIC, ChargingType::class.java)
+    override val chargingType = enum("chargingType", ChargingType.ELECTRO, ChargingType::class.java)
     override val fuelConnectorType =
         enum("fuelConnectorType", FuelConnectorType.TYPE_2, FuelConnectorType::class.java)
     override val maxTravelDistance = float("maxTravelDistance", 300f)
