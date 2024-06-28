@@ -6,12 +6,15 @@ import com.yandex.mapkit.geometry.Point
 import com.yandex.navikitdemo.domain.LocationManager
 import com.yandex.navikitdemo.domain.NavigationManager
 import com.yandex.navikitdemo.domain.RequestPointsManager
+import com.yandex.navikitdemo.domain.models.NavigationRouteState
+import com.yandex.navikitdemo.ui.R
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.take
 import javax.inject.Inject
@@ -23,12 +26,32 @@ class RouteVariantsViewModel @Inject constructor(
     private val locationManager: LocationManager,
 ) : ViewModel() {
 
-    val hasRequestPoints: Flow<Boolean> = requestPointsManager.requestPoints
-        .map { it.isEmpty() }.distinctUntilChanged()
+    private val userMessage: MutableStateFlow<Int?> = MutableStateFlow(null)
 
     init {
         subscribeForRequestRoutes().launchIn(viewModelScope)
         subscribeForFirstLocationObtained().launchIn(viewModelScope)
+    }
+
+    fun routeVariantsUiState(): Flow<RouteVariantsUiState> {
+        return combine(
+            requestPointsManager.requestPoints,
+            navigationManager.navigationRouteState,
+            userMessage,
+        ) { requestPoints, navigationRouteState, userMessage ->
+            val hasRequestPoints = requestPoints.isEmpty()
+            val message =
+                if (navigationRouteState is NavigationRouteState.Error) R.string.route_variants_error
+                else userMessage
+            RouteVariantsUiState(
+                hasRequestPoints = hasRequestPoints,
+                userMessage = message
+            )
+        }.distinctUntilChanged()
+    }
+
+    fun snackbarMessageShown() {
+        userMessage.value = null
     }
 
     fun setFromPoint(point: Point) = requestPointsManager.setFromPoint(point)
