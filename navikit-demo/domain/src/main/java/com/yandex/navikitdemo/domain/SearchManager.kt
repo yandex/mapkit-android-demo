@@ -1,9 +1,7 @@
 package com.yandex.navikitdemo.domain
 
-import com.yandex.mapkit.geometry.Circle
 import com.yandex.mapkit.geometry.Point
 import com.yandex.mapkit.search.FilterCollection
-import com.yandex.mapkit.search.SearchOptions
 import com.yandex.navikitdemo.domain.models.SearchState
 import kotlinx.coroutines.flow.Flow
 
