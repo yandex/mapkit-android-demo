@@ -10,7 +10,6 @@ import com.yandex.navikitdemo.domain.models.NavigationRouteState
 import com.yandex.navikitdemo.ui.R
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filterNotNull
@@ -26,8 +25,6 @@ class RouteVariantsViewModel @Inject constructor(
     private val locationManager: LocationManager,
 ) : ViewModel() {
 
-    private val userMessage: MutableStateFlow<Int?> = MutableStateFlow(null)
-
     init {
         subscribeForRequestRoutes().launchIn(viewModelScope)
         subscribeForFirstLocationObtained().launchIn(viewModelScope)
@@ -36,22 +33,17 @@ class RouteVariantsViewModel @Inject constructor(
     fun routeVariantsUiState(): Flow<RouteVariantsUiState> {
         return combine(
             requestPointsManager.requestPoints,
-            navigationManager.navigationRouteState,
-            userMessage,
-        ) { requestPoints, navigationRouteState, userMessage ->
+            navigationManager.navigationRouteState
+        ) { requestPoints, navigationRouteState ->
             val hasRequestPoints = requestPoints.isEmpty()
             val message =
                 if (navigationRouteState is NavigationRouteState.Error) R.string.route_variants_error
-                else userMessage
+                else null
             RouteVariantsUiState(
                 hasRequestPoints = hasRequestPoints,
-                userMessage = message
+                errorMessage = message
             )
         }.distinctUntilChanged()
-    }
-
-    fun snackbarMessageShown() {
-        userMessage.value = null
     }
 
     fun setFromPoint(point: Point) = requestPointsManager.setFromPoint(point)
@@ -78,4 +70,5 @@ class RouteVariantsViewModel @Inject constructor(
                 setFromPoint(it.position)
             }
     }
+
 }

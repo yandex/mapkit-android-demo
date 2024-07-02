@@ -18,7 +18,7 @@ import dagger.hilt.android.AndroidEntryPoint
 
 data class RouteVariantsUiState(
     val hasRequestPoints: Boolean,
-    val userMessage: Int?,
+    val errorMessage: Int?,
 )
 
 @AndroidEntryPoint
@@ -53,8 +53,8 @@ class RouteVariantsFragment : BaseMapFragment(R.layout.fragment_route_variants) 
 
         viewModel.routeVariantsUiState().subscribe(viewLifecycleOwner) { uiState ->
             binding.buttonGo.isVisible = !uiState.hasRequestPoints
-            uiState.userMessage?.let {
-                view.showSnackbar(messageRes = it) { viewModel.snackbarMessageShown() }
+            uiState.errorMessage?.let {
+                view.showSnackbar(messageRes = it) { viewModel.resetRouteVariants() }
             }
         }
     }
