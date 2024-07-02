@@ -6,9 +6,9 @@ import com.yandex.mapkit.directions.driving.VehicleType
 import com.yandex.navikitdemo.domain.SettingsManager
 import com.yandex.navikitdemo.domain.models.ChargingType
 import com.yandex.navikitdemo.domain.models.EcoClass
-import com.yandex.navikitdemo.domain.models.FuelConnectorType
 import com.yandex.navikitdemo.domain.models.JamsMode
 import com.yandex.navikitdemo.domain.models.StyleMode
+import com.yandex.navikitdemo.domain.models.connectorsByChargingType
 import com.yandex.navikitdemo.ui.R
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
@@ -75,9 +75,7 @@ class CheckListInteractor @Inject constructor(
             CheckListType.FUEL_CONNECTOR_TYPE -> CheckListState(
                 context.getString(R.string.settings_checklist_fuel_connector_type),
                 settingsManager.fuelConnectorType.value.toString(),
-                FuelConnectorType.values()
-                    .filter { it.chargingType == settingsManager.chargingType.value }
-                    .map { it.toString() }
+                connectorsByChargingType(settingsManager.chargingType.value).map { it.toString() }
             )
         }
     }
@@ -97,13 +95,13 @@ class CheckListInteractor @Inject constructor(
 
             CheckListType.CHARGING_TYPE -> {
                 settingsManager.chargingType.value = ChargingType.values()[index]
-                settingsManager.fuelConnectorType.value = FuelConnectorType.values()
-                    .first { it.chargingType == settingsManager.chargingType.value }
+                settingsManager.fuelConnectorType.value =
+                    connectorsByChargingType(settingsManager.chargingType.value).first()
                 //todo updateUi or skip this logic
             }
 
             CheckListType.FUEL_CONNECTOR_TYPE -> settingsManager.fuelConnectorType.value =
-                FuelConnectorType.values()[index]
+                connectorsByChargingType(settingsManager.chargingType.value)[index]
         }
     }
 }

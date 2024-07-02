@@ -12,4 +12,9 @@ enum class FuelConnectorType(val type: String, val chargingType: ChargingType) {
     TYPE_2("ev_plug2", ChargingType.ELECTRO),
     TYPE_3C("ev_plug3", ChargingType.ELECTRO),
     CHADEMO("CHADEMO", ChargingType.ELECTRO),
+
+}
+
+fun connectorsByChargingType(chargingType: ChargingType): List<FuelConnectorType> {
+    return enumValues<FuelConnectorType>().filter { it.chargingType == chargingType }
 }
