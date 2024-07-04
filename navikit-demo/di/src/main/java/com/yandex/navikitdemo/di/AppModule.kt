@@ -12,6 +12,7 @@ import com.yandex.navikitdemo.data.RequestPointsManagerImpl
 import com.yandex.navikitdemo.data.SearchManagerImpl
 import com.yandex.navikitdemo.data.SettingsManagerImpl
 import com.yandex.navikitdemo.data.SimulationManagerImpl
+import com.yandex.navikitdemo.data.SmartRoutePlanningManagerImpl
 import com.yandex.navikitdemo.data.SpeakerImpl
 import com.yandex.navikitdemo.data.VehicleOptionsManagerImpl
 import com.yandex.navikitdemo.data.helpers.BackgroundServiceManagerImpl
@@ -19,7 +20,8 @@ import com.yandex.navikitdemo.data.helpers.KeyValueStorageImpl
 import com.yandex.navikitdemo.data.helpers.NavigationDeserializerImpl
 import com.yandex.navikitdemo.data.helpers.NavigationFactoryImpl
 import com.yandex.navikitdemo.data.helpers.NavigationSuspenderManagerImpl
-import com.yandex.navikitdemo.data.helpers.SettingsBinderManagerImpl
+import com.yandex.navikitdemo.data.mapper.NavigationRouteStateMapperImpl
+import com.yandex.navikitdemo.data.mapper.SmartRouteStateMapperImpl
 import com.yandex.navikitdemo.domain.AnnotationsManager
 import com.yandex.navikitdemo.domain.LocationManager
 import com.yandex.navikitdemo.domain.NavigationHolder
@@ -29,6 +31,7 @@ import com.yandex.navikitdemo.domain.RequestPointsManager
 import com.yandex.navikitdemo.domain.SearchManager
 import com.yandex.navikitdemo.domain.SettingsManager
 import com.yandex.navikitdemo.domain.SimulationManager
+import com.yandex.navikitdemo.domain.SmartRoutePlanningManager
 import com.yandex.navikitdemo.domain.SpeakerManager
 import com.yandex.navikitdemo.domain.VehicleOptionsManager
 import com.yandex.navikitdemo.domain.helpers.BackgroundServiceManager
@@ -37,6 +40,8 @@ import com.yandex.navikitdemo.domain.helpers.NavigationDeserializer
 import com.yandex.navikitdemo.domain.helpers.NavigationFactory
 import com.yandex.navikitdemo.domain.helpers.NavigationSuspenderManager
 import com.yandex.navikitdemo.domain.helpers.SettingsBinderManager
+import com.yandex.navikitdemo.domain.mapper.NavigationRouteStateMapper
+import com.yandex.navikitdemo.domain.mapper.SmartRouteStateMapper
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -63,9 +68,17 @@ abstract class AppModule {
     @Binds
     abstract fun navigationManager(impl: NavigationManagerImpl): NavigationManager
 
+    @Binds
+    abstract fun navigationRouteStateMapper(impl: NavigationRouteStateMapperImpl): NavigationRouteStateMapper
+
+    @Binds
+    abstract fun smartRoutePlanningManager(impl: SmartRoutePlanningManagerImpl): SmartRoutePlanningManager
 
     @Binds
     abstract fun searchManager(impl: SearchManagerImpl): SearchManager
+
+    @Binds
+    abstract fun smartRouteStateMapper(impl: SmartRouteStateMapperImpl): SmartRouteStateMapper
 
     @Binds
     abstract fun requestPointsManager(impl: RequestPointsManagerImpl): RequestPointsManager

@@ -1,5 +1,6 @@
 package com.yandex.navikitdemo.data
 
+import android.util.Log
 import com.yandex.mapkit.LocalizedValue
 import com.yandex.mapkit.RequestPoint
 import com.yandex.mapkit.annotations.AnnotationLanguage
@@ -18,10 +19,14 @@ import com.yandex.navikitdemo.domain.NavigationManager
 import com.yandex.navikitdemo.domain.RequestPointsManager
 import com.yandex.navikitdemo.domain.SettingsManager
 import com.yandex.navikitdemo.domain.SimulationManager
+import com.yandex.navikitdemo.domain.SmartRoutePlanningManager
 import com.yandex.navikitdemo.domain.VehicleOptionsManager
 import com.yandex.navikitdemo.domain.helpers.BackgroundServiceManager
 import com.yandex.navikitdemo.domain.helpers.SimpleGuidanceListener
+import com.yandex.navikitdemo.domain.isGuidanceActive
+import com.yandex.navikitdemo.domain.mapper.NavigationRouteStateMapper
 import com.yandex.navikitdemo.domain.models.NavigationRouteState
+import com.yandex.navikitdemo.domain.models.SmartRouteState
 import com.yandex.navikitdemo.domain.utils.buildFlagsString
 import com.yandex.runtime.Error
 import kotlinx.coroutines.CoroutineScope
@@ -34,6 +39,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.buffer
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.plus
@@ -49,6 +55,8 @@ class NavigationManagerImpl @Inject constructor(
     private val settingsManager: SettingsManager,
     private val simulationManager: SimulationManager,
     private val backgroundServiceManager: BackgroundServiceManager,
+    private val smartRoutePlanningManager: SmartRoutePlanningManager,
+    private val navigationRouteStateMapper: NavigationRouteStateMapper,
     navigationHolder: NavigationHolder,
 ) : NavigationManager {
 
@@ -105,6 +113,7 @@ class NavigationManagerImpl @Inject constructor(
         override fun onCurrentRouteChanged(reason: RouteChangeReason) {
             currentRouteImpl.value = navigation.guidance.currentRoute
         }
+
     }
 
     private val windshieldListener = object : WindshieldListener {
@@ -151,17 +160,22 @@ class NavigationManagerImpl @Inject constructor(
         navigationHolder.navigation
             .onEach { recreateNavigation(it) }
             .launchIn(mainScope)
+
+        smartRoutePlanningManager.routeState
+            .onEach { if (it is SmartRouteState.Success) requestNavigationRoutes(it.requestPoints) }
+            .mapNotNull { navigationRouteStateMapper.mapSmartRouteStateToRouteState(it) }
+            .onEach { navigationRouteStateImpl.value = it }
+            .launchIn(mainScope)
     }
 
     override fun location(): StateFlow<Location?> = locationImpl
 
     override fun requestRoutes(points: List<RequestPoint>) {
-        navigation.vehicleOptions = vehicleOptionsManager.vehicleOptions()
-        navigation.requestRoutes(
-            points,
-            navigation.guidance.location?.heading,
-            null
-        )
+        if (settingsManager.smartRoutePlanningEnabled.value) {
+            smartRoutePlanningManager.requestRoutes(points)
+        } else {
+            requestNavigationRoutes(points)
+        }
     }
 
     override fun startGuidance(route: DrivingRoute) {
@@ -181,7 +195,7 @@ class NavigationManagerImpl @Inject constructor(
     override fun stopGuidance() {
         routeRequestPointsManager.resetPoints()
         navigation.stopGuidance()
-        navigation.resetRoutes()
+        resetRoutes()
         simulationManager.stopSimulation()
         backgroundServiceManager.stopService()
         if (settingsManager.restoreGuidanceState.value) {
@@ -191,6 +205,7 @@ class NavigationManagerImpl @Inject constructor(
 
     override fun resetRoutes() {
         navigation.resetRoutes()
+        smartRoutePlanningManager.reset()
     }
 
     override fun resume() {
@@ -227,6 +242,15 @@ class NavigationManagerImpl @Inject constructor(
         navigation.isAvoidPoorConditions = isAvoid
     }
 
+    private fun requestNavigationRoutes(points: List<RequestPoint>) {
+        navigation.vehicleOptions = vehicleOptionsManager.vehicleOptions()
+        navigation.requestRoutes(
+            points,
+            navigation.guidance.location?.heading,
+            null
+        )
+    }
+
     private fun recreateNavigation(newInstance: Navigation) {
         navigation.apply {
             suspend()
@@ -252,6 +276,7 @@ class NavigationManagerImpl @Inject constructor(
     }
 
     companion object {
+
         private val LOCATION_UPDATE_TIMEOUT = 1.seconds
     }
 }

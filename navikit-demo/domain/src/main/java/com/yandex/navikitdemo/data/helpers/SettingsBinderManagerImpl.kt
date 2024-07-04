@@ -8,6 +8,7 @@ import com.yandex.navikitdemo.domain.NavigationManager
 import com.yandex.navikitdemo.domain.NavigationStyleManager
 import com.yandex.navikitdemo.domain.SettingsManager
 import com.yandex.navikitdemo.domain.SimulationManager
+import com.yandex.navikitdemo.domain.SmartRoutePlanningManager
 import com.yandex.navikitdemo.domain.helpers.BackgroundServiceManager
 import com.yandex.navikitdemo.domain.helpers.SettingsBinderManager
 import com.yandex.navikitdemo.domain.isGuidanceActive
@@ -31,6 +32,7 @@ class SettingsBinderManagerImpl @Inject constructor(
     private val backgroundServiceManager: BackgroundServiceManager,
     private val navigationManager: NavigationManager,
     private val navigationHolder: NavigationHolder,
+    private val smartRoutePlanningManager: SmartRoutePlanningManager,
 ) : SettingsBinderManager {
 
     override fun applySettingsChanges(scope: CoroutineScope) {
@@ -42,6 +44,7 @@ class SettingsBinderManagerImpl @Inject constructor(
             camera()
             annotationsManager()
             background()
+            smartRoutePlanning()
         }
     }
 
@@ -168,6 +171,17 @@ class SettingsBinderManagerImpl @Inject constructor(
                     backgroundServiceManager.stopService()
                 }
             }
+            .launchIn(this)
+    }
+
+    private fun CoroutineScope.smartRoutePlanning() {
+        combine(
+            settings.smartRoutePlanningEnabled.changes(),
+            settings.fuelConnectorType.changes(),
+            settings.maxTravelDistance.changes(),
+            settings.currentRangeLvl.changes(),
+            settings.thresholdDistance.changes(),
+        ) { _, _, _, _, _ -> smartRoutePlanningManager.retry() }
             .launchIn(this)
     }
 }
