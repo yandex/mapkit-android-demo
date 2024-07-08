@@ -45,8 +45,9 @@ class SmartRoutePlanningManagerImpl @Inject constructor(
 
     private val drivingRouteListener = object : DrivingSession.DrivingRouteListener {
         override fun onDrivingRoutes(drivingRoutes: MutableList<DrivingRoute>) {
-            val fastestDrivingRoute = drivingRoutes[0]
-            drivingSessionState.value = DrivingSessionState.Success(fastestDrivingRoute)
+            drivingSessionState.value = drivingRoutes.firstOrNull()?.let {
+                DrivingSessionState.Success(it)
+            } ?: DrivingSessionState.Error
         }
 
         override fun onDrivingRoutesError(error: Error) {
