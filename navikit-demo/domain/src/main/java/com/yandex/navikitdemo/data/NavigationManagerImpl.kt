@@ -1,6 +1,5 @@
 package com.yandex.navikitdemo.data
 
-import android.util.Log
 import com.yandex.mapkit.LocalizedValue
 import com.yandex.mapkit.RequestPoint
 import com.yandex.mapkit.annotations.AnnotationLanguage
@@ -148,6 +147,9 @@ class NavigationManagerImpl @Inject constructor(
 
         override fun onRoutesBuilt() {
             navigationRouteStateImpl.value = NavigationRouteState.Success
+            if (isGuidanceActive) {
+                navigation.routes.firstOrNull()?.let { startGuidance(it) }
+            }
         }
 
         override fun onResetRoutes() {
