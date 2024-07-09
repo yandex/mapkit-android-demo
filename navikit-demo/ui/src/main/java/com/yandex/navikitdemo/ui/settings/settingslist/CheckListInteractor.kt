@@ -69,15 +69,15 @@ class CheckListInteractor @Inject constructor(
 
             CheckListType.CHARGING_TYPE -> CheckListState(
                 context.getString(R.string.settings_checklist_car_type),
-                settingsManager.chargingType.value.toString(),
-                ChargingType.values().map { it.toString() }
+                settingsManager.chargingType.value.displayName,
+                ChargingType.values().map { it.displayName }
             )
 
             CheckListType.FUEL_CONNECTOR_TYPE -> CheckListState(
                 context.getString(R.string.settings_checklist_fuel_connector_type),
-                settingsManager.fuelConnectorType.value.toString(),
+                settingsManager.fuelConnectorType.value.displayName,
                 FuelConnectorType.getConnectorByChargingType(settingsManager.chargingType.value)
-                    .map { it.toString() }
+                    .map { it.displayName }
             )
         }
     }

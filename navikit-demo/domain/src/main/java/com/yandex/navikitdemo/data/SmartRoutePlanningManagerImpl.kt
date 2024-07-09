@@ -146,7 +146,7 @@ class SmartRoutePlanningManagerImpl @Inject constructor(
         val searchPoint = searchManager.searchState
             .filter { it is SearchState.Success || it is SearchState.Error }
             .firstOrNull()
-            ?.run { (this as? SearchState.Success)?.searchPoints }
+            ?.let { (it as? SearchState.Success)?.searchPoints }
             ?.firstOrNull {
                 val distanceToViaStation = Geo.distance(thresholdPoint, it)
                 Log.i(TAG, "Via: ${it.latitude},${it.longitude}")
