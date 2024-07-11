@@ -2,6 +2,7 @@ package com.yandex.navikitdemo.data
 
 import com.yandex.mapkit.geometry.Geometry
 import com.yandex.mapkit.geometry.Point
+import com.yandex.mapkit.geometry.Polyline
 import com.yandex.mapkit.search.FilterCollection
 import com.yandex.mapkit.search.Response
 import com.yandex.mapkit.search.SearchFactory
@@ -40,11 +41,13 @@ class SearchManagerImpl @Inject constructor() : SearchManager {
 
     override val searchState = searchStateImpl
 
-    override fun submitSearch(query: String, point: Point, filter: FilterCollection) {
+    override fun submitSearch(query: String, point: Point, polyline: Polyline, filter: FilterCollection) {
         val searchGeometry = Geometry.fromPoint(point)
         searchSession?.cancel()
+
         searchSession = searchManager.submit(
             query,
+            polyline,
             searchGeometry,
             SEARCH_OPTIONS.setFilters(filter),
             searchSessionListener

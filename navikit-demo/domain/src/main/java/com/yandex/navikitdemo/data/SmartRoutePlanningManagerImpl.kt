@@ -10,6 +10,7 @@ import com.yandex.mapkit.directions.driving.DrivingRouterType
 import com.yandex.mapkit.directions.driving.DrivingSession
 import com.yandex.mapkit.geometry.Geo
 import com.yandex.mapkit.geometry.Point
+import com.yandex.mapkit.geometry.Polyline
 import com.yandex.mapkit.search.FilterCollection
 import com.yandex.mapkit.search.FilterCollectionUtils
 import com.yandex.navikitdemo.domain.SearchManager
@@ -98,7 +99,7 @@ class SmartRoutePlanningManagerImpl @Inject constructor(
         val fuelConnectorType = settingsManager.fuelConnectorType.value.type
         val filter = FilterCollectionUtils.createFilterCollectionBuilder()
             .also { it.addEnumFilter(filterType, listOf(fuelConnectorType)) }.build()
-        val viaPoints = thresholdPoints.map { getViaStationPoint(it, filter) ?: return null }
+        val viaPoints = thresholdPoints.map { getViaStationPoint(it, drivingRoute.geometry, filter) ?: return null }
         Log.i(TAG, "thresholdSize ${thresholdPoints.size} viaPointsSize: ${viaPoints.size}")
         val fromToPoints = drivingRoute.requestPoints.orEmpty()
         val requestPoints = createRequestPoints(fromToPoints, viaPoints)
@@ -138,11 +139,12 @@ class SmartRoutePlanningManagerImpl @Inject constructor(
 
     private suspend fun getViaStationPoint(
         thresholdPoint: Point,
+        polyline: Polyline,
         filter: FilterCollection
     ): Point? {
         val query = settingsManager.chargingType.value.vehicle
         val thresholdDistance = settingsManager.thresholdDistance.value.toMeters()
-        searchManager.submitSearch(query, thresholdPoint, filter)
+        searchManager.submitSearch(query, thresholdPoint, polyline,filter)
         val searchPoint = searchManager.searchState
             .filter { it is SearchState.Success || it is SearchState.Error }
             .firstOrNull()
