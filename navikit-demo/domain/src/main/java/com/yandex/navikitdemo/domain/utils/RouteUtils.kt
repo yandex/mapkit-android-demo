@@ -3,7 +3,6 @@ package com.yandex.navikitdemo.domain.utils
 import com.yandex.mapkit.LocalizedValue
 import com.yandex.mapkit.directions.driving.DrivingRoute
 import com.yandex.mapkit.geometry.PolylinePosition
-import com.yandex.mapkit.geometry.geo.PolylineUtils
 
 fun DrivingRoute.timeWithTraffic(): LocalizedValue {
     return metadata.weight.timeWithTraffic
@@ -11,6 +10,10 @@ fun DrivingRoute.timeWithTraffic(): LocalizedValue {
 
 fun DrivingRoute.distanceLeft(): LocalizedValue {
     return metadata.weight.distance
+}
+
+fun DrivingRoute.advancePositionOnRoute(distance: Double): PolylinePosition? {
+    return routePosition.advance(distance).positionOnRoute(routeId)
 }
 
 fun DrivingRoute.buildFlagsString(): String = metadata.flags.run {
