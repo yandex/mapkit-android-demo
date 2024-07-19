@@ -10,7 +10,7 @@ interface SearchManager {
 
     val searchState: Flow<SearchState>
 
-    fun submitSearch(query: String, point: Point, polyline: Polyline, filter: FilterCollection)
+    fun submitSearch(query: String, polyline: Polyline, filter: FilterCollection)
 
     fun reset()
 

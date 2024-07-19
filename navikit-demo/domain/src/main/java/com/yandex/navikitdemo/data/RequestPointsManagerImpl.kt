@@ -1,10 +1,10 @@
 package com.yandex.navikitdemo.data
 
 import com.yandex.mapkit.RequestPoint
-import com.yandex.mapkit.RequestPointType
 import com.yandex.mapkit.geometry.Point
 import com.yandex.navikitdemo.domain.LocationManager
 import com.yandex.navikitdemo.domain.RequestPointsManager
+import com.yandex.navikitdemo.domain.utils.toRequestPoint
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -55,12 +55,8 @@ class RequestPointsManagerImpl @Inject constructor(
 
 private fun createRequestPoints(from: Point, via: List<Point>, to: Point): List<RequestPoint> {
     return buildList {
-        add(from.toRequestPoint(RequestPointType.WAYPOINT))
-        addAll(via.map { it.toRequestPoint(RequestPointType.WAYPOINT) })
-        add(to.toRequestPoint(RequestPointType.WAYPOINT))
+        add(from.toRequestPoint())
+        addAll(via.map { it.toRequestPoint() })
+        add(to.toRequestPoint())
     }
-}
-
-private fun Point.toRequestPoint(type: RequestPointType): RequestPoint {
-    return RequestPoint(this, type, null, null)
 }

@@ -1,7 +1,7 @@
 package com.yandex.navikitdemo.data
 
+import android.util.Log
 import com.yandex.mapkit.geometry.Geometry
-import com.yandex.mapkit.geometry.Point
 import com.yandex.mapkit.geometry.Polyline
 import com.yandex.mapkit.search.FilterCollection
 import com.yandex.mapkit.search.Response
@@ -30,10 +30,12 @@ class SearchManagerImpl @Inject constructor() : SearchManager {
             val items = response.collection.children.mapNotNull {
                 it.obj?.geometry?.firstOrNull()?.point ?: return@mapNotNull null
             }
+            Log.i("SearchManager", "onSearchResponse: Success ${items.size}")
             searchStateImpl.value = SearchState.Success(items)
         }
 
         override fun onSearchError(error: Error) {
+            Log.e("SearchManager", "onSearchError: Error $error")
             searchStateImpl.value = SearchState.Error
         }
 
@@ -41,13 +43,11 @@ class SearchManagerImpl @Inject constructor() : SearchManager {
 
     override val searchState = searchStateImpl
 
-    override fun submitSearch(query: String, point: Point, polyline: Polyline, filter: FilterCollection) {
-        val searchGeometry = Geometry.fromPoint(point)
+    override fun submitSearch(query: String, polyline: Polyline, filter: FilterCollection) {
+        val searchGeometry = Geometry.fromPolyline(polyline)
         searchSession?.cancel()
-
         searchSession = searchManager.submit(
             query,
-            polyline,
             searchGeometry,
             SEARCH_OPTIONS.setFilters(filter),
             searchSessionListener
@@ -64,7 +64,7 @@ class SearchManagerImpl @Inject constructor() : SearchManager {
     companion object {
 
         private val SEARCH_OPTIONS = SearchOptions()
-            .setResultPageSize(1)
+            .setResultPageSize(32)
             .setSearchTypes(SearchType.BIZ.value)
     }
 

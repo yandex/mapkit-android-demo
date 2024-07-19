@@ -2,7 +2,6 @@ package com.yandex.navikitdemo.data
 
 import android.util.Log
 import com.yandex.mapkit.RequestPoint
-import com.yandex.mapkit.RequestPointType
 import com.yandex.mapkit.directions.DirectionsFactory
 import com.yandex.mapkit.directions.driving.DrivingOptions
 import com.yandex.mapkit.directions.driving.DrivingRoute
@@ -11,6 +10,12 @@ import com.yandex.mapkit.directions.driving.DrivingSession
 import com.yandex.mapkit.geometry.Geo
 import com.yandex.mapkit.geometry.Point
 import com.yandex.mapkit.geometry.Polyline
+import com.yandex.mapkit.geometry.PolylinePosition
+import com.yandex.mapkit.geometry.Segment
+import com.yandex.mapkit.geometry.Subpolyline
+import com.yandex.mapkit.geometry.SubpolylineHelper
+import com.yandex.mapkit.geometry.geo.PolylineIndex
+import com.yandex.mapkit.geometry.geo.PolylineUtils
 import com.yandex.mapkit.search.FilterCollection
 import com.yandex.mapkit.search.FilterCollectionUtils
 import com.yandex.navikitdemo.domain.SearchManager
@@ -21,6 +26,10 @@ import com.yandex.navikitdemo.domain.mapper.SmartRouteStateMapper
 import com.yandex.navikitdemo.domain.models.DrivingSessionState
 import com.yandex.navikitdemo.domain.models.SearchState
 import com.yandex.navikitdemo.domain.models.SmartRouteState
+import com.yandex.navikitdemo.domain.utils.advancePositionOnRoute
+import com.yandex.navikitdemo.domain.utils.ifNotNull
+import com.yandex.navikitdemo.domain.utils.toMeters
+import com.yandex.navikitdemo.domain.utils.toRequestPoint
 import com.yandex.runtime.Error
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -80,7 +89,6 @@ class SmartRoutePlanningManagerImpl @Inject constructor(
     }
 
     override fun retry() {
-        Log.i(TAG, "retry SmartRoute")
         if (settingsManager.smartRoutePlanningEnabled.value) {
             drivingSession?.retry(drivingRouteListener)
         }
@@ -94,70 +102,80 @@ class SmartRoutePlanningManagerImpl @Inject constructor(
     }
 
     private suspend fun getRequestPoints(drivingRoute: DrivingRoute): List<RequestPoint>? {
-        val thresholdPoints = getThresholdPoints(drivingRoute) ?: return null
-        val filterType = settingsManager.chargingType.value.filter
-        val fuelConnectorType = settingsManager.fuelConnectorType.value.type
-        val filter = FilterCollectionUtils.createFilterCollectionBuilder()
-            .also { it.addEnumFilter(filterType, listOf(fuelConnectorType)) }.build()
-        val viaPoints = thresholdPoints.map { getViaStationPoint(it, drivingRoute.geometry, filter) ?: return null }
-        Log.i(TAG, "thresholdSize ${thresholdPoints.size} viaPointsSize: ${viaPoints.size}")
+        val viaPoints = getViaPoints(drivingRoute) ?: return null
+        Log.i(TAG, "viaPointsSize: ${viaPoints.size}")
         val fromToPoints = drivingRoute.requestPoints.orEmpty()
         val requestPoints = createRequestPoints(fromToPoints, viaPoints)
         return requestPoints
     }
 
-    private fun getThresholdPoints(drivingRoute: DrivingRoute): List<Point>? {
+    private suspend fun getViaPoints(drivingRoute: DrivingRoute): List<Point>? {
+        val routeGeometry = drivingRoute.geometry
+        val fullRouteDistance = drivingRoute.metadata.weight.distance.value
         val thresholdDistance = settingsManager.thresholdDistance.value.toMeters()
         val maxTravelDistance =
             settingsManager.maxTravelDistance.value.toMeters() - thresholdDistance
-        var estimatedRange = settingsManager.currentRangeLvl.value.toMeters() - thresholdDistance
-
-        if (maxTravelDistance <= 0 || estimatedRange <= 0) return null
+        val currentRange = settingsManager.currentRangeLvl.value.toMeters() - thresholdDistance
+        val sectionRange = SectionRange(to = currentRange)
+        val filter = filterTypeCollection()
+        val viaPoints = mutableListOf<Point>()
 
         Log.i(
             TAG,
-            "thresholdDistance: ${thresholdDistance / 1000} km " +
-                    "estimatedRange: ${estimatedRange / 1000} km " +
+            "currentRange: ${currentRange / 1000} km " +
                     "maxTravelDistance: ${maxTravelDistance / 1000} km " +
-                    "fullDistance: ${drivingRoute.metadata.weight.distance.text}"
+                    "fullDistance: ${(drivingRoute.metadata.weight.distance.value) / 1000} km "
         )
 
-        val thresholdPoints = mutableListOf<Point>()
-        val currentPosition = drivingRoute.routePosition
-        val fullRouteDistance = drivingRoute.metadata.weight.distance.value
-        while (estimatedRange < fullRouteDistance) {
-            val targetPosition = currentPosition.advance(estimatedRange)
-            val sectionPoint = targetPosition.point
-            thresholdPoints.add(sectionPoint)
-            Log.i(TAG, "estimatedRange: ${estimatedRange / 1000} km ")
-            Log.i(TAG, "sectionPoint: ${sectionPoint.latitude}, ${sectionPoint.longitude}")
-            estimatedRange += maxTravelDistance
+        while (sectionRange.to < fullRouteDistance) {
+            Log.e(TAG, "----------------------------")
+            Log.i(TAG, "sectionRange.from (supposed): ${sectionRange.from / 1000} km ")
+            Log.i(TAG, "sectionRange.to (supposed): ${sectionRange.to / 1000} km ")
+            val startPosition = drivingRoute.advancePositionOnRoute(sectionRange.from)
+            val targetPosition = drivingRoute.advancePositionOnRoute(sectionRange.to)
+            val sectionPolyline = routeGeometry.sectionSubpolyline(startPosition, targetPosition)
+
+            sectionPolyline?.points?.let {
+                Log.i(TAG, "Polyline Start: ${it.first().latitude}, ${it.first().longitude}")
+                Log.i(TAG, "Polyline Last: ${it.last().latitude}, ${it.last().longitude}")
+            }
+
+            val viaPoint = getViaStationPoint(sectionPolyline, filter)
+                ?.takeIf { viaPoints.isEmpty() || Geo.distance(it, viaPoints.last()) > 0 }
+                ?: return null
+            val closestPosition = sectionPolyline?.closestPolylinePosition(routeGeometry, viaPoint)
+            val remainingDistance = ifNotNull(closestPosition, targetPosition) { a, b ->
+                PolylineUtils.distanceBetweenPolylinePositions(routeGeometry, a, b)
+            } ?: return null
+
+            Log.i(TAG, "Range (real): ${(sectionRange.to - remainingDistance) / 1000} km ")
+            Log.i(TAG, "distance to thresh(supposed) point : ${remainingDistance / 1000} km ")
+            sectionRange.appendRange(remainingDistance, maxTravelDistance)
+            viaPoints.add(viaPoint)
         }
-        Log.i(TAG, "thresholdPoints: ${thresholdPoints.size} ")
-        return thresholdPoints
+        Log.i(TAG, "viaPoints: ${viaPoints.size} ")
+        return viaPoints
     }
 
-    private suspend fun getViaStationPoint(
-        thresholdPoint: Point,
-        polyline: Polyline,
-        filter: FilterCollection
-    ): Point? {
+    private suspend fun getViaStationPoint(polyline: Polyline?, filter: FilterCollection): Point? {
         val query = settingsManager.chargingType.value.vehicle
-        val thresholdDistance = settingsManager.thresholdDistance.value.toMeters()
-        searchManager.submitSearch(query, thresholdPoint, polyline,filter)
+        val thresholdPoint = polyline?.points?.lastOrNull() ?: return null
+        searchManager.submitSearch(query, polyline, filter)
         val searchPoint = searchManager.searchState
             .filter { it is SearchState.Success || it is SearchState.Error }
             .firstOrNull()
             ?.let { (it as? SearchState.Success)?.searchPoints }
-            ?.firstOrNull {
-                val distanceToViaStation = Geo.distance(thresholdPoint, it)
-                Log.i(TAG, "Via: ${it.latitude},${it.longitude}")
-                Log.i(
-                    TAG, "distanceToViaPoint " +
-                            "${String.format("%.1f", distanceToViaStation / 1000)} km"
-                )
-                distanceToViaStation <= thresholdDistance
-            }
+            ?.minByOrNull { Geo.distance(thresholdPoint, it) }
+
+        searchPoint?.let {
+            val distanceToViaStation = Geo.distance(thresholdPoint, searchPoint)
+            Log.i(TAG, "ViaPoint: ${searchPoint.latitude},${searchPoint.longitude}")
+            Log.i(
+                TAG, "distanceToViaPoint " +
+                        "${String.format("%.1f", distanceToViaStation / 1000)} km"
+            )
+        }
+
         searchPoint ?: Log.e(TAG, "ViaStationPoint - Error!")
         return searchPoint
     }
@@ -170,15 +188,58 @@ class SmartRoutePlanningManagerImpl @Inject constructor(
         val to = fromToPoints.lastOrNull() ?: return emptyList()
         return buildList {
             add(from)
-            addAll(viaPoints.map { it.toRequestPoint(RequestPointType.WAYPOINT) })
+            addAll(viaPoints.map { it.toRequestPoint() })
             add(to)
         }
     }
 
-    private fun Float.toMeters() = this * 1000.0
+    private fun filterTypeCollection(): FilterCollection {
+        val filterType = settingsManager.chargingType.value.filter
+        val fuelConnectorType = settingsManager.fuelConnectorType.value.type
+        val filter = FilterCollectionUtils.createFilterCollectionBuilder()
+            .also { it.addEnumFilter(filterType, listOf(fuelConnectorType)) }
+            .build()
+        return filter
+    }
 
-    private fun Point.toRequestPoint(type: RequestPointType): RequestPoint {
-        return RequestPoint(this, type, null, null)
+    private fun Polyline.closestPolylinePosition(
+        routePolyline: Polyline,
+        viaPoint: Point
+    ): PolylinePosition? {
+        return points
+            .zipWithNext { a, b -> Segment(a, b) }
+            .map { Geo.closestPoint(viaPoint, it) }
+            .minByOrNull { Geo.distance(viaPoint, it) }
+            ?.let {
+                Log.i(TAG, "closestPointOnRoute: ${it.latitude}, ${it.longitude}")
+                val polylineIndex = PolylineUtils.createPolylineIndex(routePolyline)
+                polylineIndex.closestPolylinePosition(
+                    it,
+                    PolylineIndex.Priority.CLOSEST_TO_RAW_POINT,
+                    1.0
+                )
+            }
+    }
+
+    private fun Polyline.sectionSubpolyline(
+        begin: PolylinePosition?,
+        end: PolylinePosition?
+    ): Polyline? {
+        val sectionSubpolyline = ifNotNull(begin, end) { a, b ->
+            val subpolyline = Subpolyline(a, b)
+            SubpolylineHelper.subpolyline(this, subpolyline)
+        }
+        return sectionSubpolyline
+    }
+
+    private data class SectionRange(var from: Double = 0.0, var to: Double = 0.0) {
+
+        fun appendRange(remainingDistance: Double, expectedRange: Double): SectionRange {
+            from = to - remainingDistance
+            to += expectedRange - remainingDistance
+            return this
+        }
+
     }
 
     private companion object {
