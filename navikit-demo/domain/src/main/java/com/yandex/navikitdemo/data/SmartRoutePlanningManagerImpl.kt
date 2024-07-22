@@ -24,9 +24,11 @@ import com.yandex.navikitdemo.domain.SmartRoutePlanningManager
 import com.yandex.navikitdemo.domain.VehicleOptionsManager
 import com.yandex.navikitdemo.domain.mapper.SmartRouteStateMapper
 import com.yandex.navikitdemo.domain.models.DrivingSessionState
+import com.yandex.navikitdemo.domain.models.FuelConnectorType
 import com.yandex.navikitdemo.domain.models.SearchState
 import com.yandex.navikitdemo.domain.models.SmartRouteState
 import com.yandex.navikitdemo.domain.utils.advancePositionOnRoute
+import com.yandex.navikitdemo.domain.utils.distanceLeft
 import com.yandex.navikitdemo.domain.utils.ifNotNull
 import com.yandex.navikitdemo.domain.utils.toMeters
 import com.yandex.navikitdemo.domain.utils.toRequestPoint
@@ -111,13 +113,14 @@ class SmartRoutePlanningManagerImpl @Inject constructor(
 
     private suspend fun getViaPoints(drivingRoute: DrivingRoute): List<Point>? {
         val routeGeometry = drivingRoute.geometry
-        val fullRouteDistance = drivingRoute.metadata.weight.distance.value
+        val fullRouteDistance = drivingRoute.distanceLeft().value
         val thresholdDistance = settingsManager.thresholdDistance.value.toMeters()
         val maxTravelDistance =
             settingsManager.maxTravelDistance.value.toMeters() - thresholdDistance
-        val currentRange = settingsManager.currentRangeLvl.value.toMeters() - thresholdDistance
+        val currentRange = settingsManager.currentRangeLvl.value.toMeters()
         val sectionRange = SectionRange(to = currentRange)
-        val filter = filterTypeCollection()
+        val query = settingsManager.chargingType.value.vehicle
+        val filter = settingsManager.fuelConnectorType.value.filterTypeCollection()
         val viaPoints = mutableListOf<Point>()
 
         Log.i(
@@ -140,7 +143,7 @@ class SmartRoutePlanningManagerImpl @Inject constructor(
                 Log.i(TAG, "Polyline Last: ${it.last().latitude}, ${it.last().longitude}")
             }
 
-            val viaPoint = getViaStationPoint(sectionPolyline, filter)
+            val viaPoint = getViaStationPoint(sectionPolyline, query, filter)
                 ?.takeIf { viaPoints.isEmpty() || Geo.distance(it, viaPoints.last()) > 0 }
                 ?: return null
             val closestPosition = sectionPolyline?.closestPolylinePosition(routeGeometry, viaPoint)
@@ -157,8 +160,11 @@ class SmartRoutePlanningManagerImpl @Inject constructor(
         return viaPoints
     }
 
-    private suspend fun getViaStationPoint(polyline: Polyline?, filter: FilterCollection): Point? {
-        val query = settingsManager.chargingType.value.vehicle
+    private suspend fun getViaStationPoint(
+        polyline: Polyline?,
+        query: String,
+        filter: FilterCollection
+    ): Point? {
         val thresholdPoint = polyline?.points?.lastOrNull() ?: return null
         searchManager.submitSearch(query, polyline, filter)
         val searchPoint = searchManager.searchState
@@ -193,13 +199,10 @@ class SmartRoutePlanningManagerImpl @Inject constructor(
         }
     }
 
-    private fun filterTypeCollection(): FilterCollection {
-        val filterType = settingsManager.chargingType.value.filter
-        val fuelConnectorType = settingsManager.fuelConnectorType.value.type
-        val filter = FilterCollectionUtils.createFilterCollectionBuilder()
-            .also { it.addEnumFilter(filterType, listOf(fuelConnectorType)) }
+    private fun FuelConnectorType.filterTypeCollection(): FilterCollection {
+        return FilterCollectionUtils.createFilterCollectionBuilder()
+            .also { it.addEnumFilter(chargingType.filter, listOf(type)) }
             .build()
-        return filter
     }
 
     private fun Polyline.closestPolylinePosition(
@@ -227,7 +230,10 @@ class SmartRoutePlanningManagerImpl @Inject constructor(
     ): Polyline? {
         val sectionSubpolyline = ifNotNull(begin, end) { a, b ->
             val subpolyline = Subpolyline(a, b)
-            SubpolylineHelper.subpolyline(this, subpolyline)
+            if (a.segmentIndex < b.segmentIndex)
+                SubpolylineHelper.subpolyline(this, subpolyline)
+            else
+                null
         }
         return sectionSubpolyline
     }
