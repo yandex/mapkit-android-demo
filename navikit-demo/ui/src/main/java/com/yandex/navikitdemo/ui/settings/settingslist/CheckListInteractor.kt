@@ -8,7 +8,6 @@ import com.yandex.navikitdemo.domain.models.ChargingType
 import com.yandex.navikitdemo.domain.models.EcoClass
 import com.yandex.navikitdemo.domain.models.FuelConnectorType
 import com.yandex.navikitdemo.domain.models.JamsMode
-import com.yandex.navikitdemo.domain.models.SmartRouteState
 import com.yandex.navikitdemo.domain.models.StyleMode
 import com.yandex.navikitdemo.ui.R
 import dagger.hilt.android.qualifiers.ApplicationContext

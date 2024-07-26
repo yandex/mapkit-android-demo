@@ -39,7 +39,6 @@ import com.yandex.navikitdemo.domain.helpers.KeyValueStorage
 import com.yandex.navikitdemo.domain.helpers.NavigationDeserializer
 import com.yandex.navikitdemo.domain.helpers.NavigationFactory
 import com.yandex.navikitdemo.domain.helpers.NavigationSuspenderManager
-import com.yandex.navikitdemo.domain.helpers.SettingsBinderManager
 import com.yandex.navikitdemo.domain.mapper.NavigationRouteStateMapper
 import com.yandex.navikitdemo.domain.mapper.SmartRouteStateMapper
 import dagger.Binds
