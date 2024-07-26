@@ -1,6 +1,5 @@
 package com.yandex.navikitdemo.data
 
-import android.util.Log
 import com.yandex.mapkit.geometry.Geometry
 import com.yandex.mapkit.geometry.Polyline
 import com.yandex.mapkit.search.FilterCollection
@@ -30,12 +29,10 @@ class SearchManagerImpl @Inject constructor() : SearchManager {
             val items = response.collection.children.mapNotNull {
                 it.obj?.geometry?.firstOrNull()?.point ?: return@mapNotNull null
             }
-            Log.i("SearchManager", "onSearchResponse: Success ${items.size}")
             searchStateImpl.value = SearchState.Success(items)
         }
 
         override fun onSearchError(error: Error) {
-            Log.e("SearchManager", "onSearchError: Error $error")
             searchStateImpl.value = SearchState.Error
         }
 

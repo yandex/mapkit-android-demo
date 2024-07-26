@@ -100,7 +100,6 @@ class CheckListInteractor @Inject constructor(
                 settingsManager.fuelConnectorType.value =
                     FuelConnectorType.getConnectorByChargingType(settingsManager.chargingType.value)
                         .first()
-                //todo updateUi or skip this logic
             }
 
             CheckListType.FUEL_CONNECTOR_TYPE -> settingsManager.fuelConnectorType.value =
