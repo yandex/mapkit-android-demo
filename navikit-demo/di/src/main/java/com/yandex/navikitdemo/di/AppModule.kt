@@ -75,10 +75,10 @@ abstract class AppModule {
     abstract fun smartRoutePlanningManager(impl: SmartRoutePlanningManagerImpl): SmartRoutePlanningManager
 
     @Binds
-    abstract fun searchManager(impl: SearchManagerImpl): SearchManager
+    abstract fun smartRouteStateMapper(impl: SmartRouteStateMapperImpl): SmartRouteStateMapper
 
     @Binds
-    abstract fun smartRouteStateMapper(impl: SmartRouteStateMapperImpl): SmartRouteStateMapper
+    abstract fun searchManager(impl: SearchManagerImpl): SearchManager
 
     @Binds
     abstract fun requestPointsManager(impl: RequestPointsManagerImpl): RequestPointsManager

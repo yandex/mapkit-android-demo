@@ -22,10 +22,9 @@ import com.yandex.navikitdemo.domain.SettingsManager
 import com.yandex.navikitdemo.domain.SmartRoutePlanningManager
 import com.yandex.navikitdemo.domain.VehicleOptionsManager
 import com.yandex.navikitdemo.domain.mapper.SmartRouteStateMapper
-import com.yandex.navikitdemo.domain.models.DrivingSessionState
 import com.yandex.navikitdemo.domain.models.FuelConnectorType
-import com.yandex.navikitdemo.domain.models.SearchState
 import com.yandex.navikitdemo.domain.models.SmartRouteState
+import com.yandex.navikitdemo.domain.models.State
 import com.yandex.navikitdemo.domain.utils.advancePositionOnRoute
 import com.yandex.navikitdemo.domain.utils.distanceLeft
 import com.yandex.navikitdemo.domain.utils.ifNotNull
@@ -52,17 +51,16 @@ class SmartRoutePlanningManagerImpl @Inject constructor(
     private val drivingRouter =
         DirectionsFactory.getInstance().createDrivingRouter(DrivingRouterType.COMBINED)
     private var drivingSession: DrivingSession? = null
-    private val drivingSessionState = MutableStateFlow<DrivingSessionState>(DrivingSessionState.Off)
+    private val drivingSessionState = MutableStateFlow<State<DrivingRoute>>(State.Off)
 
     private val drivingRouteListener = object : DrivingSession.DrivingRouteListener {
         override fun onDrivingRoutes(drivingRoutes: MutableList<DrivingRoute>) {
-            drivingSessionState.value = drivingRoutes.firstOrNull()?.let {
-                DrivingSessionState.Success(it)
-            } ?: DrivingSessionState.Error
+            drivingSessionState.value =
+                drivingRoutes.firstOrNull()?.let { State.Success(it) } ?: State.Error
         }
 
         override fun onDrivingRoutesError(error: Error) {
-            drivingSessionState.value = DrivingSessionState.Error
+            drivingSessionState.value = State.Error
         }
 
     }
@@ -85,7 +83,7 @@ class SmartRoutePlanningManagerImpl @Inject constructor(
             vehicleOptions,
             drivingRouteListener
         )
-        drivingSessionState.value = DrivingSessionState.Loading
+        drivingSessionState.value = State.Loading
     }
 
     override fun retry() {
@@ -98,7 +96,7 @@ class SmartRoutePlanningManagerImpl @Inject constructor(
         searchManager.reset()
         drivingSession?.cancel()
         drivingSession = null
-        drivingSessionState.value = DrivingSessionState.Off
+        drivingSessionState.value = State.Off
     }
 
     private suspend fun getRequestPoints(drivingRoute: DrivingRoute): List<RequestPoint>? {
@@ -145,9 +143,9 @@ class SmartRoutePlanningManagerImpl @Inject constructor(
         val thresholdPoint = polyline?.points?.lastOrNull() ?: return null
         searchManager.submitSearch(query, polyline, filter)
         val searchPoint = searchManager.searchState
-            .filter { it is SearchState.Success || it is SearchState.Error }
+            .filter { it is State.Success || it is State.Error }
             .firstOrNull()
-            ?.let { (it as? SearchState.Success)?.searchPoints }
+            ?.let { (it as? State.Success)?.data }
             ?.minByOrNull { Geo.distance(thresholdPoint, it) }
         return searchPoint
     }

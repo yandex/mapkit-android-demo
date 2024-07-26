@@ -24,8 +24,8 @@ import com.yandex.navikitdemo.domain.helpers.BackgroundServiceManager
 import com.yandex.navikitdemo.domain.helpers.SimpleGuidanceListener
 import com.yandex.navikitdemo.domain.isGuidanceActive
 import com.yandex.navikitdemo.domain.mapper.NavigationRouteStateMapper
-import com.yandex.navikitdemo.domain.models.NavigationRouteState
 import com.yandex.navikitdemo.domain.models.SmartRouteState
+import com.yandex.navikitdemo.domain.models.State
 import com.yandex.navikitdemo.domain.utils.buildFlagsString
 import com.yandex.runtime.Error
 import kotlinx.coroutines.CoroutineScope
@@ -38,7 +38,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.buffer
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.plus
@@ -84,9 +83,8 @@ class NavigationManagerImpl @Inject constructor(
     override val speedLimitTolerance: Double = navigation.guidance.speedLimitTolerance
     override val speedLimitsPolicy: SpeedLimitsPolicy = navigation.guidance.speedLimitsPolicy
 
-    private val navigationRouteStateImpl =
-        MutableStateFlow<NavigationRouteState>(NavigationRouteState.Off)
-    override val navigationRouteState: Flow<NavigationRouteState> = navigationRouteStateImpl
+    private val navigationRouteStateImpl = MutableStateFlow<State<List<DrivingRoute>>>(State.Off)
+    override val navigationRouteState = navigationRouteStateImpl
 
     private val guidanceListener = object : SimpleGuidanceListener() {
         override fun onLocationChanged() {
@@ -130,30 +128,30 @@ class NavigationManagerImpl @Inject constructor(
 
     private val navigationListener = object : NavigationListener {
         override fun onRoutesRequestError(error: Error) {
-            navigationRouteStateImpl.value = NavigationRouteState.Error
+            navigationRouteStateImpl.value = State.Error
         }
 
         override fun onRoutesRequested(requestPoints: MutableList<RequestPoint>) {
-            navigationRouteStateImpl.value = NavigationRouteState.Loading
+            navigationRouteStateImpl.value = State.Loading
         }
 
         override fun onAlternativesRequested(p0: DrivingRoute) {
-            navigationRouteStateImpl.value = NavigationRouteState.Loading
+            navigationRouteStateImpl.value = State.Loading
         }
 
         override fun onUriResolvingRequested(p0: String) {
-            navigationRouteStateImpl.value = NavigationRouteState.Loading
+            navigationRouteStateImpl.value = State.Loading
         }
 
         override fun onRoutesBuilt() {
-            navigationRouteStateImpl.value = NavigationRouteState.Success
+            navigationRouteStateImpl.value = State.Success(navigation.routes)
             if (isGuidanceActive) {
                 navigation.routes.firstOrNull()?.let { startGuidance(it) }
             }
         }
 
         override fun onResetRoutes() {
-            navigationRouteStateImpl.value = NavigationRouteState.Off
+            navigationRouteStateImpl.value = State.Off
         }
 
     }
@@ -165,7 +163,7 @@ class NavigationManagerImpl @Inject constructor(
 
         smartRoutePlanningManager.routeState
             .onEach { if (it is SmartRouteState.Success) requestNavigationRoutes(it.requestPoints) }
-            .mapNotNull { navigationRouteStateMapper.mapSmartRouteStateToRouteState(it) }
+            .map { navigationRouteStateMapper.mapSmartRouteStateToRouteState(it) }
             .onEach { navigationRouteStateImpl.value = it }
             .launchIn(mainScope)
     }

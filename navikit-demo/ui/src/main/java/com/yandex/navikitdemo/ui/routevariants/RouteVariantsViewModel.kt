@@ -6,7 +6,7 @@ import com.yandex.mapkit.geometry.Point
 import com.yandex.navikitdemo.domain.LocationManager
 import com.yandex.navikitdemo.domain.NavigationManager
 import com.yandex.navikitdemo.domain.RequestPointsManager
-import com.yandex.navikitdemo.domain.models.NavigationRouteState
+import com.yandex.navikitdemo.domain.models.State
 import com.yandex.navikitdemo.ui.R
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
@@ -37,7 +37,7 @@ class RouteVariantsViewModel @Inject constructor(
         ) { requestPoints, navigationRouteState ->
             val hasRequestPoints = requestPoints.isEmpty()
             val message =
-                if (navigationRouteState is NavigationRouteState.Error) R.string.route_variants_error
+                if (navigationRouteState is State.Error) R.string.route_variants_error
                 else null
             RouteVariantsUiState(
                 hasRequestPoints = hasRequestPoints,

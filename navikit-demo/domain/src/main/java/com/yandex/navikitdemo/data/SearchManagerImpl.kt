@@ -1,6 +1,7 @@
 package com.yandex.navikitdemo.data
 
 import com.yandex.mapkit.geometry.Geometry
+import com.yandex.mapkit.geometry.Point
 import com.yandex.mapkit.geometry.Polyline
 import com.yandex.mapkit.search.FilterCollection
 import com.yandex.mapkit.search.Response
@@ -10,7 +11,7 @@ import com.yandex.mapkit.search.SearchOptions
 import com.yandex.mapkit.search.SearchType
 import com.yandex.mapkit.search.Session
 import com.yandex.navikitdemo.domain.SearchManager
-import com.yandex.navikitdemo.domain.models.SearchState
+import com.yandex.navikitdemo.domain.models.State
 import com.yandex.runtime.Error
 import kotlinx.coroutines.flow.MutableStateFlow
 import javax.inject.Inject
@@ -22,18 +23,18 @@ class SearchManagerImpl @Inject constructor() : SearchManager {
     private val searchManager =
         SearchFactory.getInstance().createSearchManager(SearchManagerType.COMBINED)
     private var searchSession: Session? = null
-    private val searchStateImpl = MutableStateFlow<SearchState>(SearchState.Off)
+    private val searchStateImpl = MutableStateFlow<State<List<Point>>>(State.Off)
 
     private val searchSessionListener = object : Session.SearchListener {
         override fun onSearchResponse(response: Response) {
             val items = response.collection.children.mapNotNull {
                 it.obj?.geometry?.firstOrNull()?.point ?: return@mapNotNull null
             }
-            searchStateImpl.value = SearchState.Success(items)
+            searchStateImpl.value = State.Success(items)
         }
 
         override fun onSearchError(error: Error) {
-            searchStateImpl.value = SearchState.Error
+            searchStateImpl.value = State.Error
         }
 
     }
@@ -49,13 +50,13 @@ class SearchManagerImpl @Inject constructor() : SearchManager {
             SEARCH_OPTIONS.setFilters(filter),
             searchSessionListener
         )
-        searchStateImpl.value = SearchState.Loading
+        searchStateImpl.value = State.Loading
     }
 
     override fun reset() {
         searchSession?.cancel()
         searchSession = null
-        searchStateImpl.value = SearchState.Off
+        searchStateImpl.value = State.Off
     }
 
     companion object {
