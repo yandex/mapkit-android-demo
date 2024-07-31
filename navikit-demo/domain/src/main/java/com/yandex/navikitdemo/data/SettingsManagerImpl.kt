@@ -96,8 +96,9 @@ class SettingsManagerImpl @Inject constructor(
     // Smart Route Planning Options
     override val smartRoutePlanningEnabled = boolean("smartRoutePlanningEnabled", false)
     override val chargingType = enum("chargingType", ChargingType.ELECTRO, ChargingType::class.java)
-    override val fuelConnectorType =
-        enum("fuelConnectorType", FuelConnectorType.TYPE_2, FuelConnectorType::class.java)
+    override val fuelConnectorTypes =
+        enumSet("fuelConnectorTypes", setOf(FuelConnectorType.TYPE_2), FuelConnectorType::class.java)
+
     override val maxTravelDistance = float("maxTravelDistance", 300f)
     override val currentRangeLvl = float("currentRangeLvl", 50f)
     override val thresholdDistance = float("thresholdDistance", 5f)
@@ -142,6 +143,25 @@ class SettingsManagerImpl @Inject constructor(
                 }
 
             override fun changes(): Flow<T> = valueImpl
+        }
+    }
+
+    private fun <T : Enum<T>> enumSet(
+        key: String,
+        default: Set<T>,
+        classItem: Class<T>
+    ): SettingModel<Set<T>> {
+        return object : SettingModel<Set<T>> {
+            private var valueImpl = MutableStateFlow(value)
+
+            override var value: Set<T>
+                get() = keyValueStorage.readEnumSet(key, default, classItem)
+                set(value) {
+                    keyValueStorage.putEnumSet(key, value)
+                    valueImpl.value = value
+                }
+
+            override fun changes(): Flow<Set<T>> = valueImpl
         }
     }
 
