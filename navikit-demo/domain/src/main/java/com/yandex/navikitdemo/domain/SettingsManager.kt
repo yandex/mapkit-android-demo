@@ -77,7 +77,7 @@ interface SettingsManager {
     // Smart Route Planning Options
     val smartRoutePlanningEnabled: SettingModel<Boolean>
     val chargingType: SettingModel<ChargingType>
-    val fuelConnectorType: SettingModel<FuelConnectorType>
+    val fuelConnectorTypes: SettingModel<Set<FuelConnectorType>>
     val maxTravelDistance: SettingModel<Float>
     val currentRangeLvl: SettingModel<Float>
     val thresholdDistance: SettingModel<Float>

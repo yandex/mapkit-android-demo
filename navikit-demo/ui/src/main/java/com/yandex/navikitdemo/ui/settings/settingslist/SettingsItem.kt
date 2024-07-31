@@ -12,6 +12,8 @@ sealed interface SettingsItem {
 
     data class CheckList(val settingType: CheckListType) : SettingsItem
 
+    data class MultipleCheckList(val settingType: MultipleCheckListType) : SettingsItem
+
     data class Toggle(val title: String, val setting: SettingModel<Boolean>) : SettingsItem
 
     data class Details(val title: String) : SettingsItem

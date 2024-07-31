@@ -20,7 +20,6 @@ enum class CheckListType {
     ANNOTATION_LANGUAGE,
     STYLE_MODE,
     CHARGING_TYPE,
-    FUEL_CONNECTOR_TYPE,
 }
 
 data class CheckListState(
@@ -71,13 +70,6 @@ class CheckListInteractor @Inject constructor(
                 settingsManager.chargingType.value.displayName,
                 ChargingType.values().map { it.displayName }
             )
-
-            CheckListType.FUEL_CONNECTOR_TYPE -> CheckListState(
-                context.getString(R.string.settings_checklist_fuel_connector_type),
-                settingsManager.fuelConnectorType.value.displayName,
-                FuelConnectorType.getConnectorByChargingType(settingsManager.chargingType.value)
-                    .map { it.displayName }
-            )
         }
     }
 
@@ -96,13 +88,11 @@ class CheckListInteractor @Inject constructor(
 
             CheckListType.CHARGING_TYPE -> {
                 settingsManager.chargingType.value = ChargingType.values()[index]
-                settingsManager.fuelConnectorType.value =
+                val fuelConnectorType =
                     FuelConnectorType.getConnectorByChargingType(settingsManager.chargingType.value)
                         .first()
+                settingsManager.fuelConnectorTypes.value = setOf(fuelConnectorType)
             }
-
-            CheckListType.FUEL_CONNECTOR_TYPE -> settingsManager.fuelConnectorType.value =
-                FuelConnectorType.getConnectorByChargingType(settingsManager.chargingType.value)[index]
         }
     }
 }
