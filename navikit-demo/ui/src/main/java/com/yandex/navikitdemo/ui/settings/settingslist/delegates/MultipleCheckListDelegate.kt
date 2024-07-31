@@ -1,6 +1,7 @@
 package com.yandex.navikitdemo.ui.settings.settingslist.delegates
 
 import android.content.Context
+import android.view.MenuItem
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.PopupMenu
@@ -17,6 +18,11 @@ class MultipleCheckListDelegate @Inject constructor(
     SettingsItem.MultipleCheckList::class.java
 ) {
 
+    private val onActionExpandListener = object : MenuItem.OnActionExpandListener {
+        override fun onMenuItemActionExpand(item: MenuItem): Boolean = false
+        override fun onMenuItemActionCollapse(item: MenuItem): Boolean = false
+    }
+
     override fun onBind(
         item: SettingsItem.MultipleCheckList,
         holder: SingleViewHolder<SettingsMultipleCheckListView>
@@ -30,8 +36,14 @@ class MultipleCheckListDelegate @Inject constructor(
                         menu.add(option)
                             .setChecked(viewState.selected.contains(option))
                             .setOnMenuItemClickListener {
-                                it.isChecked = interactor.onMenuItemClicked(index, item.settingType)
-                                true
+                                val isChecked =
+                                    interactor.onMenuItemClicked(index, item.settingType)
+                                it.setChecked(isChecked)
+                                    .setActionView(view)
+                                    .setOnActionExpandListener(onActionExpandListener)
+                                    .setShowAsAction(MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW)
+                                updateUi(view, item.settingType)
+                                false
                             }
                     }
                     menu.setGroupCheckable(0, true, false)
