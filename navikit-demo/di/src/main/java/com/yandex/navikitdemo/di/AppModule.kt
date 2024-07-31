@@ -11,7 +11,7 @@ import com.yandex.navikitdemo.data.NavigationStyleManagerImpl
 import com.yandex.navikitdemo.data.RequestPointsManagerImpl
 import com.yandex.navikitdemo.data.SettingsManagerImpl
 import com.yandex.navikitdemo.data.SimulationManagerImpl
-import com.yandex.navikitdemo.data.SmartRoutePlanningManagerImpl
+import com.yandex.navikitdemo.data.smartRoute.SmartRoutePlanningManagerImpl
 import com.yandex.navikitdemo.data.smartRoute.SmartRouteSearchManagerImpl
 import com.yandex.navikitdemo.data.SpeakerImpl
 import com.yandex.navikitdemo.data.VehicleOptionsManagerImpl
@@ -31,7 +31,7 @@ import com.yandex.navikitdemo.domain.RequestPointsManager
 import com.yandex.navikitdemo.domain.smartRoute.SmartRouteSearchManager
 import com.yandex.navikitdemo.domain.SettingsManager
 import com.yandex.navikitdemo.domain.SimulationManager
-import com.yandex.navikitdemo.domain.SmartRoutePlanningManager
+import com.yandex.navikitdemo.domain.smartRoute.SmartRoutePlanningManager
 import com.yandex.navikitdemo.domain.SpeakerManager
 import com.yandex.navikitdemo.domain.VehicleOptionsManager
 import com.yandex.navikitdemo.domain.helpers.BackgroundServiceManager

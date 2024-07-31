@@ -1,11 +1,10 @@
-package com.yandex.navikitdemo.data
+package com.yandex.navikitdemo.data.smartRoute
 
 import com.yandex.mapkit.RequestPoint
 import com.yandex.mapkit.directions.DirectionsFactory
 import com.yandex.mapkit.directions.driving.DrivingOptions
 import com.yandex.mapkit.directions.driving.DrivingRoute
 import com.yandex.mapkit.directions.driving.DrivingRouterType
-import com.yandex.mapkit.directions.driving.DrivingSession
 import com.yandex.mapkit.geometry.Geo
 import com.yandex.mapkit.geometry.Point
 import com.yandex.mapkit.geometry.Polyline
@@ -17,26 +16,35 @@ import com.yandex.mapkit.geometry.geo.PolylineIndex
 import com.yandex.mapkit.geometry.geo.PolylineUtils
 import com.yandex.mapkit.search.FilterCollection
 import com.yandex.mapkit.search.FilterCollectionUtils
-import com.yandex.navikitdemo.domain.SearchManager
+import com.yandex.navikitdemo.domain.NavigationManager
+import com.yandex.navikitdemo.domain.smartRoute.SmartRouteSearchManager
 import com.yandex.navikitdemo.domain.SettingsManager
-import com.yandex.navikitdemo.domain.SmartRoutePlanningManager
+import com.yandex.navikitdemo.domain.smartRoute.SmartRoutePlanningManager
+import com.yandex.navikitdemo.domain.smartRoute.SmartRoutePlanningSession
 import com.yandex.navikitdemo.domain.VehicleOptionsManager
+import com.yandex.navikitdemo.domain.isGuidanceActive
 import com.yandex.navikitdemo.domain.mapper.SmartRouteStateMapper
-import com.yandex.navikitdemo.domain.models.FuelConnectorType
 import com.yandex.navikitdemo.domain.models.SmartRouteState
 import com.yandex.navikitdemo.domain.models.State
+import com.yandex.navikitdemo.domain.smartRoute.SmartRouteDrivingListener
 import com.yandex.navikitdemo.domain.utils.advancePositionOnRoute
 import com.yandex.navikitdemo.domain.utils.distanceLeft
 import com.yandex.navikitdemo.domain.utils.ifNotNull
 import com.yandex.navikitdemo.domain.utils.toMeters
 import com.yandex.navikitdemo.domain.utils.toRequestPoint
 import com.yandex.runtime.Error
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.plus
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -44,16 +52,19 @@ import javax.inject.Singleton
 class SmartRoutePlanningManagerImpl @Inject constructor(
     private val vehicleOptionsManager: VehicleOptionsManager,
     private val settingsManager: SettingsManager,
-    private val searchManager: SearchManager,
+    private val searchManager: SmartRouteSearchManager,
     private val smartRouteStateMapper: SmartRouteStateMapper,
+    private val navigationManager: NavigationManager,
 ) : SmartRoutePlanningManager {
 
+    private val mainScope = MainScope() + Dispatchers.Main.immediate
     private val drivingRouter =
         DirectionsFactory.getInstance().createDrivingRouter(DrivingRouterType.COMBINED)
-    private var drivingSession: DrivingSession? = null
     private val drivingSessionState = MutableStateFlow<State<DrivingRoute>>(State.Off)
+    private var smartRoutePlanningSession: SmartRoutePlanningSessionBinding? = null
 
-    private val drivingRouteListener = object : DrivingSession.DrivingRouteListener {
+    private val drivingRouteListener = object : SmartRouteDrivingListener {
+
         override fun onDrivingRoutes(drivingRoutes: MutableList<DrivingRoute>) {
             drivingSessionState.value =
                 drivingRoutes.firstOrNull()?.let { State.Success(it) } ?: State.Error
@@ -63,40 +74,71 @@ class SmartRoutePlanningManagerImpl @Inject constructor(
             drivingSessionState.value = State.Error
         }
 
+        override fun onDrivingRoutesReset() {
+            drivingSessionState.value = State.Off
+            navigationManager.resetRoutes()
+        }
+
     }
 
-    override val routeState: Flow<SmartRouteState> = drivingSessionState.map {
-        smartRouteStateMapper.mapDrivingStateToRouteState(it) { drivingRoute ->
-            getRequestPoints(drivingRoute)
-        }
-    }.distinctUntilChanged()
+    init {
+        subscribeForDrivingSessionState()
+            .onEach { smartRoutePlanningSession?.routeState?.value = it }
+            .launchIn(mainScope)
 
-    override fun requestRoutes(points: List<RequestPoint>) {
+        subscribeForRoutePlanningSettings()
+            .launchIn(mainScope)
+
+        subscribeForNavigationRouteState()
+            .launchIn(mainScope)
+    }
+
+    override fun requestRoutes(from: RequestPoint, to: RequestPoint): SmartRoutePlanningSession {
         val vehicleOptions = vehicleOptionsManager.vehicleOptions()
-        val fromToPoints =
-            points.filterIndexed { index, _ -> index == 0 || index == points.lastIndex }
-        searchManager.reset()
-        drivingSession?.cancel()
-        drivingSession = drivingRouter.requestRoutes(
+        val fromToPoints = listOf(from, to)
+        smartRoutePlanningSession?.reset()
+        val drivingSession = drivingRouter.requestRoutes(
             fromToPoints,
             DRIVING_OPTIONS,
             vehicleOptions,
             drivingRouteListener
         )
         drivingSessionState.value = State.Loading
-    }
-
-    override fun retry() {
-        if (settingsManager.smartRoutePlanningEnabled.value) {
-            drivingSession?.retry(drivingRouteListener)
+        return SmartRoutePlanningSessionBinding(
+            drivingSession = drivingSession,
+            drivingRouteListener = drivingRouteListener
+        ).also {
+            smartRoutePlanningSession = it
         }
     }
 
-    override fun reset() {
-        searchManager.reset()
-        drivingSession?.cancel()
-        drivingSession = null
-        drivingSessionState.value = State.Off
+    private fun subscribeForDrivingSessionState() = drivingSessionState.map {
+        smartRouteStateMapper.mapDrivingStateToRouteState(it) { drivingRoute ->
+            getRequestPoints(drivingRoute)
+        }
+    }
+        .onEach {
+            if (it is SmartRouteState.Success) navigationManager.requestRoutes(it.requestPoints)
+        }
+        .distinctUntilChanged()
+
+    private fun subscribeForRoutePlanningSettings() = combine(
+        settingsManager.smartRoutePlanningEnabled.changes(),
+        settingsManager.fuelConnectorTypes.changes(),
+        settingsManager.maxTravelDistance.changes(),
+        settingsManager.currentRangeLvl.changes(),
+        settingsManager.thresholdDistance.changes(),
+    ) { smartRoutePlanningEnabled, _, _, _, _ ->
+        if (smartRoutePlanningEnabled) smartRoutePlanningSession?.retry()
+    }
+
+    private fun subscribeForNavigationRouteState(): Flow<*> {
+        return navigationManager.navigationRouteState
+            .onEach {
+                if (it is State.Success && navigationManager.isGuidanceActive) {
+                    it.data.firstOrNull()?.let { route -> navigationManager.startGuidance(route) }
+                }
+            }
     }
 
     private suspend fun getRequestPoints(drivingRoute: DrivingRoute): List<RequestPoint>? {
@@ -115,7 +157,7 @@ class SmartRoutePlanningManagerImpl @Inject constructor(
         val currentRange = settingsManager.currentRangeLvl.value.toMeters()
         val sectionRange = SectionRange(to = currentRange)
         val query = settingsManager.chargingType.value.vehicle
-        val filter = settingsManager.fuelConnectorType.value.filterTypeCollection()
+        val filter = filterTypeCollection()
         val viaPoints = mutableListOf<Point>()
 
         while (sectionRange.to < fullRouteDistance) {
@@ -141,8 +183,10 @@ class SmartRoutePlanningManagerImpl @Inject constructor(
         filter: FilterCollection
     ): Point? {
         val thresholdPoint = polyline?.points?.lastOrNull() ?: return null
-        searchManager.submitSearch(query, polyline, filter)
-        val searchPoint = searchManager.searchState
+        val smartRouteSearchSession = searchManager.submitSearch(query, polyline, filter).also {
+            smartRoutePlanningSession?.smartRouteSearchSession = it
+        }
+        val searchPoint = smartRouteSearchSession.searchState
             .filter { it is State.Success || it is State.Error }
             .firstOrNull()
             ?.let { (it as? State.Success)?.data }
@@ -163,9 +207,11 @@ class SmartRoutePlanningManagerImpl @Inject constructor(
         }
     }
 
-    private fun FuelConnectorType.filterTypeCollection(): FilterCollection {
+    private fun filterTypeCollection(): FilterCollection {
+        val chargingFilterType = settingsManager.chargingType.value.filter
+        val connectors = settingsManager.fuelConnectorTypes.value.map { it.type }
         return FilterCollectionUtils.createFilterCollectionBuilder()
-            .also { it.addEnumFilter(chargingType.filter, listOf(type)) }
+            .also { it.addEnumFilter(chargingFilterType, connectors) }
             .build()
     }
 

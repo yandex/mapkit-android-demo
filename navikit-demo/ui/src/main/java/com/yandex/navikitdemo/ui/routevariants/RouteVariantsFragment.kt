@@ -17,8 +17,8 @@ import com.yandex.navikitdemo.ui.utils.subscribe
 import dagger.hilt.android.AndroidEntryPoint
 
 data class RouteVariantsUiState(
-    val hasRequestPoints: Boolean,
-    val errorMessage: Int?,
+    val hasRequestPoints: Boolean = false,
+    val errorMessage: Int? = null,
 )
 
 @AndroidEntryPoint
@@ -51,7 +51,7 @@ class RouteVariantsFragment : BaseMapFragment(R.layout.fragment_route_variants) 
             showRequestPointDialog(point = it)
         }
 
-        viewModel.routeVariantsUiState().subscribe(viewLifecycleOwner) { uiState ->
+        viewModel.uiState.subscribe(viewLifecycleOwner) { uiState ->
             binding.buttonGo.isVisible = !uiState.hasRequestPoints
             uiState.errorMessage?.let {
                 view.showSnackbar(messageRes = it) { viewModel.resetRouteVariants() }
