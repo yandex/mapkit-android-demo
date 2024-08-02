@@ -59,9 +59,8 @@ class RouteVariantsViewModel @Inject constructor(
     @OptIn(ExperimentalCoroutinesApi::class)
     private fun subscribeForRequestRoutes(): Flow<*> {
         return requestPointsManager.requestPoints.flatMapLatest { points ->
-            val smartRoutePlanningEnabled =
-                settingsManager.smartRoutePlanningEnabled.value.takeIf { points.isNotEmpty() }
-            if (smartRoutePlanningEnabled == true)
+            val isSmartRouteEnabled = isSmartRoutePlanningEnabled().takeIf { points.isNotEmpty() }
+            if (isSmartRouteEnabled == true)
                 requestSmartRoutes(points)
             else
                 flowOf(points)
@@ -119,4 +118,6 @@ class RouteVariantsViewModel @Inject constructor(
 
     private fun List<RequestPoint>.isSmartRouteSupported() = size == 2
 
+    private fun isSmartRoutePlanningEnabled() = settingsManager.smartRoutePlanningEnabled.value
+        .also { smartRoutePlanningManager.currentRoutePlanningSession?.reset() }
 }
