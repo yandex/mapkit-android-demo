@@ -54,7 +54,7 @@ class RouteVariantsFragment : BaseMapFragment(R.layout.fragment_route_variants) 
         viewModel.uiState.subscribe(viewLifecycleOwner) { uiState ->
             binding.buttonGo.isVisible = !uiState.hasRequestPoints
             uiState.errorMessage?.let {
-                view.showSnackbar(messageRes = it) { viewModel.resetRouteVariants() }
+                view.showSnackbar(messageRes = it) { viewModel.errorMessageShown() }
             }
         }
     }

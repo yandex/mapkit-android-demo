@@ -140,6 +140,9 @@ class NavigationManagerImpl @Inject constructor(
 
         override fun onRoutesBuilt() {
             navigationRouteStateImpl.value = State.Success(navigation.routes)
+            if (isGuidanceActive) {
+                navigation.routes.firstOrNull()?.let { startGuidance(it) }
+            }
         }
 
         override fun onResetRoutes() {

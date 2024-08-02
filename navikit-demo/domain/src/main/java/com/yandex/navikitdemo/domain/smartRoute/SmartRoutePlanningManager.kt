@@ -6,10 +6,11 @@ import kotlinx.coroutines.flow.Flow
 
 interface SmartRoutePlanningManager {
 
+    val currentRoutePlanningSession: SmartRoutePlanningSession?
+
     fun requestRoutes(from: RequestPoint, to: RequestPoint): SmartRoutePlanningSession
 
 }
-
 
 interface SmartRoutePlanningSession {
 

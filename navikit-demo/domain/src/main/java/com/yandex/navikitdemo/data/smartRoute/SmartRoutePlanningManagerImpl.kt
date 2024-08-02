@@ -16,15 +16,12 @@ import com.yandex.mapkit.geometry.geo.PolylineIndex
 import com.yandex.mapkit.geometry.geo.PolylineUtils
 import com.yandex.mapkit.search.FilterCollection
 import com.yandex.mapkit.search.FilterCollectionUtils
-import com.yandex.navikitdemo.domain.NavigationManager
 import com.yandex.navikitdemo.domain.smartRoute.SmartRouteSearchManager
 import com.yandex.navikitdemo.domain.SettingsManager
 import com.yandex.navikitdemo.domain.smartRoute.SmartRoutePlanningManager
 import com.yandex.navikitdemo.domain.smartRoute.SmartRoutePlanningSession
 import com.yandex.navikitdemo.domain.VehicleOptionsManager
-import com.yandex.navikitdemo.domain.isGuidanceActive
 import com.yandex.navikitdemo.domain.mapper.SmartRouteStateMapper
-import com.yandex.navikitdemo.domain.models.SmartRouteState
 import com.yandex.navikitdemo.domain.models.State
 import com.yandex.navikitdemo.domain.smartRoute.SmartRouteDrivingListener
 import com.yandex.navikitdemo.domain.utils.advancePositionOnRoute
@@ -35,9 +32,7 @@ import com.yandex.navikitdemo.domain.utils.toRequestPoint
 import com.yandex.runtime.Error
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.firstOrNull
@@ -54,7 +49,6 @@ class SmartRoutePlanningManagerImpl @Inject constructor(
     private val settingsManager: SettingsManager,
     private val searchManager: SmartRouteSearchManager,
     private val smartRouteStateMapper: SmartRouteStateMapper,
-    private val navigationManager: NavigationManager,
 ) : SmartRoutePlanningManager {
 
     private val mainScope = MainScope() + Dispatchers.Main.immediate
@@ -76,20 +70,16 @@ class SmartRoutePlanningManagerImpl @Inject constructor(
 
         override fun onDrivingRoutesReset() {
             drivingSessionState.value = State.Off
-            navigationManager.resetRoutes()
         }
 
     }
 
+    override val currentRoutePlanningSession: SmartRoutePlanningSession?
+        get() = smartRoutePlanningSession
+
     init {
         subscribeForDrivingSessionState()
             .onEach { smartRoutePlanningSession?.routeState?.value = it }
-            .launchIn(mainScope)
-
-        subscribeForRoutePlanningSettings()
-            .launchIn(mainScope)
-
-        subscribeForNavigationRouteState()
             .launchIn(mainScope)
     }
 
@@ -116,30 +106,7 @@ class SmartRoutePlanningManagerImpl @Inject constructor(
         smartRouteStateMapper.mapDrivingStateToRouteState(it) { drivingRoute ->
             getRequestPoints(drivingRoute)
         }
-    }
-        .onEach {
-            if (it is SmartRouteState.Success) navigationManager.requestRoutes(it.requestPoints)
-        }
-        .distinctUntilChanged()
-
-    private fun subscribeForRoutePlanningSettings() = combine(
-        settingsManager.smartRoutePlanningEnabled.changes(),
-        settingsManager.fuelConnectorTypes.changes(),
-        settingsManager.maxTravelDistance.changes(),
-        settingsManager.currentRangeLvl.changes(),
-        settingsManager.thresholdDistance.changes(),
-    ) { smartRoutePlanningEnabled, _, _, _, _ ->
-        if (smartRoutePlanningEnabled) smartRoutePlanningSession?.retry()
-    }
-
-    private fun subscribeForNavigationRouteState(): Flow<*> {
-        return navigationManager.navigationRouteState
-            .onEach {
-                if (it is State.Success && navigationManager.isGuidanceActive) {
-                    it.data.firstOrNull()?.let { route -> navigationManager.startGuidance(route) }
-                }
-            }
-    }
+    }.distinctUntilChanged()
 
     private suspend fun getRequestPoints(drivingRoute: DrivingRoute): List<RequestPoint>? {
         val viaPoints = getViaPoints(drivingRoute) ?: return null

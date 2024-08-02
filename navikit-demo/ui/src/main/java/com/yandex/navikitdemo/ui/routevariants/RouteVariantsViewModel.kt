@@ -10,18 +10,21 @@ import com.yandex.navikitdemo.domain.RequestPointsManager
 import com.yandex.navikitdemo.domain.SettingsManager
 import com.yandex.navikitdemo.domain.models.SmartRouteState
 import com.yandex.navikitdemo.domain.smartRoute.SmartRoutePlanningManager
-import com.yandex.navikitdemo.domain.smartRoute.SmartRoutePlanningSession
 import com.yandex.navikitdemo.domain.models.State
 import com.yandex.navikitdemo.ui.R
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Job
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.flow.update
@@ -36,9 +39,6 @@ class RouteVariantsViewModel @Inject constructor(
     private val settingsManager: SettingsManager,
 ) : ViewModel() {
 
-    private var smartRoutePlanningSession: SmartRoutePlanningSession? = null
-    private var smartRoutePlanningJob: Job? = null
-
     private val uiStateImpl = MutableStateFlow(RouteVariantsUiState())
     val uiState: StateFlow<RouteVariantsUiState> = uiStateImpl.asStateFlow()
 
@@ -52,24 +52,28 @@ class RouteVariantsViewModel @Inject constructor(
     fun setToPoint(point: Point) = requestPointsManager.setToPoint(point)
     fun addViaPoint(point: Point) = requestPointsManager.addViaPoint(point)
     fun resetRouteVariants() = requestPointsManager.resetPoints()
+    fun errorMessageShown() {
+        uiStateImpl.update { it.copy(errorMessage = null) }
+    }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     private fun subscribeForRequestRoutes(): Flow<*> {
-        return requestPointsManager.requestPoints
-            .onEach {
-                if (settingsManager.smartRoutePlanningEnabled.value)
-                    requestSmartRoute(it)
-                else
-                    requestRoute(it)
-            }
+        return requestPointsManager.requestPoints.flatMapLatest { points ->
+            val smartRoutePlanningEnabled =
+                settingsManager.smartRoutePlanningEnabled.value.takeIf { points.isNotEmpty() }
+            if (smartRoutePlanningEnabled == true)
+                requestSmartRoutes(points)
+            else
+                flowOf(points)
+        }
+            .onEach { requestRoutes(it) }
     }
 
     private fun subscribeForFirstLocationObtained(): Flow<*> {
         return locationManager.location()
             .filterNotNull()
             .take(1)
-            .onEach {
-                setFromPoint(it.position)
-            }
+            .onEach { setFromPoint(it.position) }
     }
 
     private fun subscribeForRouteVariants(): Flow<*> {
@@ -78,7 +82,8 @@ class RouteVariantsViewModel @Inject constructor(
             navigationManager.navigationRouteState,
         ) { requestPoints, navigationRouteState ->
             val hasRequestPoints = requestPoints.isEmpty()
-            val message = routeVariantsErrorMessage(navigationRouteState is State.Error)
+            val message =
+                if (navigationRouteState is State.Error) R.string.route_variants_error else null
             uiStateImpl.update {
                 it.copy(
                     hasRequestPoints = hasRequestPoints,
@@ -88,36 +93,30 @@ class RouteVariantsViewModel @Inject constructor(
         }
     }
 
-    private fun requestSmartRoute(points: List<RequestPoint>) {
-        smartRoutePlanningJob?.cancel()
-        if (points.isNotEmpty()) {
-            smartRoutePlanningManager.requestRoutes(points.first(), points.last()).also {
-                smartRoutePlanningSession = it
-                smartRoutePlanningJob = it.subscribeForSmartRoutePlanning()
-                    .launchIn(viewModelScope)
-            }
+    private fun requestSmartRoutes(points: List<RequestPoint>): Flow<List<RequestPoint>?> {
+        return if (!points.isSmartRouteSupported()) {
+            showErrorMessage(R.string.smart_route_with_via_points_error)
+            flowOf(points)
         } else {
-            smartRoutePlanningSession?.reset()
+            smartRoutePlanningManager.requestRoutes(points.first(), points.last()).routeState
+                .filter { it is SmartRouteState.Success || it is SmartRouteState.Error }
+                .map { (it as? SmartRouteState.Success)?.requestPoints }
         }
     }
 
-    private fun requestRoute(points: List<RequestPoint>) {
-        if (points.isNotEmpty()) {
+    private fun requestRoutes(points: List<RequestPoint>?) {
+        points ?: showErrorMessage(R.string.route_variants_error)
+        if (!points.isNullOrEmpty()) {
             navigationManager.requestRoutes(points)
         } else {
             navigationManager.resetRoutes()
         }
     }
 
-    private fun routeVariantsErrorMessage(isError: Boolean) =
-        if (isError) R.string.route_variants_error else null
-
-    private fun SmartRoutePlanningSession.subscribeForSmartRoutePlanning(): Flow<*> {
-        return routeState
-            .onEach {
-                val message = routeVariantsErrorMessage(it is SmartRouteState.Error)
-                uiStateImpl.update { it.copy(errorMessage = message) }
-            }
+    private fun showErrorMessage(errorMessage: Int?) {
+        uiStateImpl.update { it.copy(errorMessage = errorMessage) }
     }
+
+    private fun List<RequestPoint>.isSmartRouteSupported() = size == 2
 
 }
