@@ -1,6 +1,7 @@
 package com.yandex.navikitdemo.domain.helpers
 
 interface KeyValueStorage {
+
     fun putString(key: String, value: String)
     fun readString(key: String, default: String): String
 
@@ -12,4 +13,7 @@ interface KeyValueStorage {
 
     fun <T : Enum<T>> putEnum(key: String, value: T)
     fun <T : Enum<T>> readEnum(key: String, default: T, classItem: Class<T>): T
+
+    fun <T : Enum<T>> putEnumSet(key: String, values: Set<T>)
+    fun <T : Enum<T>> readEnumSet(key: String, default: Set<T>, classItem: Class<T>): Set<T>
 }

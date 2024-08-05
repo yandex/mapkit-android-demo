@@ -21,6 +21,7 @@ class SettingsItemsMapper @Inject constructor(
                 SettingsItem.SectionTitle("Options"),
                 SettingsItem.NextScreen(SettingsScreen.DRIVING_OPTIONS),
                 SettingsItem.NextScreen(SettingsScreen.VEHICLE_OPTIONS),
+                SettingsItem.NextScreen(SettingsScreen.SMART_ROUTE),
             )
             SettingsScreen.VEHICLE_OPTIONS -> listOf(
                 SettingsItem.CheckList(CheckListType.VEHICLE_TYPE),
@@ -99,6 +100,14 @@ class SettingsItemsMapper @Inject constructor(
                 SettingsItem.Toggle("Alternatives", settingsManager.alternatives),
                 SettingsItem.Details("Enable/disable alternatives suggestions during a guidance"),
                 SettingsItem.Toggle("Restore Guidance", settingsManager.restoreGuidanceState),
+            )
+            SettingsScreen.SMART_ROUTE -> listOf(
+                SettingsItem.Toggle("Enable Smart Route Planning", settingsManager.smartRoutePlanningEnabled),
+                SettingsItem.CheckList(CheckListType.CHARGING_TYPE),
+                SettingsItem.MultipleCheckList(MultipleCheckListType.FUEL_CONNECTOR_TYPES),
+                SettingsItem.EditFloat("Maximum travel distance (km)", settingsManager.maxTravelDistance),
+                SettingsItem.EditFloat("Travel on the current level (km)", settingsManager.currentRangeLvl),
+                SettingsItem.EditFloat("Threshold distance (km)", settingsManager.thresholdDistance),
             )
         }
     }

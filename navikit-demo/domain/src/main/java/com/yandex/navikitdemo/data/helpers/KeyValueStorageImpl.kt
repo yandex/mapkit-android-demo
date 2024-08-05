@@ -56,4 +56,21 @@ class KeyValueStorageImpl @Inject constructor(
         if (string.isNullOrEmpty()) return default
         return classItem.enumConstants?.find { it.name == string } ?: default
     }
+
+    override fun <T : Enum<T>> putEnumSet(key: String, values: Set<T>) {
+        val stringsSet = values.map { it.toString() }.toSet()
+        prefs.edit()
+            .putStringSet(key, stringsSet)
+            .apply()
+    }
+
+    override fun <T : Enum<T>> readEnumSet(key: String, default: Set<T>, classItem: Class<T>): Set<T> {
+        val stringSet = prefs.getStringSet(key, emptySet())
+        if (stringSet.isNullOrEmpty()) return default
+        val enumConstants = classItem.enumConstants
+        return stringSet.mapNotNull { value ->
+            enumConstants?.firstOrNull { it.name == value }
+        }.toSet().ifEmpty { default }
+    }
+
 }

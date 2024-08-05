@@ -5,6 +5,7 @@ import com.hannesdorfmann.adapterdelegates4.ListDelegationAdapter
 import com.yandex.navikitdemo.ui.settings.settingslist.delegates.CheckListDelegate
 import com.yandex.navikitdemo.ui.settings.settingslist.delegates.DetailsDelegate
 import com.yandex.navikitdemo.ui.settings.settingslist.delegates.EditFloatDelegate
+import com.yandex.navikitdemo.ui.settings.settingslist.delegates.MultipleCheckListDelegate
 import com.yandex.navikitdemo.ui.settings.settingslist.delegates.NextScreenDelegate
 import com.yandex.navikitdemo.ui.settings.settingslist.delegates.SectionTitleDelegate
 import com.yandex.navikitdemo.ui.settings.settingslist.delegates.SpeedLimitsDelegate
@@ -23,6 +24,7 @@ interface SettingsListAdapterFactory {
 class SettingsListAdapter @AssistedInject constructor (
     sectionTitleDelegate: SectionTitleDelegate,
     checkListDelegate: CheckListDelegate,
+    multipleCheckListDelegate: MultipleCheckListDelegate,
     editFloatDelegate: EditFloatDelegate,
     toggleDelegate: ToggleDelegate,
     detailsDelegate: DetailsDelegate,
@@ -34,6 +36,7 @@ class SettingsListAdapter @AssistedInject constructor (
         delegatesManager.apply {
             addDelegate(sectionTitleDelegate)
             addDelegate(checkListDelegate)
+            addDelegate(multipleCheckListDelegate)
             addDelegate(NextScreenDelegate(openSettingsScreenCallback))
             addDelegate(editFloatDelegate)
             addDelegate(toggleDelegate)

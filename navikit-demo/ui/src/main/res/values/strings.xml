@@ -12,6 +12,8 @@
     <string name="alert_dialog_via_point">Via</string>
     <string name="route_variants_close">Close</string>
     <string name="route_variants_go">Go</string>
+    <string name="route_variants_error">The route cannot be created</string>
+    <string name="smart_route_with_via_points_error">A smart route is possible only at two points, a regular route will be built</string>
     <string name="settings_screen_settings">Settings</string>
     <string name="settings_screen_vehicle_options">Vehicle Options</string>
     <string name="settings_screen_road_events">Road Events</string>
@@ -19,6 +21,7 @@
     <string name="settings_screen_road_events_route">Road Events On Route</string>
     <string name="settings_screen_annotated_events">Annotated Events</string>
     <string name="settings_screen_driving_options">Driving Options</string>
+    <string name="settings_screen_smart_route_planning_options">Smart Route Planning Options</string>
     <string name="settings_screen_camera">Camera</string>
     <string name="settings_screen_map">Map</string>
     <string name="settings_screen_simulation">Simulation</string>
@@ -27,6 +30,9 @@
     <string name="settings_checklist_eco_class">Eco class</string>
     <string name="settings_checklist_annotation_language">Annotation Language</string>
     <string name="settings_checklist_style_mode">Map Style Mode</string>
+    <string name="settings_checklist_car_type">Vehicle type</string>
+    <string name="settings_checklist_fuel_connector_type">Fuel/Connector type</string>
     <string name="settings_screen_guidance">Guidance</string>
     <string name="settings_screen_sound_annotations">Sound Annotations</string>
+    <string name="settings_multiple_checklist_count">%d more</string>
 </resources>
