@@ -60,10 +60,11 @@ class RouteVariantsViewModel @Inject constructor(
     private fun subscribeForRequestRoutes(): Flow<*> {
         return requestPointsManager.requestPoints.flatMapLatest { points ->
             val isSmartRouteEnabled = isSmartRoutePlanningEnabled().takeIf { points.isNotEmpty() }
-            if (isSmartRouteEnabled == true)
+            if (isSmartRouteEnabled == true) {
                 requestSmartRoutes(points)
-            else
+            } else {
                 flowOf(points)
+            }
         }
             .onEach { requestRoutes(it) }
     }
@@ -81,8 +82,11 @@ class RouteVariantsViewModel @Inject constructor(
             navigationManager.navigationRouteState,
         ) { requestPoints, navigationRouteState ->
             val hasRequestPoints = requestPoints.isEmpty()
-            val message =
-                if (navigationRouteState is State.Error) R.string.route_variants_error else null
+            val message = if (navigationRouteState is State.Error) {
+                R.string.route_variants_error
+            } else {
+                null
+            }
             uiStateImpl.update {
                 it.copy(
                     hasRequestPoints = hasRequestPoints,
@@ -100,11 +104,11 @@ class RouteVariantsViewModel @Inject constructor(
             smartRoutePlanningManager.requestRoutes(points.first(), points.last()).routeState
                 .filter { it is SmartRouteState.Success || it is SmartRouteState.Error }
                 .map { (it as? SmartRouteState.Success)?.requestPoints }
+                .onEach { it ?: showErrorMessage(R.string.route_variants_error) }
         }
     }
 
     private fun requestRoutes(points: List<RequestPoint>?) {
-        points ?: showErrorMessage(R.string.route_variants_error)
         if (!points.isNullOrEmpty()) {
             navigationManager.requestRoutes(points)
         } else {
