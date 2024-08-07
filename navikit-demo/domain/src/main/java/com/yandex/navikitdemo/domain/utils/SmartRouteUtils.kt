@@ -12,10 +12,10 @@ import com.yandex.mapkit.search.Response
 import com.yandex.mapkit.search.SearchManager
 import com.yandex.mapkit.search.SearchOptions
 import com.yandex.mapkit.search.Session
+import com.yandex.runtime.Error
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
-import com.yandex.runtime.Error as RequestError
 
 fun DrivingRouter.requestRoutes(
     points: List<RequestPoint>,
@@ -26,12 +26,12 @@ fun DrivingRouter.requestRoutes(
         val listener = object : DrivingSession.DrivingRouteListener {
             override fun onDrivingRoutes(drivingRoutes: MutableList<DrivingRoute>) {
                 val result = drivingRoutes.firstOrNull()?.let { Result.success(it) }
-                    ?: Result.failure(Error("DrivingRoutes is empty"))
+                    ?: Result.failure(Exception("DrivingRoutes is empty"))
                 trySend(result)
             }
 
-            override fun onDrivingRoutesError(error: RequestError) {
-                trySend(Result.failure(Error("DrivingRoutesError: $error")))
+            override fun onDrivingRoutesError(error: Error) {
+                trySend(Result.failure(Exception("DrivingRoutesError: $error")))
             }
         }
         val drivingSession = requestRoutes(points, drivingOptions, vehicleOptions, listener)
@@ -53,8 +53,8 @@ fun SearchManager.submitSearch(
                 trySend(Result.success(items))
             }
 
-            override fun onSearchError(error: RequestError) {
-                trySend(Result.failure(Error("SearchError: $error")))
+            override fun onSearchError(error: Error) {
+                trySend(Result.failure(Exception("SearchError: $error")))
             }
         }
         val searchSession = submit(query, geometry, searchOptions, listener)

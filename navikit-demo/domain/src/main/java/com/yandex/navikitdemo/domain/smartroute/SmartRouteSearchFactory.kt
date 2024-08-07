@@ -1,4 +1,4 @@
-package com.yandex.navikitdemo.domain.smartRoute
+package com.yandex.navikitdemo.domain.smartroute
 
 import com.yandex.mapkit.geometry.Point
 import com.yandex.mapkit.geometry.Polyline

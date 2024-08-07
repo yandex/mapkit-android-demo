@@ -1,4 +1,4 @@
-package com.yandex.navikitdemo.data.smartRoute
+package com.yandex.navikitdemo.data.smartroute
 
 import com.yandex.mapkit.RequestPoint
 import com.yandex.mapkit.directions.driving.DrivingOptions
@@ -16,15 +16,14 @@ import com.yandex.mapkit.geometry.geo.PolylineIndex
 import com.yandex.mapkit.geometry.geo.PolylineUtils
 import com.yandex.navikitdemo.domain.models.SectionRange
 import com.yandex.navikitdemo.domain.models.SmartRouteOptions
-import com.yandex.navikitdemo.domain.smartRoute.SmartRoutePlanningFactory
-import com.yandex.navikitdemo.domain.smartRoute.SmartRouteSearchFactory
+import com.yandex.navikitdemo.domain.smartroute.SmartRoutePlanningFactory
+import com.yandex.navikitdemo.domain.smartroute.SmartRouteSearchFactory
 import com.yandex.navikitdemo.domain.utils.advancePositionOnRoute
 import com.yandex.navikitdemo.domain.utils.distanceLeft
 import com.yandex.navikitdemo.domain.utils.requestRoutes
 import com.yandex.navikitdemo.domain.utils.toRequestPoint
 import kotlinx.coroutines.flow.firstOrNull
 import javax.inject.Inject
-import kotlin.Error
 
 class SmartRoutePlanningFactoryImpl @Inject constructor(
     private val routeSearchFactory: SmartRouteSearchFactory,
@@ -42,9 +41,9 @@ class SmartRoutePlanningFactoryImpl @Inject constructor(
         val drivingRoute =
             drivingRouter.requestRoutes(fromToPoints, drivingOptions, vehicleOptions).firstOrNull()
                 ?.getOrNull()
-                ?: return Result.failure(Error("DrivingRoutes error"))
+                ?: return Result.failure(Exception("DrivingRoutes error"))
         val viaPoints = getViaPoints(drivingRoute, smartRouteOptions)
-            ?: return Result.failure(Error("ViaPoints error"))
+            ?: return Result.failure(Exception("ViaPoints error"))
         val requestPoints = createRequestPoints(from, viaPoints, to)
         return Result.success(requestPoints)
     }

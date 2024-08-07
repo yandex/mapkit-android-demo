@@ -11,7 +11,7 @@ import com.yandex.navikitdemo.domain.SettingsManager
 import com.yandex.navikitdemo.domain.VehicleOptionsManager
 import com.yandex.navikitdemo.domain.models.SmartRouteOptions
 import com.yandex.navikitdemo.domain.models.State
-import com.yandex.navikitdemo.domain.smartRoute.SmartRoutePlanningFactory
+import com.yandex.navikitdemo.domain.smartroute.SmartRoutePlanningFactory
 import com.yandex.navikitdemo.ui.R
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -24,7 +24,7 @@ import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.flow.update
@@ -98,12 +98,13 @@ class RouteVariantsViewModel @Inject constructor(
         }
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     private suspend fun requestSmartRoutes(points: List<RequestPoint>): Flow<List<RequestPoint>?> {
         return if (!points.isSmartRouteSupported()) {
             showErrorMessage(R.string.smart_route_with_via_points_error)
             flowOf(points)
         } else {
-            smartRoutePlanningSettings().filterNotNull().map {
+            smartRoutePlanningSettings().filterNotNull().mapLatest {
                 val smartRouteResult = smartRoutePlanningFactory.requestRoutes(
                     points.first(),
                     points.last(),
