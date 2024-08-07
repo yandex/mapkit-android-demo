@@ -12,10 +12,8 @@ import com.yandex.mapkit.search.Response
 import com.yandex.mapkit.search.SearchManager
 import com.yandex.mapkit.search.SearchOptions
 import com.yandex.mapkit.search.Session
-import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.buffer
 import kotlinx.coroutines.flow.callbackFlow
 import com.yandex.runtime.Error as RequestError
 
@@ -39,7 +37,6 @@ fun DrivingRouter.requestRoutes(
         val drivingSession = requestRoutes(points, drivingOptions, vehicleOptions, listener)
         awaitClose { drivingSession.cancel() }
     }
-        .buffer(capacity = 1, onBufferOverflow = BufferOverflow.DROP_OLDEST)
 }
 
 fun SearchManager.submitSearch(
@@ -63,5 +60,4 @@ fun SearchManager.submitSearch(
         val searchSession = submit(query, geometry, searchOptions, listener)
         awaitClose { searchSession.cancel() }
     }
-        .buffer(capacity = 1, onBufferOverflow = BufferOverflow.DROP_OLDEST)
 }
