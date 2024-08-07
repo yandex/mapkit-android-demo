@@ -1,10 +1,9 @@
 package com.yandex.navikitdemo.data.smartRoute
 
 import com.yandex.mapkit.RequestPoint
-import com.yandex.mapkit.directions.DirectionsFactory
 import com.yandex.mapkit.directions.driving.DrivingOptions
 import com.yandex.mapkit.directions.driving.DrivingRoute
-import com.yandex.mapkit.directions.driving.DrivingRouterType
+import com.yandex.mapkit.directions.driving.DrivingRouter
 import com.yandex.mapkit.directions.driving.VehicleOptions
 import com.yandex.mapkit.geometry.Geo
 import com.yandex.mapkit.geometry.Point
@@ -28,7 +27,8 @@ import javax.inject.Inject
 import kotlin.Error
 
 class SmartRoutePlanningFactoryImpl @Inject constructor(
-    private val routeSearchFactory: SmartRouteSearchFactory
+    private val routeSearchFactory: SmartRouteSearchFactory,
+    private val drivingRouter: DrivingRouter
 ) : SmartRoutePlanningFactory {
 
     override suspend fun requestRoutes(
@@ -37,16 +37,15 @@ class SmartRoutePlanningFactoryImpl @Inject constructor(
         vehicleOptions: VehicleOptions,
         smartRouteOptions: SmartRouteOptions
     ): Result<List<RequestPoint>> {
-        val router = DirectionsFactory.getInstance().createDrivingRouter(DrivingRouterType.COMBINED)
-        val points = listOf(from, to)
+        val fromToPoints = listOf(from, to)
         val drivingOptions = DrivingOptions().setRoutesCount(1)
         val drivingRoute =
-            router.requestRoutes(points, drivingOptions, vehicleOptions).firstOrNull()?.getOrNull()
+            drivingRouter.requestRoutes(fromToPoints, drivingOptions, vehicleOptions).firstOrNull()
+                ?.getOrNull()
                 ?: return Result.failure(Error("DrivingRoutes error"))
         val viaPoints = getViaPoints(drivingRoute, smartRouteOptions)
             ?: return Result.failure(Error("ViaPoints error"))
-        val fromToPoints = drivingRoute.requestPoints.orEmpty()
-        val requestPoints = createRequestPoints(fromToPoints, viaPoints)
+        val requestPoints = createRequestPoints(from, viaPoints, to)
         return Result.success(requestPoints)
     }
 
@@ -69,7 +68,7 @@ class SmartRoutePlanningFactoryImpl @Inject constructor(
 
             val sectionPolyline = routeGeometry.sectionSubpolyline(startPosition, targetPosition)
                 ?: return null
-            val viaPoint = getViaForPolyline(sectionPolyline, viaPoints, smartRouteOptions)
+            val viaPoint = getViaForPolyline(sectionPolyline, viaPoints.lastOrNull(), smartRouteOptions)
                 ?: return null
             val closestPosition = sectionPolyline.closestPolylinePosition(routeGeometry, viaPoint)
                 ?: return null
@@ -87,7 +86,7 @@ class SmartRoutePlanningFactoryImpl @Inject constructor(
 
     private suspend fun getViaForPolyline(
         sectionPolyline: Polyline,
-        viaPoints: List<Point>,
+        lastChargingPoint: Point?,
         smartRouteOptions: SmartRouteOptions
     ): Point? {
         val thresholdPoint = sectionPolyline.points.lastOrNull() ?: return null
@@ -96,15 +95,14 @@ class SmartRoutePlanningFactoryImpl @Inject constructor(
             sectionPolyline,
             smartRouteOptions
         ).getOrNull()
-            ?.takeIf { viaPoints.isEmpty() || Geo.distance(it, viaPoints.last()) > 0 }
+            ?.takeIf { lastChargingPoint == null || Geo.distance(it, lastChargingPoint) > 1 }
     }
 
     private fun createRequestPoints(
-        fromToPoints: List<RequestPoint>,
+        from: RequestPoint,
         viaPoints: List<Point>,
+        to: RequestPoint,
     ): List<RequestPoint> {
-        val from = fromToPoints.firstOrNull() ?: return emptyList()
-        val to = fromToPoints.lastOrNull() ?: return emptyList()
         return buildList {
             add(from)
             addAll(viaPoints.map { it.toRequestPoint() })

@@ -7,6 +7,7 @@ import com.yandex.mapkit.geometry.Polyline
 import com.yandex.mapkit.search.FilterCollection
 import com.yandex.mapkit.search.FilterCollectionUtils
 import com.yandex.mapkit.search.SearchFactory
+import com.yandex.mapkit.search.SearchManager
 import com.yandex.mapkit.search.SearchManagerType
 import com.yandex.mapkit.search.SearchOptions
 import com.yandex.mapkit.search.SearchType
@@ -17,15 +18,15 @@ import kotlinx.coroutines.flow.firstOrNull
 import javax.inject.Inject
 import kotlin.Error
 
-class SmartRouteSearchFactoryImpl @Inject constructor() : SmartRouteSearchFactory {
+class SmartRouteSearchFactoryImpl @Inject constructor(
+    private val searchManager: SearchManager
+) : SmartRouteSearchFactory {
 
     override suspend fun getViaForPolyline(
         thresholdPoint: Point,
         polyline: Polyline,
         options: SmartRouteOptions
     ): Result<Point> {
-        val searchManager =
-            SearchFactory.getInstance().createSearchManager(SearchManagerType.COMBINED)
         val query = options.chargingType.vehicle
         val searchOptions = SearchOptions()
             .setResultPageSize(32)

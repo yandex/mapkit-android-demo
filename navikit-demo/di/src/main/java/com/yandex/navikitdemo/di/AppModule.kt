@@ -3,6 +3,12 @@ package com.yandex.navikitdemo.di
 import android.app.Application
 import android.app.NotificationManager
 import android.content.Context
+import com.yandex.mapkit.directions.DirectionsFactory
+import com.yandex.mapkit.directions.driving.DrivingRouter
+import com.yandex.mapkit.directions.driving.DrivingRouterType
+import com.yandex.mapkit.search.SearchFactory
+import com.yandex.mapkit.search.SearchManager
+import com.yandex.mapkit.search.SearchManagerType
 import com.yandex.navikitdemo.data.AnnotationsManagerImpl
 import com.yandex.navikitdemo.data.LocationManagerImpl
 import com.yandex.navikitdemo.data.NavigationHolderImpl
@@ -100,6 +106,7 @@ abstract class AppModule {
     abstract fun annotationsManager(impl: AnnotationsManagerImpl): AnnotationsManager
 
     companion object {
+
         @Singleton
         @Provides
         fun notificationManager(
@@ -107,5 +114,16 @@ abstract class AppModule {
         ): NotificationManager {
             return application.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         }
+
+        @Provides
+        fun drivingRouter(): DrivingRouter {
+            return DirectionsFactory.getInstance().createDrivingRouter(DrivingRouterType.COMBINED)
+        }
+
+        @Provides
+        fun searchManager(): SearchManager {
+            return SearchFactory.getInstance().createSearchManager(SearchManagerType.COMBINED)
+        }
+
     }
 }
