@@ -1,7 +1,6 @@
 package com.yandex.navikitdemo.ui.guidance
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.yandex.mapkit.directions.driving.DrivingRoute
 import com.yandex.mapkit.geometry.geo.PolylineUtils
 import com.yandex.mapkit.location.Location
@@ -12,8 +11,6 @@ import com.yandex.navikitdemo.domain.SettingsManager
 import com.yandex.navikitdemo.domain.SimulationManager
 import com.yandex.navikitdemo.domain.helpers.BackgroundServiceManager
 import com.yandex.navikitdemo.domain.isGuidanceActive
-import com.yandex.navikitdemo.domain.models.SmartRouteState
-import com.yandex.navikitdemo.domain.smartRoute.SmartRoutePlanningManager
 import com.yandex.navikitdemo.domain.utils.distanceLeft
 import com.yandex.navikitdemo.domain.utils.localizeDistance
 import com.yandex.navikitdemo.domain.utils.localizeSpeed
@@ -27,12 +24,8 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.flow.filterIsInstance
-import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 import kotlin.time.Duration.Companion.seconds
 
@@ -43,7 +36,6 @@ class GuidanceViewModel @Inject constructor(
     private val simulationManager: SimulationManager,
     private val settingsManager: SettingsManager,
     private val backgroundServiceManager: BackgroundServiceManager,
-    private val smartRoutePlanningManager: SmartRoutePlanningManager
 ) : ViewModel() {
 
     enum class SimulationSpeedChange {
@@ -59,10 +51,6 @@ class GuidanceViewModel @Inject constructor(
         .debounce(2.seconds)
         .filter { it }
         .map { }
-
-    init {
-        subscribeForSmartRoutePlanning()?.launchIn(viewModelScope)
-    }
 
     fun startGuidanceIfNeeded(nullableRoute: DrivingRoute?) {
         val route = nullableRoute ?: return
@@ -146,13 +134,6 @@ class GuidanceViewModel @Inject constructor(
             )
         }
             .distinctUntilChanged()
-    }
-
-    private fun subscribeForSmartRoutePlanning(): Flow<*>? {
-        return smartRoutePlanningManager.currentRoutePlanningSession?.routeState
-            ?.filterIsInstance<SmartRouteState.Success>()
-            ?.drop(1)
-            ?.onEach { navigationManager.requestRoutes(it.requestPoints) }
     }
 
     private fun Location.toSpeedLimitViewState(): SpeedLimitViewState? {

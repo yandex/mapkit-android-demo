@@ -1,23 +1,15 @@
 package com.yandex.navikitdemo.domain.smartRoute
 
 import com.yandex.mapkit.RequestPoint
-import com.yandex.navikitdemo.domain.models.SmartRouteState
-import kotlinx.coroutines.flow.Flow
+import com.yandex.mapkit.directions.driving.VehicleOptions
+import com.yandex.navikitdemo.domain.models.SmartRouteOptions
 
-interface SmartRoutePlanningManager {
+interface SmartRoutePlanningFactory {
 
-    val currentRoutePlanningSession: SmartRoutePlanningSession?
-
-    fun requestRoutes(from: RequestPoint, to: RequestPoint): SmartRoutePlanningSession
-
-}
-
-interface SmartRoutePlanningSession {
-
-    val routeState: Flow<SmartRouteState>
-
-    fun retry()
-
-    fun reset()
-
+    suspend fun requestRoutes(
+        from: RequestPoint,
+        to: RequestPoint,
+        vehicleOptions: VehicleOptions,
+        smartRouteOptions: SmartRouteOptions
+    ): Result<List<RequestPoint>>
 }

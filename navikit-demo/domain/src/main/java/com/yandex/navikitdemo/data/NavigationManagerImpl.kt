@@ -21,7 +21,6 @@ import com.yandex.navikitdemo.domain.SimulationManager
 import com.yandex.navikitdemo.domain.VehicleOptionsManager
 import com.yandex.navikitdemo.domain.helpers.BackgroundServiceManager
 import com.yandex.navikitdemo.domain.helpers.SimpleGuidanceListener
-import com.yandex.navikitdemo.domain.isGuidanceActive
 import com.yandex.navikitdemo.domain.models.State
 import com.yandex.navikitdemo.domain.utils.buildFlagsString
 import com.yandex.runtime.Error
@@ -140,9 +139,6 @@ class NavigationManagerImpl @Inject constructor(
 
         override fun onRoutesBuilt() {
             navigationRouteStateImpl.value = State.Success(navigation.routes)
-            if (isGuidanceActive) {
-                navigation.routes.firstOrNull()?.let { startGuidance(it) }
-            }
         }
 
         override fun onResetRoutes() {

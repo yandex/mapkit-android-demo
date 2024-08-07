@@ -1,0 +1,67 @@
+package com.yandex.navikitdemo.domain.utils
+
+import com.yandex.mapkit.RequestPoint
+import com.yandex.mapkit.directions.driving.DrivingOptions
+import com.yandex.mapkit.directions.driving.DrivingRoute
+import com.yandex.mapkit.directions.driving.DrivingRouter
+import com.yandex.mapkit.directions.driving.DrivingSession
+import com.yandex.mapkit.directions.driving.VehicleOptions
+import com.yandex.mapkit.geometry.Geometry
+import com.yandex.mapkit.geometry.Point
+import com.yandex.mapkit.search.Response
+import com.yandex.mapkit.search.SearchManager
+import com.yandex.mapkit.search.SearchOptions
+import com.yandex.mapkit.search.Session
+import kotlinx.coroutines.channels.BufferOverflow
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.buffer
+import kotlinx.coroutines.flow.callbackFlow
+import com.yandex.runtime.Error as RequestError
+
+fun DrivingRouter.requestRoutes(
+    points: List<RequestPoint>,
+    drivingOptions: DrivingOptions,
+    vehicleOptions: VehicleOptions
+): Flow<Result<DrivingRoute>> {
+    return callbackFlow {
+        val listener = object : DrivingSession.DrivingRouteListener {
+            override fun onDrivingRoutes(drivingRoutes: MutableList<DrivingRoute>) {
+                val result = drivingRoutes.firstOrNull()?.let { Result.success(it) }
+                    ?: Result.failure(Error("DrivingRoutes is empty"))
+                trySend(result)
+            }
+
+            override fun onDrivingRoutesError(error: RequestError) {
+                trySend(Result.failure(Error("DrivingRoutesError: $error")))
+            }
+        }
+        val drivingSession = requestRoutes(points, drivingOptions, vehicleOptions, listener)
+        awaitClose { drivingSession.cancel() }
+    }
+        .buffer(capacity = 1, onBufferOverflow = BufferOverflow.DROP_OLDEST)
+}
+
+fun SearchManager.submitSearch(
+    query: String,
+    geometry: Geometry,
+    searchOptions: SearchOptions,
+): Flow<Result<List<Point>>> {
+    return callbackFlow {
+        val listener = object : Session.SearchListener {
+            override fun onSearchResponse(response: Response) {
+                val items = response.collection.children.mapNotNull {
+                    it.obj?.geometry?.firstOrNull()?.point ?: return@mapNotNull null
+                }
+                trySend(Result.success(items))
+            }
+
+            override fun onSearchError(error: RequestError) {
+                trySend(Result.failure(Error("SearchError: $error")))
+            }
+        }
+        val searchSession = submit(query, geometry, searchOptions, listener)
+        awaitClose { searchSession.cancel() }
+    }
+        .buffer(capacity = 1, onBufferOverflow = BufferOverflow.DROP_OLDEST)
+}
