@@ -14,12 +14,10 @@ import com.yandex.mapkit.geometry.Subpolyline
 import com.yandex.mapkit.geometry.SubpolylineHelper
 import com.yandex.mapkit.geometry.geo.PolylineIndex
 import com.yandex.mapkit.geometry.geo.PolylineUtils
-import com.yandex.navikitdemo.domain.models.SectionRange
 import com.yandex.navikitdemo.domain.models.SmartRouteOptions
 import com.yandex.navikitdemo.domain.smartroute.SmartRoutePlanningFactory
 import com.yandex.navikitdemo.domain.smartroute.SmartRouteSearchFactory
 import com.yandex.navikitdemo.domain.utils.advancePositionOnRoute
-import com.yandex.navikitdemo.domain.utils.distanceLeft
 import com.yandex.navikitdemo.domain.utils.requestRoutes
 import com.yandex.navikitdemo.domain.utils.toRequestPoint
 import kotlinx.coroutines.flow.firstOrNull
@@ -53,31 +51,23 @@ class SmartRoutePlanningFactoryImpl @Inject constructor(
         smartRouteOptions: SmartRouteOptions
     ): List<Point>? {
         val routeGeometry = drivingRoute.geometry
-        val fullRouteDistance = drivingRoute.distanceLeft().value
-        val thresholdDistance = smartRouteOptions.thresholdDistanceInMeters
-        val maxTravelDistance = smartRouteOptions.maxTravelDistanceInMeters - thresholdDistance
-        val currentRange = smartRouteOptions.currentRangeLvlInMeters
-        val sectionRange = SectionRange(to = currentRange)
+        val maxTravelDistance =
+            smartRouteOptions.maxTravelDistanceInMeters - smartRouteOptions.thresholdDistanceInMeters
+        var currentRange = smartRouteOptions.currentRangeLvlInMeters
         val viaPoints = mutableListOf<Point>()
+        while (drivingRoute.routePosition.distanceToFinish() > currentRange) {
+            val currentPosition = drivingRoute.position
+            val targetPosition = drivingRoute.advancePositionOnRoute(currentRange) ?: return null
 
-        while (sectionRange.to < fullRouteDistance) {
-            val startPosition = drivingRoute.advancePositionOnRoute(sectionRange.from)
-            val targetPosition = drivingRoute.advancePositionOnRoute(sectionRange.to)
-            if (startPosition == null || targetPosition == null) return null
-
-            val sectionPolyline = routeGeometry.sectionSubpolyline(startPosition, targetPosition)
+            val sectionPolyline = routeGeometry.sectionSubpolyline(currentPosition, targetPosition)
                 ?: return null
             val viaPoint = getViaForPolyline(sectionPolyline, viaPoints.lastOrNull(), smartRouteOptions)
                 ?: return null
             val closestPosition = sectionPolyline.closestPolylinePosition(routeGeometry, viaPoint)
                 ?: return null
 
-            val remainingDistance = PolylineUtils.distanceBetweenPolylinePositions(
-                routeGeometry,
-                closestPosition,
-                targetPosition
-            )
-            sectionRange.appendRange(remainingDistance, maxTravelDistance)
+            drivingRoute.position = closestPosition
+            currentRange = maxTravelDistance
             viaPoints.add(viaPoint)
         }
         return viaPoints

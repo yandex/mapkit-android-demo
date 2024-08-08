@@ -32,7 +32,6 @@ import com.yandex.navikitdemo.domain.NavigationHolder
 import com.yandex.navikitdemo.domain.NavigationManager
 import com.yandex.navikitdemo.domain.NavigationStyleManager
 import com.yandex.navikitdemo.domain.RequestPointsManager
-import com.yandex.navikitdemo.domain.smartroute.SmartRouteSearchFactory
 import com.yandex.navikitdemo.domain.SettingsManager
 import com.yandex.navikitdemo.domain.SimulationManager
 import com.yandex.navikitdemo.domain.SpeakerManager
@@ -43,6 +42,7 @@ import com.yandex.navikitdemo.domain.helpers.NavigationDeserializer
 import com.yandex.navikitdemo.domain.helpers.NavigationFactory
 import com.yandex.navikitdemo.domain.helpers.NavigationSuspenderManager
 import com.yandex.navikitdemo.domain.smartroute.SmartRoutePlanningFactory
+import com.yandex.navikitdemo.domain.smartroute.SmartRouteSearchFactory
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
