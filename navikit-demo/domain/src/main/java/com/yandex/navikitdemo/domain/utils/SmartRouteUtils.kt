@@ -12,10 +12,13 @@ import com.yandex.mapkit.search.Response
 import com.yandex.mapkit.search.SearchManager
 import com.yandex.mapkit.search.SearchOptions
 import com.yandex.mapkit.search.Session
+import com.yandex.navikitdemo.domain.SettingsManager
+import com.yandex.navikitdemo.domain.models.SmartRouteOptions
 import com.yandex.runtime.Error
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.flow.combine
 
 fun DrivingRouter.requestRoutes(
     points: List<RequestPoint>,
@@ -60,4 +63,30 @@ fun SearchManager.submitSearch(
         val searchSession = submit(query, geometry, searchOptions, listener)
         awaitClose { searchSession.cancel() }
     }
+}
+
+fun SettingsManager.smartRouteOptionsChanges(): Flow<SmartRouteOptions?> {
+    return combine(
+        smartRoutePlanningEnabled.changes(),
+        fuelConnectorTypes.changes(),
+        maxTravelDistance.changes(),
+        currentRangeLvl.changes(),
+        thresholdDistance.changes(),
+    ) { smartRoutePlanningEnabled, _, _, _, _ ->
+        if (smartRoutePlanningEnabled) {
+            smartRouteOptions()
+        } else {
+            null
+        }
+    }
+}
+
+fun SettingsManager.smartRouteOptions(): SmartRouteOptions {
+    return SmartRouteOptions(
+        chargingType.value,
+        fuelConnectorTypes.value,
+        maxTravelDistance.value.toMeters(),
+        currentRangeLvl.value.toMeters(),
+        thresholdDistance.value.toMeters()
+    )
 }
