@@ -8,7 +8,7 @@ import com.yandex.mapkit.navigation.automotive.SpeedLimitStatus
 import com.yandex.mapkit.navigation.automotive.SpeedLimitsPolicy
 import com.yandex.mapkit.navigation.automotive.UpcomingLaneSign
 import com.yandex.mapkit.navigation.automotive.UpcomingManoeuvre
-import com.yandex.navikitdemo.domain.models.State
+import com.yandex.navikitdemo.domain.models.NavigationState
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
 
@@ -24,7 +24,7 @@ interface NavigationManager : LocationManager {
     val speedLimitTolerance: Double
     val speedLimitsPolicy: SpeedLimitsPolicy
 
-    val navigationRouteState: Flow<State<List<DrivingRoute>>>
+    val navigationRouteState: Flow<NavigationState>
 
     fun requestRoutes(points: List<RequestPoint>)
     fun startGuidance(route: DrivingRoute)

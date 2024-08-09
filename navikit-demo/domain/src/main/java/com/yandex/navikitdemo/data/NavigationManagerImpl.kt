@@ -21,7 +21,7 @@ import com.yandex.navikitdemo.domain.SimulationManager
 import com.yandex.navikitdemo.domain.VehicleOptionsManager
 import com.yandex.navikitdemo.domain.helpers.BackgroundServiceManager
 import com.yandex.navikitdemo.domain.helpers.SimpleGuidanceListener
-import com.yandex.navikitdemo.domain.models.State
+import com.yandex.navikitdemo.domain.models.NavigationState
 import com.yandex.navikitdemo.domain.utils.buildFlagsString
 import com.yandex.runtime.Error
 import kotlinx.coroutines.CoroutineScope
@@ -77,7 +77,7 @@ class NavigationManagerImpl @Inject constructor(
     override val speedLimitTolerance: Double = navigation.guidance.speedLimitTolerance
     override val speedLimitsPolicy: SpeedLimitsPolicy = navigation.guidance.speedLimitsPolicy
 
-    private val navigationRouteStateImpl = MutableStateFlow<State<List<DrivingRoute>>>(State.Off)
+    private val navigationRouteStateImpl = MutableStateFlow<NavigationState>(NavigationState.Off)
     override val navigationRouteState = navigationRouteStateImpl
 
     private val guidanceListener = object : SimpleGuidanceListener() {
@@ -122,27 +122,27 @@ class NavigationManagerImpl @Inject constructor(
 
     private val navigationListener = object : NavigationListener {
         override fun onRoutesRequestError(error: Error) {
-            navigationRouteStateImpl.value = State.Error
+            navigationRouteStateImpl.value = NavigationState.Error
         }
 
         override fun onRoutesRequested(requestPoints: MutableList<RequestPoint>) {
-            navigationRouteStateImpl.value = State.Loading
+            navigationRouteStateImpl.value = NavigationState.Loading
         }
 
         override fun onAlternativesRequested(p0: DrivingRoute) {
-            navigationRouteStateImpl.value = State.Loading
+            navigationRouteStateImpl.value = NavigationState.Loading
         }
 
         override fun onUriResolvingRequested(p0: String) {
-            navigationRouteStateImpl.value = State.Loading
+            navigationRouteStateImpl.value = NavigationState.Loading
         }
 
         override fun onRoutesBuilt() {
-            navigationRouteStateImpl.value = State.Success(navigation.routes)
+            navigationRouteStateImpl.value = NavigationState.Success(navigation.routes)
         }
 
         override fun onResetRoutes() {
-            navigationRouteStateImpl.value = State.Off
+            navigationRouteStateImpl.value = NavigationState.Off
         }
 
     }

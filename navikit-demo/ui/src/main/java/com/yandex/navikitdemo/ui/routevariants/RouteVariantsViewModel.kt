@@ -9,9 +9,9 @@ import com.yandex.navikitdemo.domain.NavigationManager
 import com.yandex.navikitdemo.domain.RequestPointsManager
 import com.yandex.navikitdemo.domain.SettingsManager
 import com.yandex.navikitdemo.domain.VehicleOptionsManager
-import com.yandex.navikitdemo.domain.models.SmartRouteOptions
-import com.yandex.navikitdemo.domain.models.State
+import com.yandex.navikitdemo.domain.models.NavigationState
 import com.yandex.navikitdemo.domain.smartroute.SmartRoutePlanningFactory
+import com.yandex.navikitdemo.domain.utils.smartRouteOptionsChanges
 import com.yandex.navikitdemo.ui.R
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -84,7 +84,7 @@ class RouteVariantsViewModel @Inject constructor(
             navigationManager.navigationRouteState,
         ) { requestPoints, navigationRouteState ->
             val hasRequestPoints = requestPoints.isEmpty()
-            val message = if (navigationRouteState is State.Error) {
+            val message = if (navigationRouteState is NavigationState.Error) {
                 R.string.route_variants_error
             } else {
                 null
@@ -104,7 +104,7 @@ class RouteVariantsViewModel @Inject constructor(
             showErrorMessage(R.string.smart_route_with_via_points_error)
             flowOf(points)
         } else {
-            smartRoutePlanningSettings().filterNotNull().mapLatest {
+            settingsManager.smartRouteOptionsChanges().filterNotNull().mapLatest {
                 val smartRouteResult = smartRoutePlanningFactory.requestRoutes(
                     points.first(),
                     points.last(),
@@ -129,22 +129,6 @@ class RouteVariantsViewModel @Inject constructor(
 
     private fun showErrorMessage(errorMessage: Int?) {
         uiStateImpl.update { it.copy(errorMessage = errorMessage) }
-    }
-
-    private fun smartRoutePlanningSettings(): Flow<SmartRouteOptions?> {
-        return combine(
-            settingsManager.smartRoutePlanningEnabled.changes(),
-            settingsManager.fuelConnectorTypes.changes(),
-            settingsManager.maxTravelDistance.changes(),
-            settingsManager.currentRangeLvl.changes(),
-            settingsManager.thresholdDistance.changes(),
-        ) { smartRoutePlanningEnabled, _, _, _, _ ->
-            if (smartRoutePlanningEnabled) {
-                SmartRouteOptions(settingsManager)
-            } else {
-                null
-            }
-        }
     }
 
     private fun List<RequestPoint>.isSmartRouteSupported() = size == 2
