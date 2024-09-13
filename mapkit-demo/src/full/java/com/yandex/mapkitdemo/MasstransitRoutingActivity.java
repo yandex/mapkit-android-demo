@@ -19,14 +19,16 @@ import com.yandex.mapkit.map.MapObjectCollection;
 import com.yandex.mapkit.map.PolylineMapObject;
 import com.yandex.mapkit.mapview.MapView;
 import com.yandex.mapkit.transport.TransportFactory;
-import com.yandex.mapkit.transport.masstransit.TransitOptions;
 import com.yandex.mapkit.transport.masstransit.FilterVehicleTypes;
+import com.yandex.mapkit.transport.masstransit.FitnessOptions;
 import com.yandex.mapkit.transport.masstransit.MasstransitRouter;
 import com.yandex.mapkit.transport.masstransit.Route;
+import com.yandex.mapkit.transport.masstransit.RouteOptions;
 import com.yandex.mapkit.transport.masstransit.Section;
 import com.yandex.mapkit.transport.masstransit.SectionMetadata;
 import com.yandex.mapkit.transport.masstransit.Session;
 import com.yandex.mapkit.transport.masstransit.TimeOptions;
+import com.yandex.mapkit.transport.masstransit.TransitOptions;
 import com.yandex.mapkit.transport.masstransit.Transport;
 import com.yandex.runtime.Error;
 import com.yandex.runtime.network.NetworkError;
@@ -62,15 +64,16 @@ public class MasstransitRoutingActivity extends Activity
         mapObjects = mapView.getMapWindow().getMap().getMapObjects().addCollection();
 
 
-        TransitOptions options = new TransitOptions(FilterVehicleTypes.NONE.value, new TimeOptions());
+        TransitOptions transitOptions = new TransitOptions(FilterVehicleTypes.NONE.value, new TimeOptions());
         boolean avoidSteep = false;
+        RouteOptions routeOptions = new RouteOptions(new FitnessOptions(avoidSteep));
         List<RequestPoint> points = new ArrayList<RequestPoint>();
         points.add(new RequestPoint(
                 MASSTRANSIT_ROUTE_START_LOCATION, RequestPointType.WAYPOINT, null, null));
         points.add(new RequestPoint(
                 MASSTRANSIT_ROUTE_END_LOCATION, RequestPointType.WAYPOINT, null, null));
         mtRouter = TransportFactory.getInstance().createMasstransitRouter();
-        mtRouter.requestRoutes(points, options, avoidSteep, this);
+        mtRouter.requestRoutes(points, transitOptions, routeOptions, this);
     }
 
     @Override

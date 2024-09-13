@@ -7,7 +7,7 @@ This repository contains an application that demonstraits use of MapKit SDK API 
 1. To build the project you need to put external dependencies to the ```libs/``` directory:
 
     - maps.mobile.aar
-    - com.yandex.mapkit.navigation.automotive.layer.styling.aar
+    - com.yandex.mapkit.styling.automotivenavigation.aar
     - com.yandex.mapkit.styling.roadevents.aar
 
 2. Put your MapKit API key in to the project level ```local.properties``` file, like the following:

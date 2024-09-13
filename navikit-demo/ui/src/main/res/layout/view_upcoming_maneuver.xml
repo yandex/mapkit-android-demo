@@ -26,7 +26,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/layout_lanes_sign"
         app:layout_goneMarginTop="4dp"
-        tools:src="@drawable/mapkit_automotive_context_lane_left90_large" />
+        tools:src="@drawable/mapkit_styling_automotive_context_lane_left90_large" />
 
     <TextView
         android:id="@+id/text_distance"

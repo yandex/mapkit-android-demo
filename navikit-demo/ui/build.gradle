@@ -12,7 +12,7 @@ android {
     buildToolsVersion "33.0.0"
 
     defaultConfig {
-        minSdk 23
+        minSdk 26
         targetSdk 33
     }
 
@@ -31,7 +31,7 @@ android {
 }
 
 dependencies {
-    implementation "com.yandex.android:maps.mobile:4.7.0-navikit"
+    implementation "com.yandex.android:maps.mobile:4.8.0-navikit"
 
     implementation project(":com.yandex.navikitdemo.domain")
 

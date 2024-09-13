@@ -5,8 +5,8 @@ import android.content.Context
 import androidx.lifecycle.lifecycleScope
 import com.yandex.mapkit.annotations.AnnotationLanguage
 import com.yandex.mapkit.map.MapWindow
-import com.yandex.mapkit.navigation.automotive.layer.styling.AutomotiveNavigationStyleProvider
 import com.yandex.mapkit.navigation.automotive.layer.styling.NavigationStyleProvider
+import com.yandex.mapkit.styling.automotivenavigation.AutomotiveNavigationStyleProvider
 import com.yandex.mapkit.road_events_layer.StyleProvider
 import com.yandex.mapkit.styling.roadevents.RoadEventsLayerDefaultStyleProvider
 import com.yandex.navikitdemo.AppActivity
