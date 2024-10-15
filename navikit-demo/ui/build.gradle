@@ -31,7 +31,7 @@ android {
 }
 
 dependencies {
-    implementation "com.yandex.android:maps.mobile:4.8.0-navikit"
+    implementation "com.yandex.android:maps.mobile:4.8.1-navikit"
 
     implementation project(":com.yandex.navikitdemo.domain")
 

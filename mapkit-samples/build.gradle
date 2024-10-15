@@ -13,8 +13,8 @@ ext {
     fragmentKtxVersion = "1.5.5"
     recyclerVersion = "1.1.0"
     navigationVersion = "2.5.3"
-    mapkitLiteVersion = "4.8.0-lite"
-    mapkitFullVersion = "4.8.0-full"
+    mapkitLiteVersion = "4.8.1-lite"
+    mapkitFullVersion = "4.8.1-full"
 
     mapkitApiKey = getMapkitApiKey()
 }

@@ -75,9 +75,9 @@ android {
 
 dependencies {
     // lite version provides only map and some core services.
-    liteImplementation 'com.yandex.android:maps.mobile:4.8.0-lite'
+    liteImplementation 'com.yandex.android:maps.mobile:4.8.1-lite'
     // full version provides the rest of maps API routing, panoramas, search and etc.
-    fullImplementation 'com.yandex.android:maps.mobile:4.8.0-full'
+    fullImplementation 'com.yandex.android:maps.mobile:4.8.1-full'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.1'
     implementation 'androidx.preference:preference:1.2.1'
     implementation 'com.google.android.gms:play-services-location:21.0.1'
