@@ -1,6 +1,8 @@
 package com.yandex.navikitdemo.data
 
 import com.yandex.mapkit.directions.driving.Flags
+import com.yandex.mapkit.navigation.automotive.layer.NavigationLayerMode
+import com.yandex.mapkit.navigation.automotive.layer.styling.HighlightStyleProvider
 import com.yandex.mapkit.navigation.automotive.layer.styling.JamStyle
 import com.yandex.mapkit.navigation.automotive.layer.styling.NavigationStyleProvider
 import com.yandex.mapkit.navigation.automotive.layer.styling.RouteStyle
@@ -39,46 +41,51 @@ class NavigationStyleManagerImpl @Inject constructor(
         automotiveNavigationStyleProvider.requestPointStyleProvider()
 
     override fun routePinsStyleProvider() = automotiveNavigationStyleProvider.routePinsStyleProvider()
+    override fun highlightStyleProvider() = automotiveNavigationStyleProvider.highlightStyleProvider()
 
     private inner class RouteViewStyleProviderImpl : RouteViewStyleProvider {
         override fun provideJamStyle(
             flags: Flags,
             isSelected: Boolean,
             isNightMode: Boolean,
+            navigationLayerMode: NavigationLayerMode,
             jamStyle: JamStyle
         ) {
             automotiveNavigationStyleProvider.routeViewStyleProvider()
-                .provideJamStyle(flags, isSelected, isNightMode, jamStyle)
+                .provideJamStyle(flags, isSelected, isNightMode, navigationLayerMode, jamStyle)
         }
 
         override fun providePolylineStyle(
             flags: Flags,
             isSelected: Boolean,
             isNightMode: Boolean,
+            navigationLayerMode: NavigationLayerMode,
             polylineStyle: PolylineStyle
         ) {
             automotiveNavigationStyleProvider.routeViewStyleProvider()
-                .providePolylineStyle(flags, isSelected, isNightMode, polylineStyle)
+                .providePolylineStyle(flags, isSelected, isNightMode, navigationLayerMode, polylineStyle)
         }
 
         override fun provideManoeuvreStyle(
             flags: Flags,
             isSelected: Boolean,
             isNightMode: Boolean,
+            navigationLayerMode: NavigationLayerMode,
             arrowStyle: ArrowStyle
         ) {
             automotiveNavigationStyleProvider.routeViewStyleProvider()
-                .provideManoeuvreStyle(flags, isSelected, isNightMode, arrowStyle)
+                .provideManoeuvreStyle(flags, isSelected, isNightMode, navigationLayerMode, arrowStyle)
         }
 
         override fun provideRouteStyle(
             flags: Flags,
             isSelected: Boolean,
             isNightMode: Boolean,
+            navigationLayerMode: NavigationLayerMode,
             routeStyle: RouteStyle
         ) {
             automotiveNavigationStyleProvider.routeViewStyleProvider()
-                .provideRouteStyle(flags, isSelected, isNightMode, routeStyle)
+                .provideRouteStyle(flags, isSelected, isNightMode, navigationLayerMode, routeStyle)
             val showJams = when (currentJamsMode) {
                 JamsMode.DISABLED -> false
                 JamsMode.ENABLED_FOR_CURRENT_ROUTE -> isSelected
@@ -106,7 +113,12 @@ class NavigationStyleManagerImpl @Inject constructor(
     }
 
     private inner class UserPlacemarkStyleProviderImpl : UserPlacemarkStyleProvider {
-        override fun provideStyle(scaleFactor: Float, isNightMode: Boolean, style: PlacemarkStyle) {
+        override fun provideStyle(
+            scaleFactor: Float,
+            isNightMode: Boolean,
+            navigationLayerMode: NavigationLayerMode,
+            style: PlacemarkStyle
+        ) {
             style.setArrowModel()
         }
     }

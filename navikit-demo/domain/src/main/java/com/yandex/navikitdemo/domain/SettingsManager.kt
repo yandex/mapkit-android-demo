@@ -6,8 +6,10 @@ import com.yandex.mapkit.road_events.EventTag
 import com.yandex.navikitdemo.domain.models.AnnotatedEventsType
 import com.yandex.navikitdemo.domain.models.AnnotatedRoadEventsType
 import com.yandex.navikitdemo.domain.models.EcoClass
+import com.yandex.navikitdemo.domain.models.FuelConnectorType
 import com.yandex.navikitdemo.domain.models.JamsMode
 import com.yandex.navikitdemo.domain.models.StyleMode
+import com.yandex.navikitdemo.domain.models.ChargingType
 import kotlinx.coroutines.flow.Flow
 
 interface SettingModel<T> {
@@ -71,4 +73,12 @@ interface SettingsManager {
     val speedLimitTolerance: SettingModel<Float>
     val restoreGuidanceState: SettingModel<Boolean>
     val serializedNavigation: SettingModel<String>
+
+    // Smart Route Planning Options
+    val smartRoutePlanningEnabled: SettingModel<Boolean>
+    val chargingType: SettingModel<ChargingType>
+    val fuelConnectorTypes: SettingModel<Set<FuelConnectorType>>
+    val maxTravelDistance: SettingModel<Float>
+    val currentRangeLvl: SettingModel<Float>
+    val thresholdDistance: SettingModel<Float>
 }

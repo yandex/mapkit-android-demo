@@ -8,12 +8,13 @@ import com.yandex.mapkit.navigation.automotive.layer.BalloonViewListener
 import com.yandex.mapkit.navigation.automotive.layer.NavigationLayer
 import com.yandex.mapkit.navigation.automotive.layer.NavigationLayerFactory
 import com.yandex.mapkit.navigation.automotive.layer.NavigationLayerListener
+import com.yandex.mapkit.navigation.automotive.layer.NavigationLayerMode
 import com.yandex.mapkit.navigation.automotive.layer.RouteView
 import com.yandex.mapkit.navigation.automotive.layer.RouteViewListener
-import com.yandex.mapkit.navigation.automotive.layer.RoutesSource
 import com.yandex.mapkit.navigation.guidance_camera.CameraListener
 import com.yandex.mapkit.navigation.guidance_camera.CameraMode
-import com.yandex.mapkit.road_events_layer.RoadEventsLayer
+import com.yandex.mapkit.road_events.EventTag
+import com.yandex.mapkit.road_events_layer.StyleProvider
 import com.yandex.navikitdemo.domain.NavigationHolder
 import com.yandex.navikitdemo.domain.NavigationLayerManager
 import com.yandex.navikitdemo.domain.NavigationStyleManager
@@ -27,7 +28,7 @@ import javax.inject.Inject
 @ActivityScoped
 class NavigationLayerManagerImpl @Inject constructor(
     private val mapWindow: MapWindow,
-    private val roadEventsLayer: RoadEventsLayer,
+    private val roadEventsLayerStyleProvider: StyleProvider,
     private val navigationStyleManager: NavigationStyleManager,
     private val navigationHolder: NavigationHolder,
     private val settings: SettingsManager,
@@ -41,9 +42,9 @@ class NavigationLayerManagerImpl @Inject constructor(
 
     private val routeViewListener = object : RouteViewListener {
         override fun onRouteViewTap(routeView: RouteView) {
-            when (navigationLayer.routesSource) {
-                RoutesSource.NAVIGATION -> navigationLayer.selectRoute(routeView)
-                RoutesSource.GUIDANCE -> navigationLayer.navigation.guidance.switchToRoute(routeView.route)
+            when (navigationLayer.mode) {
+                NavigationLayerMode.ROUTE_SELECTION -> navigationLayer.selectRoute(routeView)
+                NavigationLayerMode.GUIDANCE -> navigationLayer.navigation.guidance.switchToRoute(routeView.route)
             }
         }
 
@@ -65,9 +66,9 @@ class NavigationLayerManagerImpl @Inject constructor(
     private val balloonViewListener = object : BalloonViewListener {
         override fun onBalloonViewTap(balloonView: BalloonView) {
             val route = balloonView.hostRoute
-            when (navigationLayer.routesSource) {
-                RoutesSource.NAVIGATION -> navigationLayer.selectRoute(navigationLayer.getView(route))
-                RoutesSource.GUIDANCE -> if (balloonView.balloon.alternative != null) {
+            when (navigationLayer.mode) {
+                NavigationLayerMode.ROUTE_SELECTION -> navigationLayer.selectRoute(navigationLayer.getView(route))
+                NavigationLayerMode.GUIDANCE -> if (balloonView.balloon.alternative != null) {
                     navigationLayer.navigation.guidance.switchToRoute(route)
                 }
             }
@@ -76,7 +77,7 @@ class NavigationLayerManagerImpl @Inject constructor(
         override fun onBalloonViewsChanged(p0: RouteView) = Unit
         override fun onBalloonVisibilityChanged(balloonView: BalloonView) {
             if (
-                navigationLayer.routesSource == RoutesSource.GUIDANCE
+                navigationLayer.mode == NavigationLayerMode.GUIDANCE
                 && balloonView.balloon.manoeuvre != null
             ) {
                 maneuverBalloonVisibilityImpl.value = balloonView.isIsVisible
@@ -91,7 +92,7 @@ class NavigationLayerManagerImpl @Inject constructor(
             currentDrivingRoute = navigationLayer.selectedRoute()?.route
         }
 
-        override fun onRoutesSourceChanged() = Unit
+        override fun onModeChanged() = Unit
     }
 
     private val cameraListener = CameraListener {
@@ -161,9 +162,13 @@ class NavigationLayerManagerImpl @Inject constructor(
         navigationLayer.camera.setOverviewRect(rect, null)
     }
 
+    override fun setRoadEventVisibleOnRoute(tag: EventTag, visible: Boolean) {
+        navigationLayer.setRoadEventVisibleOnRoute(tag, visible)
+    }
+
     private fun createLayer(): NavigationLayer {
         return NavigationLayerFactory.createNavigationLayer(
-            mapWindow, roadEventsLayer, navigationStyleManager, navigationHolder.navigation.value
+            mapWindow, roadEventsLayerStyleProvider, navigationStyleManager, navigationHolder.navigation.value
         )
     }
 

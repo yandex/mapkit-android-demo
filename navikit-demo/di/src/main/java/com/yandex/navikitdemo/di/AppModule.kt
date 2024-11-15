@@ -3,6 +3,12 @@ package com.yandex.navikitdemo.di
 import android.app.Application
 import android.app.NotificationManager
 import android.content.Context
+import com.yandex.mapkit.directions.DirectionsFactory
+import com.yandex.mapkit.directions.driving.DrivingRouter
+import com.yandex.mapkit.directions.driving.DrivingRouterType
+import com.yandex.mapkit.search.SearchFactory
+import com.yandex.mapkit.search.SearchManager
+import com.yandex.mapkit.search.SearchManagerType
 import com.yandex.navikitdemo.data.AnnotationsManagerImpl
 import com.yandex.navikitdemo.data.LocationManagerImpl
 import com.yandex.navikitdemo.data.NavigationHolderImpl
@@ -11,6 +17,7 @@ import com.yandex.navikitdemo.data.NavigationStyleManagerImpl
 import com.yandex.navikitdemo.data.RequestPointsManagerImpl
 import com.yandex.navikitdemo.data.SettingsManagerImpl
 import com.yandex.navikitdemo.data.SimulationManagerImpl
+import com.yandex.navikitdemo.data.smartroute.SmartRouteSearchFactoryImpl
 import com.yandex.navikitdemo.data.SpeakerImpl
 import com.yandex.navikitdemo.data.VehicleOptionsManagerImpl
 import com.yandex.navikitdemo.data.helpers.BackgroundServiceManagerImpl
@@ -18,7 +25,8 @@ import com.yandex.navikitdemo.data.helpers.KeyValueStorageImpl
 import com.yandex.navikitdemo.data.helpers.NavigationDeserializerImpl
 import com.yandex.navikitdemo.data.helpers.NavigationFactoryImpl
 import com.yandex.navikitdemo.data.helpers.NavigationSuspenderManagerImpl
-import com.yandex.navikitdemo.data.helpers.SettingsBinderManagerImpl
+import com.yandex.navikitdemo.data.smartroute.SimpleSmartRoutePlanningFactoryImpl
+import com.yandex.navikitdemo.data.smartroute.SmartRoutePlanningFactoryImpl
 import com.yandex.navikitdemo.domain.AnnotationsManager
 import com.yandex.navikitdemo.domain.LocationManager
 import com.yandex.navikitdemo.domain.NavigationHolder
@@ -34,7 +42,7 @@ import com.yandex.navikitdemo.domain.helpers.KeyValueStorage
 import com.yandex.navikitdemo.domain.helpers.NavigationDeserializer
 import com.yandex.navikitdemo.domain.helpers.NavigationFactory
 import com.yandex.navikitdemo.domain.helpers.NavigationSuspenderManager
-import com.yandex.navikitdemo.domain.helpers.SettingsBinderManager
+import com.yandex.navikitdemo.domain.smartroute.SmartRoutePlanningFactory
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -60,6 +68,9 @@ abstract class AppModule {
 
     @Binds
     abstract fun navigationManager(impl: NavigationManagerImpl): NavigationManager
+
+    @Binds
+    abstract fun smartRouteWithViaPlanningFactory(impl: SmartRoutePlanningFactoryImpl): SmartRoutePlanningFactory
 
     @Binds
     abstract fun requestPointsManager(impl: RequestPointsManagerImpl): RequestPointsManager
@@ -92,6 +103,7 @@ abstract class AppModule {
     abstract fun annotationsManager(impl: AnnotationsManagerImpl): AnnotationsManager
 
     companion object {
+
         @Singleton
         @Provides
         fun notificationManager(
@@ -99,5 +111,18 @@ abstract class AppModule {
         ): NotificationManager {
             return application.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         }
+
+        @Singleton
+        @Provides
+        fun drivingRouter(): DrivingRouter {
+            return DirectionsFactory.getInstance().createDrivingRouter(DrivingRouterType.COMBINED)
+        }
+
+        @Singleton
+        @Provides
+        fun searchManager(): SearchManager {
+            return SearchFactory.getInstance().createSearchManager(SearchManagerType.COMBINED)
+        }
+
     }
 }

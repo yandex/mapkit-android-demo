@@ -4,7 +4,9 @@ import android.content.Context
 import com.yandex.mapkit.annotations.AnnotationLanguage
 import com.yandex.mapkit.directions.driving.VehicleType
 import com.yandex.navikitdemo.domain.SettingsManager
+import com.yandex.navikitdemo.domain.models.ChargingType
 import com.yandex.navikitdemo.domain.models.EcoClass
+import com.yandex.navikitdemo.domain.models.FuelConnectorType
 import com.yandex.navikitdemo.domain.models.JamsMode
 import com.yandex.navikitdemo.domain.models.StyleMode
 import com.yandex.navikitdemo.ui.R
@@ -17,6 +19,7 @@ enum class CheckListType {
     ECO_CLASS,
     ANNOTATION_LANGUAGE,
     STYLE_MODE,
+    CHARGING_TYPE,
 }
 
 data class CheckListState(
@@ -37,25 +40,35 @@ class CheckListInteractor @Inject constructor(
                 settingsManager.jamsMode.value.toString(),
                 JamsMode.values().map { it.toString() }
             )
+
             CheckListType.VEHICLE_TYPE -> CheckListState(
                 context.getString(R.string.settings_checklist_vehicle_type),
                 settingsManager.vehicleType.value.toString(),
                 VehicleType.values().map { it.toString() }
             )
+
             CheckListType.ECO_CLASS -> CheckListState(
                 context.getString(R.string.settings_checklist_eco_class),
                 settingsManager.ecoClass.value.toString(),
                 EcoClass.values().map { it.toString() }
             )
+
             CheckListType.ANNOTATION_LANGUAGE -> CheckListState(
                 context.getString(R.string.settings_checklist_annotation_language),
                 settingsManager.annotationLanguage.value.toString(),
                 AnnotationLanguage.values().map { it.toString() }
             )
+
             CheckListType.STYLE_MODE -> CheckListState(
                 context.getString(R.string.settings_checklist_style_mode),
                 settingsManager.styleMode.value.toString(),
                 StyleMode.values().map { it.toString() }
+            )
+
+            CheckListType.CHARGING_TYPE -> CheckListState(
+                context.getString(R.string.settings_checklist_car_type),
+                settingsManager.chargingType.value.displayName,
+                ChargingType.values().map { it.displayName }
             )
         }
     }
@@ -65,11 +78,21 @@ class CheckListInteractor @Inject constructor(
             CheckListType.JAMS -> settingsManager.jamsMode.value = JamsMode.values()[index]
             CheckListType.VEHICLE_TYPE -> settingsManager.vehicleType.value =
                 VehicleType.values()[index]
+
             CheckListType.ECO_CLASS -> settingsManager.ecoClass.value = EcoClass.values()[index]
             CheckListType.ANNOTATION_LANGUAGE -> settingsManager.annotationLanguage.value =
                 AnnotationLanguage.values()[index]
+
             CheckListType.STYLE_MODE -> settingsManager.styleMode.value =
                 StyleMode.values()[index]
+
+            CheckListType.CHARGING_TYPE -> {
+                settingsManager.chargingType.value = ChargingType.values()[index]
+                val fuelConnectorType =
+                    FuelConnectorType.getConnectorByChargingType(settingsManager.chargingType.value)
+                        .first()
+                settingsManager.fuelConnectorTypes.value = setOf(fuelConnectorType)
+            }
         }
     }
 }

@@ -1,6 +1,5 @@
 package com.yandex.navikitdemo.data.helpers
 
-import com.yandex.mapkit.road_events_layer.RoadEventsLayer
 import com.yandex.navikitdemo.domain.AnnotationsManager
 import com.yandex.navikitdemo.domain.NavigationHolder
 import com.yandex.navikitdemo.domain.NavigationLayerManager
@@ -24,7 +23,6 @@ import javax.inject.Inject
 class SettingsBinderManagerImpl @Inject constructor(
     private val settings: SettingsManager,
     private val simulationManager: SimulationManager,
-    private val roadEventsLayer: RoadEventsLayer,
     private val navigationLayerManager: NavigationLayerManager,
     private val navigationStyleManager: NavigationStyleManager,
     private val annotationsManager: AnnotationsManager,
@@ -36,7 +34,6 @@ class SettingsBinderManagerImpl @Inject constructor(
     override fun applySettingsChanges(scope: CoroutineScope) {
         with(scope) {
             simulationManager()
-            roadEventsLayer()
             navigationLayer()
             navigation()
             camera()
@@ -49,16 +46,6 @@ class SettingsBinderManagerImpl @Inject constructor(
         settings.simulationSpeed.changes()
             .onEach {
                 simulationManager.setSimulationSpeed(it.toDouble())
-            }
-            .launchIn(this)
-    }
-
-    private fun CoroutineScope.roadEventsLayer() {
-        settings.roadEventsOnRoute
-            .map { (tag, setting) -> setting.changes().map { tag to it } }
-            .merge()
-            .onEach { (tag, visibility) ->
-                roadEventsLayer.setRoadEventVisibleOnRoute(tag, visibility)
             }
             .launchIn(this)
     }
@@ -88,6 +75,14 @@ class SettingsBinderManagerImpl @Inject constructor(
 
         navigationHolder.navigation
             .onEach { navigationLayerManager.recreateNavigationLayer() }
+            .launchIn(this)
+
+        settings.roadEventsOnRoute
+            .map { (tag, settings) -> settings.changes().map {tag to it} }
+            .merge()
+            .onEach { (tag, visibility) ->
+                navigationLayerManager.setRoadEventVisibleOnRoute(tag, visibility)
+            }
             .launchIn(this)
     }
 

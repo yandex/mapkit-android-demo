@@ -66,7 +66,8 @@ public class MasstransitRoutingActivity extends Activity
 
         TransitOptions transitOptions = new TransitOptions(FilterVehicleTypes.NONE.value, new TimeOptions());
         boolean avoidSteep = false;
-        RouteOptions routeOptions = new RouteOptions(new FitnessOptions(avoidSteep));
+        boolean avoidStairs = false;
+        RouteOptions routeOptions = new RouteOptions(new FitnessOptions(avoidSteep, avoidStairs));
         List<RequestPoint> points = new ArrayList<RequestPoint>();
         points.add(new RequestPoint(
                 MASSTRANSIT_ROUTE_START_LOCATION, RequestPointType.WAYPOINT, null, null));

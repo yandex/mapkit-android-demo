@@ -3,6 +3,7 @@ package com.yandex.navikitdemo.domain
 import com.yandex.mapkit.ScreenRect
 import com.yandex.mapkit.directions.driving.DrivingRoute
 import com.yandex.mapkit.navigation.guidance_camera.CameraMode
+import com.yandex.mapkit.road_events.EventTag
 import kotlinx.coroutines.flow.StateFlow
 
 interface NavigationLayerManager {
@@ -22,4 +23,5 @@ interface NavigationLayerManager {
     fun setAutoZoom(enabled: Boolean)
     fun setFollowingModeZoomOffset(offset: Float)
     fun setOverviewRect(rect: ScreenRect)
+    fun setRoadEventVisibleOnRoute(tag: EventTag, visible: Boolean)
 }

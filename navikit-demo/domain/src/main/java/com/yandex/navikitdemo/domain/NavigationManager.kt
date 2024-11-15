@@ -4,13 +4,11 @@ import com.yandex.mapkit.LocalizedValue
 import com.yandex.mapkit.RequestPoint
 import com.yandex.mapkit.annotations.AnnotationLanguage
 import com.yandex.mapkit.directions.driving.DrivingRoute
-import com.yandex.mapkit.location.Location
-import com.yandex.mapkit.navigation.automotive.Annotator
-import com.yandex.mapkit.navigation.automotive.Navigation
 import com.yandex.mapkit.navigation.automotive.SpeedLimitStatus
 import com.yandex.mapkit.navigation.automotive.SpeedLimitsPolicy
 import com.yandex.mapkit.navigation.automotive.UpcomingLaneSign
 import com.yandex.mapkit.navigation.automotive.UpcomingManoeuvre
+import com.yandex.navikitdemo.domain.models.NavigationState
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
 
@@ -25,6 +23,8 @@ interface NavigationManager : LocationManager {
     val speedLimitStatus: SpeedLimitStatus
     val speedLimitTolerance: Double
     val speedLimitsPolicy: SpeedLimitsPolicy
+
+    val navigationRouteState: Flow<NavigationState>
 
     fun requestRoutes(points: List<RequestPoint>)
     fun startGuidance(route: DrivingRoute)
