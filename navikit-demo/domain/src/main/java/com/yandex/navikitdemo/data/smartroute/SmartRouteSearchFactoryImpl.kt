@@ -36,7 +36,7 @@ class SmartRouteSearchFactoryImpl(
             .setFilters(options.filterTypeCollection())
 
         val geoObject = findChargingPoints(polyline, query, searchOptions)
-            ?.minByOrNull { Geo.distance(thresholdPoint, it.geometry.firstOrNull()?.point) }
+            ?.minByOrNull { Geo.distance(thresholdPoint, it.geometry.firstOrNull()?.point!!) }
             ?: return null
 
         return geoObject

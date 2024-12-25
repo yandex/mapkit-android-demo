@@ -138,6 +138,10 @@ class NavigationManagerImpl @Inject constructor(
             navigationRouteStateImpl.value = NavigationState.Loading
         }
 
+        override fun onMatchRouteResolvingRequested() {
+            navigationRouteStateImpl.value = NavigationState.Loading
+        }
+
         override fun onRoutesBuilt() {
             navigationRouteStateImpl.value = NavigationState.Success(navigation.routes)
         }

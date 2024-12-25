@@ -98,10 +98,12 @@ public class DrivingActivity extends Activity implements DrivingSession.DrivingR
                 DRIVING_ROUTE_START_LOCATION,
                 RequestPointType.WAYPOINT,
                 null,
+                null, 
                 null));
         requestPoints.add(new RequestPoint(
                 DRIVING_ROUTE_END_LOCATION,
                 RequestPointType.WAYPOINT,
+                null,
                 null,
                 null));
         drivingSession = drivingRouter.requestRoutes(requestPoints, drivingOptions, vehicleOptions, this);

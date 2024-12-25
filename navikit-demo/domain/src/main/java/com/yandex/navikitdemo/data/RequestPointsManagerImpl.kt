@@ -62,5 +62,5 @@ private fun createRequestPoints(from: Point, via: List<Point>, to: Point): List<
 }
 
 private fun Point.toRequestPoint(type: RequestPointType): RequestPoint {
-    return RequestPoint(this, type, null, null)
+    return RequestPoint(this, type, null, null, null)
 }

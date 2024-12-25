@@ -70,9 +70,9 @@ public class MasstransitRoutingActivity extends Activity
         RouteOptions routeOptions = new RouteOptions(new FitnessOptions(avoidSteep, avoidStairs));
         List<RequestPoint> points = new ArrayList<RequestPoint>();
         points.add(new RequestPoint(
-                MASSTRANSIT_ROUTE_START_LOCATION, RequestPointType.WAYPOINT, null, null));
+                MASSTRANSIT_ROUTE_START_LOCATION, RequestPointType.WAYPOINT, null, null, null));
         points.add(new RequestPoint(
-                MASSTRANSIT_ROUTE_END_LOCATION, RequestPointType.WAYPOINT, null, null));
+                MASSTRANSIT_ROUTE_END_LOCATION, RequestPointType.WAYPOINT, null, null, null));
         mtRouter = TransportFactory.getInstance().createMasstransitRouter();
         mtRouter.requestRoutes(points, transitOptions, routeOptions, this);
     }

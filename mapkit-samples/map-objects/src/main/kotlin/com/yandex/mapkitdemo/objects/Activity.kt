@@ -17,6 +17,7 @@ import com.yandex.mapkit.map.ClusterListener
 import com.yandex.mapkit.map.ClusterTapListener
 import com.yandex.mapkit.map.ClusterizedPlacemarkCollection
 import com.yandex.mapkit.map.IconStyle
+import com.yandex.mapkit.map.LineStyle
 import com.yandex.mapkit.map.MapObject
 import com.yandex.mapkit.map.MapObjectCollection
 import com.yandex.mapkit.map.MapObjectDragListener
@@ -176,10 +177,12 @@ class Activity : AppCompatActivity() {
 
         // Add a polyline
         val polylineMapObject = collection.addPolyline(GeometryProvider.polyline).apply {
-            strokeWidth = 5f
+            style = LineStyle().apply {
+                strokeWidth = 5f
+                outlineWidth = 1f
+                outlineColor = ContextCompat.getColor(this@Activity, CommonColors.black)
+            }
             setStrokeColor(ContextCompat.getColor(this@Activity, CommonColors.gray))
-            outlineWidth = 1f
-            outlineColor = ContextCompat.getColor(this@Activity, CommonColors.black)
             addTapListener(polylineTapListener)
         }
 

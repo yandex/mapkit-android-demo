@@ -103,7 +103,7 @@ class SimpleSmartRoutePlanningFactoryImpl(
             add(SmartRoutePoint.RegularPoint(from))
             addAll(viaGeoObjects.map { geoObject ->
                 SmartRoutePoint.ChargingPoint(
-                    RequestPoint(geoObject.point(), RequestPointType.WAYPOINT, null, null),
+                    RequestPoint(geoObject.point(), RequestPointType.WAYPOINT, null, null, null),
                     geoObject
                 )
             })
