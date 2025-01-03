@@ -26,7 +26,7 @@ android {
 }
 
 dependencies {
-    implementation "com.yandex.android:maps.mobile:4.10.0-navikit"
+    implementation "com.yandex.android:maps.mobile:4.10.1-navikit"
 
     implementation "androidx.core:core-ktx:${rootProject.ext.coreKtxVersion}"
     implementation "androidx.appcompat:appcompat:${rootProject.ext.appcompatVersion}"
