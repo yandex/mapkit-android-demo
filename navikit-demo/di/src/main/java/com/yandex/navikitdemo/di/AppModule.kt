@@ -17,15 +17,13 @@ import com.yandex.navikitdemo.data.NavigationStyleManagerImpl
 import com.yandex.navikitdemo.data.RequestPointsManagerImpl
 import com.yandex.navikitdemo.data.SettingsManagerImpl
 import com.yandex.navikitdemo.data.SimulationManagerImpl
-import com.yandex.navikitdemo.data.smartroute.SmartRouteSearchFactoryImpl
-import com.yandex.navikitdemo.data.SpeakerImpl
+import com.yandex.navikitdemo.data.SpeakerManagerImpl
 import com.yandex.navikitdemo.data.VehicleOptionsManagerImpl
 import com.yandex.navikitdemo.data.helpers.BackgroundServiceManagerImpl
 import com.yandex.navikitdemo.data.helpers.KeyValueStorageImpl
 import com.yandex.navikitdemo.data.helpers.NavigationDeserializerImpl
 import com.yandex.navikitdemo.data.helpers.NavigationFactoryImpl
 import com.yandex.navikitdemo.data.helpers.NavigationSuspenderManagerImpl
-import com.yandex.navikitdemo.data.smartroute.SimpleSmartRoutePlanningFactoryImpl
 import com.yandex.navikitdemo.data.smartroute.SmartRoutePlanningFactoryImpl
 import com.yandex.navikitdemo.domain.AnnotationsManager
 import com.yandex.navikitdemo.domain.LocationManager
@@ -97,10 +95,10 @@ abstract class AppModule {
     abstract fun navigationHolder(impl: NavigationHolderImpl): NavigationHolder
 
     @Binds
-    abstract fun speakerManager(impl: SpeakerImpl): SpeakerManager
+    abstract fun annotationsManager(impl: AnnotationsManagerImpl): AnnotationsManager
 
     @Binds
-    abstract fun annotationsManager(impl: AnnotationsManagerImpl): AnnotationsManager
+    abstract fun speakerManager(impl: SpeakerManagerImpl): SpeakerManager
 
     companion object {
 

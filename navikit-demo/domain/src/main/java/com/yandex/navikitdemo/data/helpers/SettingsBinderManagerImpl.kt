@@ -36,8 +36,8 @@ class SettingsBinderManagerImpl @Inject constructor(
             simulationManager()
             navigationLayer()
             navigation()
-            camera()
             annotationsManager()
+            camera()
             background()
         }
     }
@@ -112,22 +112,6 @@ class SettingsBinderManagerImpl @Inject constructor(
         }.launchIn(this)
     }
 
-    private fun CoroutineScope.camera() {
-        combine(
-            settings.autoCamera.changes(),
-            settings.autoRotation.changes(),
-            settings.autoZoom.changes(),
-            settings.zoomOffset.changes(),
-        ) { autoCamera, autoRotation, autoZoom, offset ->
-            navigationLayerManager.apply {
-                setSwitchModesAutomatically(autoCamera)
-                setAutoRotation(autoRotation)
-                setAutoZoom(autoZoom)
-                setFollowingModeZoomOffset(offset)
-            }
-        }.launchIn(this)
-    }
-
     private fun CoroutineScope.annotationsManager() {
         settings.annotatedEvents
             .map { (event, setting) ->
@@ -154,7 +138,23 @@ class SettingsBinderManagerImpl @Inject constructor(
             .launchIn(this)
     }
 
-    fun CoroutineScope.background() {
+    private fun CoroutineScope.camera() {
+        combine(
+            settings.autoCamera.changes(),
+            settings.autoRotation.changes(),
+            settings.autoZoom.changes(),
+            settings.zoomOffset.changes(),
+        ) { autoCamera, autoRotation, autoZoom, offset ->
+            navigationLayerManager.apply {
+                setSwitchModesAutomatically(autoCamera)
+                setAutoRotation(autoRotation)
+                setAutoZoom(autoZoom)
+                setFollowingModeZoomOffset(offset)
+            }
+        }.launchIn(this)
+    }
+
+    private fun CoroutineScope.background() {
         settings.background.changes()
             .onEach {
                 if (it && navigationManager.isGuidanceActive) {

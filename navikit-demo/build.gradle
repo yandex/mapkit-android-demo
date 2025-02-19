@@ -26,6 +26,7 @@ ext {
     materialVersion = "1.8.0"
     hiltVersion = "2.45"
     adaptersDelegatesVersion = "4.3.2"
+    exoPlayerVersion = "1.1.1"
 
     mapkitApiKey = getMapkitApiKey()
 }

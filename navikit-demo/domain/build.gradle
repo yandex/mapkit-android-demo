@@ -26,12 +26,13 @@ android {
 }
 
 dependencies {
-    implementation "com.yandex.android:maps.mobile:4.10.1-navikit"
+    implementation "com.yandex.android:maps.mobile:4.11.0-navikit"
 
     implementation "androidx.core:core-ktx:${rootProject.ext.coreKtxVersion}"
     implementation "androidx.appcompat:appcompat:${rootProject.ext.appcompatVersion}"
 
     implementation "com.google.dagger:hilt-android:${rootProject.ext.hiltVersion}"
+    implementation project(':com.yandex.navikitdemo.annotations')
     kapt "com.google.dagger:hilt-compiler:${rootProject.ext.hiltVersion}"
 }
 

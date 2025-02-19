@@ -26,4 +26,6 @@ include ':com.yandex.navikitdemo.ui'
 project(':com.yandex.navikitdemo.ui').projectDir = file('ui')
 include ':com.yandex.navikitdemo.domain'
 project(':com.yandex.navikitdemo.domain').projectDir = file('domain')
+include(':com.yandex.navikitdemo.annotations')
+project(':com.yandex.navikitdemo.annotations').projectDir = file('annotations')
 

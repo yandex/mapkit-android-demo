@@ -59,6 +59,7 @@ class SettingsManagerImpl @Inject constructor(
         enum("annotationLanguage", defaultAnnotationsLanguage, AnnotationLanguage::class.java)
     override val muteAnnotations = boolean("muteAnnotations", false)
     override val textAnnotations = boolean("textAnnotations", true)
+    override val preRecordedAnnotations = boolean("preRecordedAnnotations", false)
 
     // Driving Options
     override val avoidTolls = boolean("avoidTolls", false)
@@ -73,6 +74,8 @@ class SettingsManagerImpl @Inject constructor(
     override val showPredicted = boolean("showPredicted", false)
     override val balloonsGeometry = boolean("balloonsGeometry", false)
     override val focusRectsAutoUpdate = boolean("focusRectsAutoUpdate", true)
+    override val hdMode = boolean("hdMode", true)
+    override val poi3DModels = boolean("poi3DModels", true)
 
     // Camera
     override val autoZoom = boolean("autoZoom", true)

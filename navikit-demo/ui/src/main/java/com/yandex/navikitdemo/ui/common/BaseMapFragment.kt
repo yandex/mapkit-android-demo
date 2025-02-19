@@ -14,6 +14,7 @@ import com.yandex.mapkit.logo.Padding
 import com.yandex.mapkit.logo.VerticalAlignment
 import com.yandex.mapkit.map.MapWindow
 import com.yandex.mapkit.map.SizeChangedListener
+import com.yandex.navikitdemo.data.StyleManagerImpl
 import com.yandex.navikitdemo.domain.CameraManager
 import com.yandex.navikitdemo.domain.SettingsManager
 import com.yandex.navikitdemo.domain.helpers.AlertDialogFactory
@@ -41,6 +42,9 @@ abstract class BaseMapFragment(@LayoutRes resId: Int) : Fragment(resId) {
 
     @Inject
     lateinit var alertDialogFactory: AlertDialogFactory
+
+    @Inject
+    lateinit var styleManager: StyleManagerImpl
 
     /**
      * Represents map's focus rect and point.
@@ -73,7 +77,10 @@ abstract class BaseMapFragment(@LayoutRes resId: Int) : Fragment(resId) {
             setMinusButtonClickCallback { cameraManager.changeZoomByStep(CameraManager.ZoomStep.MINUS) }
         }
 
-        cameraManager.start(viewLifecycleOwner.lifecycleScope)
+        with(viewLifecycleOwner.lifecycleScope) {
+            cameraManager.start(this)
+            styleManager.start(this)
+        }
     }
 
     /**

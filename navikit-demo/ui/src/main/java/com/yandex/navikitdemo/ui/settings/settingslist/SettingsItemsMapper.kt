@@ -52,7 +52,9 @@ class SettingsItemsMapper @Inject constructor(
                 SettingsItem.Toggle("Text Annotations", settingsManager.textAnnotations),
                 SettingsItem.Details("Display annotations using Toast popup"),
                 SettingsItem.NextScreen(SettingsScreen.ANNOTATED_EVENTS),
-                SettingsItem.Details("Setting for each event whether it will be annotated or not")
+                SettingsItem.Details("Setting for each event whether it will be annotated or not"),
+                SettingsItem.Toggle("Use pre-recorded annotations", settingsManager.preRecordedAnnotations),
+                SettingsItem.Details("Available only in Russian and English languages"),
             )
             SettingsScreen.ANNOTATED_EVENTS -> buildList {
                 add(SettingsItem.SectionTitle("Annotated Events"))
@@ -84,6 +86,8 @@ class SettingsItemsMapper @Inject constructor(
                 SettingsItem.Toggle("Traffics Lights", settingsManager.trafficLight),
                 SettingsItem.Toggle("Show Predicted", settingsManager.showPredicted),
                 SettingsItem.Toggle("Balloons Geometry", settingsManager.balloonsGeometry),
+                SettingsItem.Toggle("HD mode", settingsManager.hdMode),
+                SettingsItem.Toggle("POI 3D models", settingsManager.poi3DModels),
             )
             SettingsScreen.SIMULATION -> listOf(
                 SettingsItem.Toggle("Simulation", settingsManager.simulation),
