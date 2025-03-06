@@ -7,6 +7,7 @@
 
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_LOCATION"/>
 
     <application
         android:allowBackup="true"
@@ -17,7 +18,9 @@
         tools:targetApi="31"
         android:name=".App">
 
-        <service android:name=".service.BackgroundGuidanceService" />
+        <service
+            android:name=".service.BackgroundGuidanceService"
+            android:foregroundServiceType="location"/>
 
         <activity
             android:name=".AppActivity"

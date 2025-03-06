@@ -8,12 +8,12 @@ plugins {
 
 android {
     namespace 'com.yandex.navikitdemo.ui'
-    compileSdk 33
-    buildToolsVersion "33.0.0"
+    compileSdk 34
+    buildToolsVersion "34.0.0"
 
     defaultConfig {
         minSdk 26
-        targetSdk 33
+        targetSdk 34
     }
 
     compileOptions {
@@ -31,7 +31,7 @@ android {
 }
 
 dependencies {
-    implementation "com.yandex.android:maps.mobile:4.11.0-navikit"
+    implementation "com.yandex.android:maps.mobile:4.12.0-navikit"
 
     implementation project(":com.yandex.navikitdemo.domain")
 
