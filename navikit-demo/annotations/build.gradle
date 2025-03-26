@@ -24,6 +24,6 @@ android {
 }
 
 dependencies {
-    implementation "com.yandex.android:maps.mobile:4.12.0-navikit"
+    implementation "com.yandex.android:maps.mobile:4.13.0-navikit"
     implementation "androidx.media3:media3-exoplayer:${rootProject.ext.exoPlayerVersion}"
 }
