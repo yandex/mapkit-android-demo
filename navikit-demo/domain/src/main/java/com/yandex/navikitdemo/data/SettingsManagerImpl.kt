@@ -64,7 +64,12 @@ class SettingsManagerImpl @Inject constructor(
     // Driving Options
     override val avoidTolls = boolean("avoidTolls", false)
     override val avoidUnpaved = boolean("avoidUnpaved", false)
-    override val avoidPoorConditions = boolean("avoidPoorConditions", false)
+    override val avoidPoorCondition = boolean("avoidPoorCondition", false)
+    override val avoidRailwayCrossing = boolean("avoidRailwayCrossing", false)
+    override val avoidBoatFerry = boolean("avoidBoatFerry", false)
+    override val avoidFordCrossing = boolean("avoidFordCrossing", false)
+    override val avoidTunnel = boolean("avoidTunnel", false)
+    override val avoidHighway = boolean("avoidHighway", false)
 
     // Navigation Layer
     override val jamsMode =

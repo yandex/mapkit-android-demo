@@ -14,6 +14,7 @@ internal val SpeakerPhraseToken.path: String
         SpeakerPhraseToken.THEN -> "Then"
         SpeakerPhraseToken.AND -> "And"
         SpeakerPhraseToken.STRAIGHT -> "Forward"
+        SpeakerPhraseToken.CONTINUE_STRAIGHT -> "ContinueStraight"
         SpeakerPhraseToken.OVER -> "Over"
         SpeakerPhraseToken.EXIT -> "Exit"
         SpeakerPhraseToken.AHEAD -> "Ahead"
@@ -59,6 +60,8 @@ internal val SpeakerPhraseToken.path: String
         SpeakerPhraseToken.FORBIDDEN_STOP_CAMERA -> "ForbiddenStopCamera"
         SpeakerPhraseToken.MOBILE_CAMERA -> "MobileCamera"
         SpeakerPhraseToken.SPEED_LIMIT_CAMERA -> "SpeedCamera"
+        SpeakerPhraseToken.TRAFFIC_CAMERA -> "TrafficCamera"
+        SpeakerPhraseToken.POLICE_PATROL -> "PolicePatrol"
 
         SpeakerPhraseToken.AT_MIDDLE -> "AtMiddle"
         SpeakerPhraseToken.AT_LEFT -> "AtLeft"

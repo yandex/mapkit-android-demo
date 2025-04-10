@@ -50,7 +50,12 @@ interface SettingsManager {
     // Driving Options
     val avoidTolls: SettingModel<Boolean>
     val avoidUnpaved: SettingModel<Boolean>
-    val avoidPoorConditions: SettingModel<Boolean>
+    val avoidPoorCondition: SettingModel<Boolean>
+    val avoidRailwayCrossing: SettingModel<Boolean>
+    val avoidBoatFerry: SettingModel<Boolean>
+    val avoidFordCrossing: SettingModel<Boolean>
+    val avoidTunnel: SettingModel<Boolean>
+    val avoidHighway: SettingModel<Boolean>
 
     // Navigation Layer
     val jamsMode: SettingModel<JamsMode>

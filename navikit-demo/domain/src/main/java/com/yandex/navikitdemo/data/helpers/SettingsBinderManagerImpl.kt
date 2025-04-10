@@ -1,5 +1,6 @@
 package com.yandex.navikitdemo.data.helpers
 
+import com.yandex.mapkit.directions.driving.AvoidanceFlags
 import com.yandex.navikitdemo.domain.AnnotationsManager
 import com.yandex.navikitdemo.domain.NavigationHolder
 import com.yandex.navikitdemo.domain.NavigationLayerManager
@@ -102,13 +103,24 @@ class SettingsBinderManagerImpl @Inject constructor(
         combine(
             settings.avoidTolls.changes(),
             settings.avoidUnpaved.changes(),
-            settings.avoidPoorConditions.changes(),
-        ) { avoidTolls, avoidUnpaved, avoidPoorConditions ->
-            navigationManager.apply {
-                setAvoidTolls(avoidTolls)
-                setAvoidUnpaved(avoidUnpaved)
-                setAvoidPoorConditions(avoidPoorConditions)
-            }
+            settings.avoidPoorCondition.changes(),
+            settings.avoidRailwayCrossing.changes(),
+            settings.avoidBoatFerry.changes(),
+            settings.avoidFordCrossing.changes(),
+            settings.avoidTunnel.changes(),
+            settings.avoidHighway.changes(),
+        ) { avoidanceArray ->
+            val flags = AvoidanceFlags(
+                avoidanceArray[0],
+                avoidanceArray[1],
+                avoidanceArray[2],
+                avoidanceArray[3],
+                avoidanceArray[4],
+                avoidanceArray[5],
+                avoidanceArray[6],
+                avoidanceArray[7]
+            )
+            navigationManager.setAvoidanceFlags(flags)
         }.launchIn(this)
     }
 

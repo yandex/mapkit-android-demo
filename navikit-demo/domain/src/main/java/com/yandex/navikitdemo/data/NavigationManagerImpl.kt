@@ -3,6 +3,7 @@ package com.yandex.navikitdemo.data
 import com.yandex.mapkit.LocalizedValue
 import com.yandex.mapkit.RequestPoint
 import com.yandex.mapkit.annotations.AnnotationLanguage
+import com.yandex.mapkit.directions.driving.AvoidanceFlags
 import com.yandex.mapkit.directions.driving.DrivingRoute
 import com.yandex.mapkit.location.Location
 import com.yandex.mapkit.navigation.automotive.Navigation
@@ -219,16 +220,8 @@ class NavigationManagerImpl @Inject constructor(
         navigation.guidance.speedLimitTolerance = tolerance
     }
 
-    override fun setAvoidTolls(isAvoid: Boolean) {
-        navigation.isAvoidTolls = isAvoid
-    }
-
-    override fun setAvoidUnpaved(isAvoid: Boolean) {
-        navigation.isAvoidUnpaved = isAvoid
-    }
-
-    override fun setAvoidPoorConditions(isAvoid: Boolean) {
-        navigation.isAvoidPoorConditions = isAvoid
+    override fun setAvoidanceFlags(flags: AvoidanceFlags) {
+        navigation.avoidanceFlags = flags
     }
 
     private fun recreateNavigation(newInstance: Navigation) {

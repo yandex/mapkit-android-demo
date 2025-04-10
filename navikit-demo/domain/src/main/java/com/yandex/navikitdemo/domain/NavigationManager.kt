@@ -3,6 +3,7 @@ package com.yandex.navikitdemo.domain
 import com.yandex.mapkit.LocalizedValue
 import com.yandex.mapkit.RequestPoint
 import com.yandex.mapkit.annotations.AnnotationLanguage
+import com.yandex.mapkit.directions.driving.AvoidanceFlags
 import com.yandex.mapkit.directions.driving.DrivingRoute
 import com.yandex.mapkit.navigation.automotive.SpeedLimitStatus
 import com.yandex.mapkit.navigation.automotive.SpeedLimitsPolicy
@@ -37,9 +38,7 @@ interface NavigationManager : LocationManager {
     fun setAnnotationLanguage(language: AnnotationLanguage)
     fun setEnabledAlternatives(isEnabled: Boolean)
     fun setSpeedLimitTolerance(tolerance: Double)
-    fun setAvoidTolls(isAvoid: Boolean)
-    fun setAvoidUnpaved(isAvoid: Boolean)
-    fun setAvoidPoorConditions(isAvoid: Boolean)
+    fun setAvoidanceFlags(flags: AvoidanceFlags)
 }
 
 val NavigationManager.isGuidanceActive: Boolean

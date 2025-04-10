@@ -67,8 +67,16 @@ class SettingsItemsMapper @Inject constructor(
                 SettingsItem.Toggle("Avoid Unpaved Routes", settingsManager.avoidUnpaved),
                 SettingsItem.Toggle(
                     "Avoid Poor Conditions Routes",
-                    settingsManager.avoidPoorConditions
+                    settingsManager.avoidPoorCondition
                 ),
+                SettingsItem.Toggle(
+                    "Avoid Railway Crossings",
+                    settingsManager.avoidRailwayCrossing
+                ),
+                SettingsItem.Toggle("Avoid Boat Ferries", settingsManager.avoidBoatFerry),
+                SettingsItem.Toggle("Avoid Ford Crossings", settingsManager.avoidFordCrossing),
+                SettingsItem.Toggle("Avoid Tunnels", settingsManager.avoidTunnel),
+                SettingsItem.Toggle("Avoid Highways", settingsManager.avoidHighway)
             )
             SettingsScreen.CAMERA -> listOf(
                 SettingsItem.Toggle("Auto Camera", settingsManager.autoCamera),

@@ -1,5 +1,6 @@
 package com.yandex.navikitdemo.data.smartroute
 
+import com.yandex.mapkit.directions.driving.AvoidanceFlags
 import com.yandex.mapkit.directions.driving.DrivingOptions
 import com.yandex.navikitdemo.domain.SettingsManager
 import com.yandex.navikitdemo.domain.VehicleOptionsManager
@@ -21,7 +22,12 @@ class SmartRouteSettingsProvider @Inject constructor(
                 thresholdDistance.changes(),
                 avoidTolls.changes(),
                 avoidUnpaved.changes(),
-                avoidPoorConditions.changes()
+                avoidPoorCondition.changes(),
+                avoidRailwayCrossing.changes(),
+                avoidBoatFerry.changes(),
+                avoidFordCrossing.changes(),
+                avoidTunnel.changes(),
+                avoidHighway.changes(),
             ) { _ ->
                 smartRouteOptions()
             }
@@ -35,9 +41,16 @@ class SmartRouteSettingsProvider @Inject constructor(
             currentRangeLvl.value.toMeters(),
             thresholdDistance.value.toMeters(),
             DrivingOptions().also { options ->
-                options.avoidTolls = avoidTolls.value
-                options.avoidUnpaved = avoidUnpaved.value
-                options.avoidPoorConditions = avoidPoorConditions.value
+                options.avoidanceFlags = AvoidanceFlags(
+                    avoidTolls.value,
+                    avoidUnpaved.value,
+                    avoidPoorCondition.value,
+                    avoidRailwayCrossing.value,
+                    avoidBoatFerry.value,
+                    avoidFordCrossing.value,
+                    avoidTunnel.value,
+                    avoidHighway.value
+                )
             },
             vehicleOptionsManager.vehicleOptions(),
         )
@@ -45,4 +58,3 @@ class SmartRouteSettingsProvider @Inject constructor(
 
     private fun Float.toMeters(): Double = this * 1000.0
 }
-
