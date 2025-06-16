@@ -46,7 +46,7 @@ public class UserLocationActivity extends Activity implements UserLocationObject
         mapKit.resetLocationManagerToDefault();
         userLocationLayer = mapKit.createUserLocationLayer(mapView.getMapWindow());
         userLocationLayer.setVisible(true);
-        userLocationLayer.setHeadingEnabled(true);
+        userLocationLayer.setHeadingModeActive(true);
 
         userLocationLayer.setObjectListener(this);
     }
