@@ -4,6 +4,9 @@ plugins {
 
 android {
     namespace 'com.yandex.mapkitdemo.objects'
+    buildFeatures {
+        buildConfig true
+    }
 }
 
 dependencies {

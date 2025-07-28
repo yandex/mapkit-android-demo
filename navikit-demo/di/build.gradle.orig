@@ -33,7 +33,7 @@ dependencies {
     implementation project(":com.yandex.navikitdemo.domain")
     implementation project(":com.yandex.navikitdemo.ui")
 
-    implementation "com.yandex.android:maps.mobile:4.19.0-navikit"
+    implementation "com.yandex.maps:maps.mobile@aar"
 
     implementation "androidx.core:core-ktx:${rootProject.ext.coreKtxVersion}"
     implementation "androidx.appcompat:appcompat:${rootProject.ext.appcompatVersion}"
