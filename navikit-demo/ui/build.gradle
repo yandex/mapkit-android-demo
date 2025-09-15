@@ -17,12 +17,12 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_11
-        targetCompatibility JavaVersion.VERSION_11
+        sourceCompatibility JavaVersion.VERSION_21
+        targetCompatibility JavaVersion.VERSION_21
     }
 
     kotlinOptions {
-        jvmTarget = '11'
+        jvmTarget = 21
     }
 
     buildFeatures {
@@ -31,7 +31,7 @@ android {
 }
 
 dependencies {
-    implementation "com.yandex.android:maps.mobile:4.19.0-navikit"
+    implementation "com.yandex.android:maps.mobile:4.22.0-navikit"
 
     implementation project(":com.yandex.navikitdemo.domain")
 
