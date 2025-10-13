@@ -4,9 +4,6 @@ plugins {
 
 android {
     namespace 'com.yandex.mapkitdemo.search'
-    buildFeatures {
-        buildConfig true
-    }
 }
 
 dependencies {

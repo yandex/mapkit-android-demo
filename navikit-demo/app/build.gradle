@@ -8,13 +8,13 @@ plugins {
 
 android {
     namespace 'com.yandex.navikitdemo'
-    compileSdk 35
-    buildToolsVersion "35.0.0"
+    compileSdk 34
+    buildToolsVersion "34.0.0"
 
     defaultConfig {
         applicationId "com.yandex.navikitdemo"
         minSdk 26
-        targetSdk 35
+        targetSdk 34
         versionCode 1
         versionName "1.0"
 
@@ -23,16 +23,15 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_21
-        targetCompatibility JavaVersion.VERSION_21
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 
     kotlinOptions {
-        jvmTarget = 21
+        jvmTarget = '1.8'
     }
 
     buildFeatures {
-        buildConfig true
         viewBinding true
     }
 
@@ -59,9 +58,9 @@ dependencies {
     implementation project(":com.yandex.navikitdemo.domain")
     implementation project(":com.yandex.navikitdemo.ui")
 
-    implementation "com.yandex.android:maps.mobile:4.24.0-navikit"
-    implementation "com.yandex.mapkit.styling:automotivenavigation:4.24.0"
-    implementation "com.yandex.mapkit.styling:roadevents:4.24.0"
+    implementation "com.yandex.android:maps.mobile:4.17.2-navikit"
+    implementation "com.yandex.mapkit.styling:automotivenavigation:4.17.2"
+    implementation "com.yandex.mapkit.styling:roadevents:4.17.2"
 
     implementation "androidx.appcompat:appcompat:${rootProject.ext.appcompatVersion}"
     implementation "androidx.constraintlayout:constraintlayout:${rootProject.ext.constraintlayoutVersion}"

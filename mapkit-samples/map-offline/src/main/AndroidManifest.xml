@@ -6,8 +6,8 @@
         android:name=".App"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/BaseAppTheme"
-        tools:targetApi="35">
+        android:theme="@style/Theme.AppCompat.DayNight.DarkActionBar"
+        tools:targetApi="31">
 
         <activity
             android:name=".ui.Activity"

@@ -4,9 +4,6 @@ plugins {
 
 android {
     namespace 'com.yandex.mapkitdemo.interaction'
-    buildFeatures {
-        buildConfig true
-    }
 }
 
 dependencies {

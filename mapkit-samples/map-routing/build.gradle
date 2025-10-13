@@ -4,9 +4,6 @@ plugins {
 
 android {
     namespace 'com.yandex.mapkitdemo.routing'
-    buildFeatures {
-        buildConfig true
-    }
 }
 
 dependencies {

@@ -5,9 +5,6 @@ plugins {
 
 android {
     namespace 'com.yandex.mapkitdemo.offline'
-    buildFeatures {
-        buildConfig true
-    }
 }
 
 dependencies {

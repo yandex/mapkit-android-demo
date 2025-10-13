@@ -7,25 +7,21 @@ plugins {
 
 android {
     namespace 'com.yandex.navikitdemo.di'
-    compileSdk 35
-    buildToolsVersion "35.0.0"
+    compileSdk 34
+    buildToolsVersion "34.0.0"
 
     defaultConfig {
         minSdk 26
-        targetSdk 35
+        targetSdk 34
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_21
-        targetCompatibility JavaVersion.VERSION_21
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 
     kotlinOptions {
-        jvmTarget = 21
-    }
-
-    buildFeatures {
-        buildConfig true
+        jvmTarget = '1.8'
     }
 }
 
@@ -33,7 +29,7 @@ dependencies {
     implementation project(":com.yandex.navikitdemo.domain")
     implementation project(":com.yandex.navikitdemo.ui")
 
-    implementation "com.yandex.android:maps.mobile:4.24.0-navikit"
+    implementation "com.yandex.android:maps.mobile:4.17.2-navikit"
 
     implementation "androidx.core:core-ktx:${rootProject.ext.coreKtxVersion}"
     implementation "androidx.appcompat:appcompat:${rootProject.ext.appcompatVersion}"

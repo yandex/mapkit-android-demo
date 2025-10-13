@@ -40,8 +40,6 @@ internal val SpeakerPhraseToken.path: String
         SpeakerPhraseToken.TURN_BACK -> "TurnBack"
         SpeakerPhraseToken.BOARD_FERRY -> "BoardFerry"
         SpeakerPhraseToken.ENTER_ROUNDABOUT -> "InCircularMovement"
-        SpeakerPhraseToken.LEFT_TURN -> "LeftTurn"
-        SpeakerPhraseToken.RIGHT_TURN -> "RightTurn"
 
         SpeakerPhraseToken.ROUTE_UPDATED -> "RouteRecalculated"
         SpeakerPhraseToken.ROUTE_UPDATED_TO_TOLL_ROAD -> "RouteUpdatedToTollRoad"
@@ -281,20 +279,4 @@ internal val SpeakerPhraseToken.path: String
         SpeakerPhraseToken.HY_EIGHTY_THREE -> "HyEightyThree"
         SpeakerPhraseToken.HY_NINETY_TWO -> "HyNinetyTwo"
         SpeakerPhraseToken.HY_NINETY_THREE -> "HyNinetyThree"
-
-        
-        SpeakerPhraseToken.ELEVATOR_DOWN -> "ElevatorDown"
-        SpeakerPhraseToken.ELEVATOR_UP -> "ElevatorUp"
-        SpeakerPhraseToken.ESCALATOR -> "Escalator"
-        SpeakerPhraseToken.ESCALATOR_DOWN -> "EscalatorDown"
-        SpeakerPhraseToken.ESCALATOR_UP -> "EscalatorUp"
-        SpeakerPhraseToken.TRAVOLATOR -> "Travolator"
-        SpeakerPhraseToken.TRAVOLATOR_DOWN -> "TravolatorDown"
-        SpeakerPhraseToken.TRAVOLATOR_UP -> "TravolatorUp"
-
-        SpeakerPhraseToken.AT_FIRST_EXIT -> "AtFirstExit"
-        SpeakerPhraseToken.AT_SECOND_EXIT -> "AtSecondExit"
-        SpeakerPhraseToken.AT_THIRD_EXIT -> "AtThirdExit"
-        SpeakerPhraseToken.AT_FOURTH_EXIT -> "AtFourthExit"
-        SpeakerPhraseToken.AT_FIFTH_EXIT -> "AtFifthExit"
     }

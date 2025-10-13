@@ -4,9 +4,6 @@ plugins {
 
 android {
     namespace 'com.yandex.mapkitdemo.placemark'
-    buildFeatures {
-        buildConfig true
-    }
 }
 
 dependencies {
