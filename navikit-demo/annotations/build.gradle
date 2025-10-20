@@ -5,25 +5,29 @@ plugins {
 
 android {
     namespace 'com.yandex.navikitdemo.annotations'
-    compileSdk 34
-    buildToolsVersion "34.0.0"
+    compileSdk 35
+    buildToolsVersion "35.0.0"
 
     defaultConfig {
         minSdk 26
-        targetSdk 34
+        targetSdk 35
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_21
+        targetCompatibility JavaVersion.VERSION_21
     }
 
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = 21
+    }
+
+    buildFeatures {
+        buildConfig true
     }
 }
 
 dependencies {
-    implementation "com.yandex.android:maps.mobile:4.17.2-navikit"
+    implementation "com.yandex.android:maps.mobile:4.25.0-navikit"
     implementation "androidx.media3:media3-exoplayer:${rootProject.ext.exoPlayerVersion}"
 }

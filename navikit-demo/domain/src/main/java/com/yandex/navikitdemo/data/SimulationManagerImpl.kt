@@ -2,9 +2,11 @@ package com.yandex.navikitdemo.data
 
 import com.yandex.mapkit.MapKitFactory
 import com.yandex.mapkit.directions.driving.DrivingRoute
+import com.yandex.mapkit.location.LocationSettings
+import com.yandex.mapkit.location.LocationSettingsFactory
 import com.yandex.mapkit.location.LocationSimulator
 import com.yandex.mapkit.location.LocationSimulatorListener
-import com.yandex.mapkit.location.SimulationAccuracy
+import com.yandex.mapkit.location.SimulationSettings
 import com.yandex.navikitdemo.domain.SettingsManager
 import com.yandex.navikitdemo.domain.SimulationManager
 import com.yandex.navikitdemo.domain.utils.toMetersPerSecond
@@ -32,14 +34,15 @@ class SimulationManagerImpl @Inject constructor(
 
     override fun startSimulation(route: DrivingRoute) {
         val locationSimulator =
-            MapKitFactory.getInstance().createLocationSimulator(route.geometry).apply {
+            MapKitFactory.getInstance().createLocationSimulator().apply {
                 locationSimulatorListener = LocationSimulatorListener { stopSimulation() }
                 subscribeForSimulatorEvents(locationSimulatorListener)
-                speed = simulationSpeed
             }
         this.locationSimulator = locationSimulator
         MapKitFactory.getInstance().setLocationManager(locationSimulator)
-        locationSimulator.startSimulation(SimulationAccuracy.COARSE)
+        val locationSettings = LocationSettingsFactory.coarseSettings()
+        locationSettings.setSpeed(simulationSpeed)
+        locationSimulator.startSimulation(listOf(SimulationSettings(route.geometry, locationSettings)))
         simulationActiveImpl.value = true
     }
 

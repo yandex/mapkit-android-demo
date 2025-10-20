@@ -3,11 +3,10 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
     id 'com.google.dagger.hilt.android'
-    id 'androidx.navigation.safeargs.kotlin'
 }
 
 android {
-    namespace 'com.yandex.navikitdemo.ui'
+    namespace 'com.yandex.navikitdemo.di'
     compileSdk 35
     buildToolsVersion "35.0.0"
 
@@ -26,23 +25,19 @@ android {
     }
 
     buildFeatures {
-        viewBinding true
+        buildConfig true
     }
 }
 
 dependencies {
-    implementation "com.yandex.android:maps.mobile:4.25.0-navikit"
-
     implementation project(":com.yandex.navikitdemo.domain")
+    implementation project(":com.yandex.navikitdemo.ui")
+
+    implementation "com.yandex.maps:maps.mobile@aar"
 
     implementation "androidx.core:core-ktx:${rootProject.ext.coreKtxVersion}"
     implementation "androidx.appcompat:appcompat:${rootProject.ext.appcompatVersion}"
-    implementation "com.google.android.material:material:${rootProject.ext.materialVersion}"
-    implementation "androidx.constraintlayout:constraintlayout:${rootProject.ext.constraintlayoutVersion}"
-    implementation "androidx.fragment:fragment-ktx:${rootProject.ext.fragmentKtxVersion}"
-    implementation "androidx.navigation:navigation-fragment:${rootProject.ext.navigationVersion}"
-    implementation "androidx.navigation:navigation-ui:${rootProject.ext.navigationVersion}"
+
     implementation "com.google.dagger:hilt-android:${rootProject.ext.hiltVersion}"
     kapt "com.google.dagger:hilt-compiler:${rootProject.ext.hiltVersion}"
-    implementation "com.hannesdorfmann:adapterdelegates4:${rootProject.ext.adaptersDelegatesVersion}"
 }

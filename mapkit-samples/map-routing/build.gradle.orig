@@ -11,5 +11,5 @@ android {
 
 dependencies {
     // Add MapKit SDK full dependency
-    implementation "com.yandex.android:maps.mobile:${rootProject.ext.mapkitFullVersion}"
+    implementation(name:'maps.mobile', ext:'aar')
 }

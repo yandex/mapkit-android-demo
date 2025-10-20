@@ -15,5 +15,6 @@ dependencies {
     implementation "androidx.navigation:navigation-ui-ktx:${rootProject.ext.navigationVersion}"
 
     // Add MapKit SDK lite dependency
-    implementation "com.yandex.android:maps.mobile:${rootProject.ext.mapkitLiteVersion}"
+    implementation(name:'maps.mobile', ext:'aar')
+    implementation 'androidx.work:work-runtime:2.8.1'
 }

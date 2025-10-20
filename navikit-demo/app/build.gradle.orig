@@ -59,9 +59,9 @@ dependencies {
     implementation project(":com.yandex.navikitdemo.domain")
     implementation project(":com.yandex.navikitdemo.ui")
 
-    implementation "com.yandex.android:maps.mobile:4.25.0-navikit"
-    implementation "com.yandex.mapkit.styling:automotivenavigation:4.25.0"
-    implementation "com.yandex.mapkit.styling:roadevents:4.25.0"
+    implementation "com.yandex.maps:maps.mobile@aar"
+    implementation "com.yandex.mapkit:com.yandex.mapkit.styling.automotivenavigation@aar"
+    implementation "com.yandex.mapkit:com.yandex.mapkit.styling.roadevents@aar"
 
     implementation "androidx.appcompat:appcompat:${rootProject.ext.appcompatVersion}"
     implementation "androidx.constraintlayout:constraintlayout:${rootProject.ext.constraintlayoutVersion}"

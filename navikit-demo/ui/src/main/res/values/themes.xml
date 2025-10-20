@@ -17,5 +17,7 @@
         <item name="colorOnSecondaryContainer">@color/icons_primary</item>
 
         <item name="colorControlHighlight">@color/ripple_material_dark</item>
+
+        <item name="android:windowOptOutEdgeToEdgeEnforcement">true</item>
     </style>
 </resources>

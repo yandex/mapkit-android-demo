@@ -3,7 +3,7 @@ plugins {
 }
 
 android {
-    namespace 'com.yandex.mapkitdemo.placemark'
+    namespace 'com.yandex.mapkitdemo.interaction'
     buildFeatures {
         buildConfig true
     }
@@ -11,5 +11,5 @@ android {
 
 dependencies {
     // Add MapKit SDK lite dependency
-    implementation "com.yandex.android:maps.mobile:${rootProject.ext.mapkitLiteVersion}"
+    implementation(name:'maps.mobile', ext:'aar')
 }
