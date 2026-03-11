@@ -7,3 +7,4 @@ data class SpeakerSettings(
     val usePreRecordedAnnotations: Boolean,
     val textAnnotations: Boolean,
 )
+
