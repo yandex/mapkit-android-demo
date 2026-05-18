@@ -106,7 +106,6 @@ class UpcomingManeuverResourcesProviderImpl @Inject constructor(
             Action.EXIT_LEFT -> R.drawable.mapkit_styling_automotive_context_ra_exit_left
             Action.EXIT_RIGHT -> R.drawable.mapkit_styling_automotive_context_ra_exit_right
             Action.FINISH -> R.drawable.mapkit_styling_automotive_context_ra_finish
-            Action.UNKNOWN -> null
             Action.WAYPOINT -> null
         }
     }
