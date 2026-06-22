@@ -16,5 +16,5 @@ dependencies {
 
     // Add MapKit SDK lite dependency
     implementation(name:'maps.mobile', ext:'aar')
-    implementation 'androidx.work:work-runtime:2.8.1'
+    implementation 'androidx.work:work-runtime:2.11.1'
 }

@@ -65,6 +65,9 @@ internal val SpeakerPhraseToken.path: String
         SpeakerPhraseToken.TRAFFIC_CAMERA -> "TrafficCamera"
         SpeakerPhraseToken.POLICE_PATROL -> "PolicePatrol"
 
+        SpeakerPhraseToken.CAMERA_IN_BACK -> "CameraInBack"
+        SpeakerPhraseToken.CAMERA_IN_BOTH_DIRECTIONS -> "CameraInBothDirections"
+
         SpeakerPhraseToken.AT_MIDDLE -> "AtMiddle"
         SpeakerPhraseToken.AT_LEFT -> "AtLeft"
         SpeakerPhraseToken.AT_RIGHT -> "AtRight"
