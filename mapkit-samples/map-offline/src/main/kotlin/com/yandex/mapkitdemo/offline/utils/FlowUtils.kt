@@ -11,6 +11,7 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.channels.trySendBlocking
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
+import java.lang.ref.WeakReference
 
 /**
  * Convenient wrapper for OfflineCacheManager subscription using kotlin coroutines.
@@ -19,9 +20,9 @@ fun regionsFlow(offlineCacheManager: OfflineCacheManager): Flow<List<Region>> = 
     val listener = RegionListUpdatesListener {
         trySendBlocking(offlineCacheManager.regions())
     }
-    offlineCacheManager.addRegionListUpdatesListener(listener)
+    offlineCacheManager.addRegionListUpdatesListener(WeakReference(listener))
     trySendBlocking(offlineCacheManager.regions())
-    awaitClose { offlineCacheManager.removeRegionListUpdatesListener(listener) }
+    awaitClose { offlineCacheManager.removeRegionListUpdatesListener(WeakReference(listener)) }
 }
 
 sealed class RegionUpdates(val id: Int) {
@@ -45,8 +46,8 @@ fun regionsUpdatesFlow(offlineCacheManager: OfflineCacheManager): Flow<RegionUpd
                 )
             }
         }
-        offlineCacheManager.addRegionListener(listener)
-        awaitClose { offlineCacheManager.removeRegionListener(listener) }
+        offlineCacheManager.addRegionListener(WeakReference(listener))
+        awaitClose { offlineCacheManager.removeRegionListener(WeakReference(listener)) }
     }
 
 sealed class OfflineCacheError(val error: Error) {
@@ -65,6 +66,6 @@ fun offlineCacheErrorsFlow(offlineCacheManager: OfflineCacheManager): Flow<Offli
                 trySendBlocking(OfflineCacheError.Region(error, regionId))
             }
         }
-        offlineCacheManager.addErrorListener(listener)
-        awaitClose { offlineCacheManager.removeErrorListener(listener) }
+        offlineCacheManager.addErrorListener(WeakReference(listener))
+        awaitClose { offlineCacheManager.removeErrorListener(WeakReference(listener)) }
     }

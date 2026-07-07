@@ -23,6 +23,8 @@ import com.yandex.mapkit.user_location.UserLocationObjectListener;
 import com.yandex.mapkit.user_location.UserLocationView;
 import com.yandex.runtime.image.ImageProvider;
 
+import java.lang.ref.WeakReference;
+
 /**
  * This example shows how to display and customize user location arrow on the map.
  */
@@ -48,7 +50,7 @@ public class UserLocationActivity extends Activity implements UserLocationObject
         userLocationLayer.setVisible(true);
         userLocationLayer.setHeadingModeActive(true);
 
-        userLocationLayer.setObjectListener(this);
+        userLocationLayer.setObjectListener(new WeakReference<>(this));
     }
 
     private void requestLocationPermission() {

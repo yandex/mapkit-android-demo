@@ -12,6 +12,7 @@ import com.yandex.navikitdemo.domain.SimulationManager
 import com.yandex.navikitdemo.domain.utils.toMetersPerSecond
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import java.lang.ref.WeakReference
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -36,7 +37,7 @@ class SimulationManagerImpl @Inject constructor(
         val locationSimulator =
             MapKitFactory.getInstance().createLocationSimulator().apply {
                 locationSimulatorListener = LocationSimulatorListener { stopSimulation() }
-                subscribeForSimulatorEvents(locationSimulatorListener)
+                subscribeForSimulatorEvents(WeakReference(locationSimulatorListener))
             }
         this.locationSimulator = locationSimulator
         MapKitFactory.getInstance().setLocationManager(locationSimulator)
@@ -47,7 +48,7 @@ class SimulationManagerImpl @Inject constructor(
     }
 
     override fun stopSimulation() {
-        locationSimulator?.unsubscribeFromSimulatorEvents(locationSimulatorListener)
+        locationSimulator?.unsubscribeFromSimulatorEvents(WeakReference(locationSimulatorListener))
         locationSimulator = null
         MapKitFactory.getInstance().resetLocationManagerToDefault()
         simulationActiveImpl.value = false

@@ -32,6 +32,7 @@ import com.yandex.mapkitdemo.search.ui.details.DetailsDialogFragment
 import com.yandex.runtime.image.ImageProvider
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import java.lang.ref.WeakReference
 
 class Activity : AppCompatActivity() {
 
@@ -71,10 +72,10 @@ class Activity : AppCompatActivity() {
         mapkitVersionTextView.text = MapKitFactory.getInstance().version
 
         map.move(START_POSITION)
-        map.addCameraListener(cameraListener)
+        map.addCameraListener(WeakReference(cameraListener))
         viewModel.setVisibleRegion(map.visibleRegion)
 
-        binding.mapview.mapWindow.addSizeChangedListener(sizeChangedListener)
+        binding.mapview.mapWindow.addSizeChangedListener(WeakReference(sizeChangedListener))
         updateFocusRect()
 
         binding.apply {
@@ -167,7 +168,7 @@ class Activity : AppCompatActivity() {
             map.mapObjects.addPlacemark().apply {
                 geometry = it.point
                 setIcon(imageProvider, IconStyle().apply { scale = 0.5f })
-                addTapListener(searchResultPlacemarkTapListener)
+                addTapListener(WeakReference(searchResultPlacemarkTapListener))
                 userData = it.geoObject
             }
         }

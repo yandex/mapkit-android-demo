@@ -31,6 +31,8 @@ import com.yandex.runtime.image.ImageProvider;
 import com.yandex.runtime.network.NetworkError;
 import com.yandex.runtime.network.RemoteError;
 
+import java.lang.ref.WeakReference;
+
 /**
  * This example shows how to add and interact with a layer that displays search results on the map.
  * Note: search API calls count towards MapKit daily usage limits.
@@ -57,7 +59,7 @@ public class SearchActivity extends Activity implements Session.SearchListener, 
         searchManager = SearchFactory.getInstance().createSearchManager(SearchManagerType.COMBINED);
 
         mapView = findViewById(R.id.mapview);
-        mapView.getMapWindow().getMap().addCameraListener(this);
+        mapView.getMapWindow().getMap().addCameraListener(new WeakReference<>(this));
 
         searchEdit = findViewById(R.id.search_edit);
         searchEdit.setOnEditorActionListener(new TextView.OnEditorActionListener() {

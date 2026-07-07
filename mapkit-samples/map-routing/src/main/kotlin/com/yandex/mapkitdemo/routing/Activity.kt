@@ -32,6 +32,7 @@ import com.yandex.mapkitdemo.common.showToast
 import com.yandex.runtime.Error
 import com.yandex.runtime.image.ImageProvider
 import com.yandex.runtime.network.NetworkError
+import java.lang.ref.WeakReference;
 
 class Activity : AppCompatActivity() {
     private lateinit var mapView: MapView
@@ -82,7 +83,7 @@ class Activity : AppCompatActivity() {
         setContentView(R.layout.activity_layout)
         mapView = findViewById(R.id.mapview)
         map = mapView.mapWindow.map
-        map.addInputListener(inputListener)
+        map.addInputListener(WeakReference(inputListener))
 
         val mapkitVersionView = findViewById<LinearLayout>(R.id.mapkit_version)
         val mapkitVersionTextView =

@@ -17,6 +17,8 @@ import android.widget.ImageButton;
 import com.yandex.mapkit.traffic.TrafficLevel;
 import com.yandex.mapkit.traffic.TrafficListener;
 
+import java.lang.ref.WeakReference;
+
 public class JamsActivity extends Activity implements TrafficListener {
     private TextView levelText;
     private ImageButton levelIcon;
@@ -40,7 +42,7 @@ public class JamsActivity extends Activity implements TrafficListener {
         levelIcon = findViewById(R.id.traffic_light);
         traffic = MapKitFactory.getInstance().createTrafficLayer(mapView.getMapWindow());
         traffic.setTrafficVisible(true);
-        traffic.addTrafficListener(this);
+        traffic.addTrafficListener(new WeakReference<>(this));
         updateLevel();
     }
 

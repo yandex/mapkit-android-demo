@@ -9,6 +9,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
+import java.lang.ref.WeakReference
 import javax.inject.Inject
 
 @ActivityScoped
@@ -23,7 +24,7 @@ class MapTapManagerImpl @Inject constructor(
 
     override fun start(scope: CoroutineScope) {
         inputListener?.let {
-            map.removeInputListener(it)
+            map.removeInputListener(WeakReference(it))
         }
         inputListener = null
         val listener = object : InputListener {
@@ -35,6 +36,6 @@ class MapTapManagerImpl @Inject constructor(
             }
         }
         inputListener = listener
-        map.addInputListener(listener)
+        map.addInputListener(WeakReference(listener))
     }
 }

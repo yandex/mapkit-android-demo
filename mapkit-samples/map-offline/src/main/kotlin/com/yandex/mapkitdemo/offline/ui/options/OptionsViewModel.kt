@@ -18,6 +18,7 @@ import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
+import java.lang.ref.WeakReference
 
 private const val PROPERTIES_KEY = "propertiesKey"
 private const val AUTO_UPDATE_KEY = "autoUpdateEnabled"
@@ -71,7 +72,7 @@ class OptionsViewModel(context: Context) : ViewModel() {
     }
 
     fun movePath(path: String): Flow<MovePathState> = callbackFlow {
-        offlineCacheManager.moveData(path, object : DataMoveListener {
+        val listener = object : DataMoveListener {
             override fun onDataMoveProgress(progress: Int) {
                 trySendBlocking(MovePathState.Progress(progress))
             }
@@ -83,7 +84,8 @@ class OptionsViewModel(context: Context) : ViewModel() {
             override fun onDataMoveError(error: Error) {
                 trySendBlocking(MovePathState.Error(error))
             }
-        })
+        }
+        offlineCacheManager.moveData(path, WeakReference(listener))
         awaitClose { }
     }
 

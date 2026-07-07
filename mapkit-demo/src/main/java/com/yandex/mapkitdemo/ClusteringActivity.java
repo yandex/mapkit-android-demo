@@ -26,6 +26,7 @@ import com.yandex.mapkit.map.ClusterizedPlacemarkCollection;
 import com.yandex.mapkit.mapview.MapView;
 import com.yandex.runtime.image.ImageProvider;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -106,7 +107,7 @@ public class ClusteringActivity extends Activity implements ClusterListener, Clu
         // Note that application must retain strong references to both
         // cluster listener and cluster tap listener
         ClusterizedPlacemarkCollection clusterizedCollection =
-                mapView.getMapWindow().getMap().getMapObjects().addClusterizedPlacemarkCollection(this);
+                mapView.getMapWindow().getMap().getMapObjects().addClusterizedPlacemarkCollection(new WeakReference<>(this));
 
         List<Point> points = createPoints(PLACEMARKS_NUMBER);
         clusterizedCollection.addPlacemarks(points, imageProvider, new IconStyle());
@@ -136,7 +137,7 @@ public class ClusteringActivity extends Activity implements ClusterListener, Clu
         // We setup cluster appearance and tap handler in this method
         cluster.getAppearance().setIcon(
                 new TextImageProvider(Integer.toString(cluster.getSize())));
-        cluster.addClusterTapListener(this);
+        cluster.addClusterTapListener(new WeakReference<>(this));
     }
 
     @Override

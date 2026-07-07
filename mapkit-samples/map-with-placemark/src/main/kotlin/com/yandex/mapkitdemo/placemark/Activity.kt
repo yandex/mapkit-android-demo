@@ -13,6 +13,7 @@ import com.yandex.mapkitdemo.common.CommonDrawables
 import com.yandex.mapkitdemo.common.CommonId
 import com.yandex.mapkitdemo.common.showToast
 import com.yandex.runtime.image.ImageProvider
+import java.lang.ref.WeakReference;
 
 class Activity : AppCompatActivity() {
     private lateinit var mapView: MapView
@@ -42,7 +43,7 @@ class Activity : AppCompatActivity() {
             geometry = POINT
             setIcon(imageProvider)
         }
-        placemarkObject.addTapListener(placemarkTapListener)
+        placemarkObject.addTapListener(WeakReference(placemarkTapListener))
     }
 
     override fun onStart() {

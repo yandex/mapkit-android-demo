@@ -48,6 +48,7 @@ internal val SpeakerPhraseToken.path: String
         SpeakerPhraseToken.GONE_OFF_ROUTE -> "RouteLost"
         SpeakerPhraseToken.RETURNED_ON_ROUTE -> "RouteReturn"
         SpeakerPhraseToken.SPEED_LIMIT_EXCEEDED -> "Danger"
+        SpeakerPhraseToken.SPEED_LIMIT_AHEAD -> "SpeedLimitAhead"
         SpeakerPhraseToken.WAY_POINT_PASSED -> "RouteViaPoint"
         SpeakerPhraseToken.FASTER_ROUTE_AVAILABLE -> "FasterRouteAvailable"
         SpeakerPhraseToken.DANGER -> "DangerousRoads"
@@ -285,7 +286,6 @@ internal val SpeakerPhraseToken.path: String
         SpeakerPhraseToken.HY_NINETY_TWO -> "HyNinetyTwo"
         SpeakerPhraseToken.HY_NINETY_THREE -> "HyNinetyThree"
 
-        
         SpeakerPhraseToken.ELEVATOR_DOWN -> "ElevatorDown"
         SpeakerPhraseToken.ELEVATOR_UP -> "ElevatorUp"
         SpeakerPhraseToken.ESCALATOR -> "Escalator"

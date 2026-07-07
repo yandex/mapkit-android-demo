@@ -25,6 +25,7 @@ import com.yandex.mapkitdemo.common.CommonId
 import com.yandex.mapkitdemo.common.showToast
 import com.yandex.mapkitdemo.interaction.databinding.ActivityLayoutBinding
 import com.yandex.runtime.image.ImageProvider
+import java.lang.ref.WeakReference;
 
 class Activity : AppCompatActivity() {
 
@@ -76,11 +77,11 @@ class Activity : AppCompatActivity() {
         mapWindow = binding.mapview.mapWindow
         map = mapWindow.map
 
-        mapWindow.addSizeChangedListener(sizeChangedListener)
+        mapWindow.addSizeChangedListener(WeakReference(sizeChangedListener))
         updateFocusInfo()
 
-        map.addInputListener(inputListener)
-        map.addTapListener(geoObjectTapListener)
+        map.addInputListener(WeakReference(inputListener))
+        map.addTapListener(WeakReference(geoObjectTapListener))
 
         map.move(START_POSITION, START_ANIMATION) { showToast("Initial camera move") }
 

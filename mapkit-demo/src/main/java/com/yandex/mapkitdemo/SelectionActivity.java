@@ -17,6 +17,8 @@ import com.yandex.mapkit.map.InputListener;
 import com.yandex.mapkit.map.Map;
 import com.yandex.mapkit.mapview.MapView;
 
+import java.lang.ref.WeakReference;
+
 /**
  * This example shows how to activate selection.
  */
@@ -35,8 +37,8 @@ public class SelectionActivity extends Activity implements GeoObjectTapListener,
                 new Animation(Animation.Type.SMOOTH, 1),
                 null);
 
-        mapView.getMapWindow().getMap().addTapListener(this);
-        mapView.getMapWindow().getMap().addInputListener(this);
+        mapView.getMapWindow().getMap().addTapListener(new WeakReference<>(this));
+        mapView.getMapWindow().getMap().addInputListener(new WeakReference<>(this));
     }
 
     @Override

@@ -37,6 +37,7 @@ import com.yandex.mapkitdemo.common.showToast
 import com.yandex.runtime.image.AnimatedImageProvider
 import com.yandex.runtime.image.ImageProvider
 import com.yandex.runtime.ui_view.ViewProvider
+import java.lang.ref.WeakReference;
 
 // Minimal distance in pixels between objects that remain separate.
 private const val CLUSTER_RADIUS = 60.0
@@ -105,7 +106,7 @@ class Activity : AppCompatActivity() {
         )
         cluster.appearance.zIndex = 100f
 
-        cluster.addClusterTapListener(clusterTapListener)
+        cluster.addClusterTapListener(WeakReference(clusterTapListener))
     }
 
     private val clusterTapListener = ClusterTapListener {
@@ -160,7 +161,7 @@ class Activity : AppCompatActivity() {
             mapkitVersionView.findViewById<TextView>(CommonId.mapkit_version_value)
         mapkitVersionTextView.text = MapKitFactory.getInstance().version
 
-        mapView.mapWindow.addSizeChangedListener(mapWindowSizeChangedListener)
+        mapView.mapWindow.addSizeChangedListener(WeakReference(mapWindowSizeChangedListener))
         updateFocusRect()
 
         map.move(GeometryProvider.startPosition)
@@ -183,7 +184,7 @@ class Activity : AppCompatActivity() {
                 outlineColor = ContextCompat.getColor(this@Activity, CommonColors.black)
             }
             setStrokeColor(ContextCompat.getColor(this@Activity, CommonColors.gray))
-            addTapListener(polylineTapListener)
+            addTapListener(WeakReference(polylineTapListener))
         }
 
         // Add a circle
@@ -191,11 +192,11 @@ class Activity : AppCompatActivity() {
             strokeWidth = 2f
             strokeColor = ContextCompat.getColor(this@Activity, CommonColors.red)
             fillColor = ContextCompat.getColor(this@Activity, CommonColors.red_alpha)
-            addTapListener(circleTapListener)
+            addTapListener(WeakReference(circleTapListener))
         }
 
         // Add a clusterized collection
-        clasterizedCollection = collection.addClusterizedPlacemarkCollection(clusterListener)
+        clasterizedCollection = collection.addClusterizedPlacemarkCollection(WeakReference(clusterListener))
 
         // Add pins to the clusterized collection
 
@@ -217,10 +218,10 @@ class Activity : AppCompatActivity() {
                 // If we want to make placemarks draggable, we should call
                 // clasterizedCollection.clusterPlacemarks on onMapObjectDragEnd
                 isDraggable = true
-                setDragListener(pinDragListener)
+                setDragListener(WeakReference(pinDragListener))
                 // Put any data in MapObject
                 userData = PlacemarkUserData("Data_$index", type)
-                addTapListener(placemarkTapListener)
+                addTapListener(WeakReference(placemarkTapListener))
             }
         }
 
@@ -229,7 +230,7 @@ class Activity : AppCompatActivity() {
         // Composite placemark with text
         val placemark = collection.addPlacemark().apply {
             geometry = GeometryProvider.compositeIconPoint
-            addTapListener(singlePlacemarkTapListener)
+            addTapListener(WeakReference(singlePlacemarkTapListener))
             // Set text near the placemark with the custom TextStyle
 
             setText(
@@ -271,7 +272,7 @@ class Activity : AppCompatActivity() {
                     AnimatedImageProvider.fromAsset(this@Activity, "animation.png"),
                     IconStyle().apply { scale = 0.6f })
             }.play()
-            addTapListener(animatedPlacemarkTapListener)
+            addTapListener(WeakReference(animatedPlacemarkTapListener))
         }
 
         // Setup buttons
@@ -303,7 +304,7 @@ class Activity : AppCompatActivity() {
                 // Turned off/on visibility
                 isShowGeometryOnMap = !isShowGeometryOnMap
                 text = "${if (isShowGeometryOnMap) "Off" else "On"} geometry"
-                collection.traverse(geometryVisibilityVisitor)
+                collection.traverse(WeakReference(geometryVisibilityVisitor))
             }
         }
     }

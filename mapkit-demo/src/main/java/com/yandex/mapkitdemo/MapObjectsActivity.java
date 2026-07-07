@@ -38,6 +38,7 @@ import com.yandex.runtime.image.AnimatedImageProvider;
 import com.yandex.runtime.image.ImageProvider;
 import com.yandex.runtime.ui_view.ViewProvider;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -191,7 +192,7 @@ public class MapObjectsActivity extends Activity {
         circle.setUserData(new CircleMapObjectUserData(42, "Tappable circle"));
 
         // Client code must retain strong reference to the listener.
-        circle.addTapListener(circleMapObjectTapListener);
+        circle.addTapListener(new WeakReference<>(circleMapObjectTapListener));
     }
 
     private void createPlacemarkMapObjectWithViewProvider() {

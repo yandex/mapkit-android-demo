@@ -23,6 +23,7 @@ import com.yandex.navikitdemo.ui.R
 import com.yandex.navikitdemo.ui.settings.SettingsFragmentDirections
 import com.yandex.navikitdemo.ui.settings.settingslist.SettingsScreen
 import dagger.hilt.android.AndroidEntryPoint
+import java.lang.ref.WeakReference;
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -68,7 +69,7 @@ abstract class BaseMapFragment(@LayoutRes resId: Int) : Fragment(resId) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        mapWindow.addSizeChangedListener(sizeChangedListener)
+        mapWindow.addSizeChangedListener(WeakReference(sizeChangedListener))
         view.post { onMapWindowSizeUpdated() }
 
         mapControlsView.apply {
