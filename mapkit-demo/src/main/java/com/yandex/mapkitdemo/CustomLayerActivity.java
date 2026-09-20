@@ -17,6 +17,8 @@ import com.yandex.mapkit.tiles.UrlProvider;
 import com.yandex.mapkit.images.DefaultImageUrlProvider;
 import com.yandex.mapkit.mapview.MapView;
 
+import java.lang.ref.WeakReference;
+
 /**
  * This example shows how to add a user-defined layer to the map.
  * We use the UrlProvider class to format requests to a remote server that renders
@@ -46,8 +48,8 @@ public class CustomLayerActivity extends Activity {
                 @Override
                 public void createTileDataSource(@NonNull TileDataSourceBuilder tileDataSourceBuilder) {
                     tileDataSourceBuilder.setTileFormat(TileFormat.PNG);
-                    tileDataSourceBuilder.setTileUrlProvider(urlProvider);
-                    tileDataSourceBuilder.setImageUrlProvider(imageUrlProvider);
+                    tileDataSourceBuilder.setTileUrlProvider(new WeakReference<>(urlProvider));
+                    tileDataSourceBuilder.setImageUrlProvider(new WeakReference<>(imageUrlProvider));
                 }
         });
     }

@@ -6,7 +6,9 @@ import com.yandex.navikitdemo.annotations.api.SpeakerSettings
 import com.yandex.navikitdemo.domain.NavigationHolder
 import com.yandex.navikitdemo.domain.SettingsManager
 import com.yandex.navikitdemo.domain.SpeakerManager
+import com.yandex.mapkit.annotations.Speaker
 import dagger.hilt.android.qualifiers.ApplicationContext
+import java.lang.ref.WeakReference
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
@@ -23,6 +25,8 @@ class SpeakerManagerImpl @Inject constructor(
     private val navigationHolder: NavigationHolder,
 ) : SpeakerManager {
 
+    private var currentSpeaker: Speaker? = null
+
     override fun startIn(scope: CoroutineScope) {
         navigationHolder.navigation
             .map { it.guidance.annotator }
@@ -38,7 +42,8 @@ class SpeakerManagerImpl @Inject constructor(
                         SpeakerFactory.createSpeaker(context.applicationContext, it)
                     }
                     .onEach { speaker ->
-                        annotator.setSpeaker(speaker)
+                        currentSpeaker = speaker
+                        annotator.setSpeaker(WeakReference(speaker))
                     }
             }
             .launchIn(scope)

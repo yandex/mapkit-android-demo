@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import java.lang.ref.WeakReference
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlin.time.Duration.Companion.seconds
@@ -37,9 +38,9 @@ class LocationManagerImpl @Inject constructor(
     init {
         navigationHolder.navigation
             .onEach {
-                guidance.removeListener(guidanceListener)
+                guidance.removeListener(WeakReference(guidanceListener))
                 guidance = it.guidance
-                guidance.addListener(guidanceListener)
+                guidance.addListener(WeakReference(guidanceListener))
             }
             .launchIn(mainScope)
     }

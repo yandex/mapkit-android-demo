@@ -40,6 +40,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.plus
 import kotlinx.coroutines.withContext
+import java.lang.ref.WeakReference
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlin.time.Duration.Companion.seconds
@@ -227,15 +228,15 @@ class NavigationManagerImpl @Inject constructor(
     private fun recreateNavigation(newInstance: Navigation) {
         navigation.apply {
             suspend()
-            removeListener(navigationListener)
-            guidance.removeListener(guidanceListener)
-            guidance.windshield.removeListener(windshieldListener)
+            removeListener(WeakReference(navigationListener))
+            guidance.removeListener(WeakReference(guidanceListener))
+            guidance.windshield.removeListener(WeakReference(windshieldListener))
         }
         navigation = newInstance
         navigation.apply {
-            addListener(navigationListener)
-            guidance.addListener(guidanceListener)
-            guidance.windshield.addListener(windshieldListener)
+            addListener(WeakReference(navigationListener))
+            guidance.addListener(WeakReference(guidanceListener))
+            guidance.windshield.addListener(WeakReference(windshieldListener))
             resume()
 
             currentRouteImpl.value = guidance.currentRoute

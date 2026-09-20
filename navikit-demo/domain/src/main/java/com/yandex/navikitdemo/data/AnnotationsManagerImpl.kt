@@ -13,6 +13,7 @@ import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.plus
+import java.lang.ref.WeakReference
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -45,7 +46,7 @@ class AnnotationsManagerImpl @Inject constructor(
 
     init {
         annotator.apply {
-            addListener(annotatorListener)
+            addListener(WeakReference(annotatorListener))
         }
 
         navigationHolder.navigation
@@ -85,11 +86,11 @@ class AnnotationsManagerImpl @Inject constructor(
 
     private fun recreateAnnotator(otherAnnotator: Annotator) {
         annotator.apply {
-            removeListener(annotatorListener)
+            removeListener(WeakReference(annotatorListener))
         }
         annotator = otherAnnotator
         annotator.apply {
-            addListener(annotatorListener)
+            addListener(WeakReference(annotatorListener))
         }
     }
 

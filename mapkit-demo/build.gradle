@@ -17,12 +17,12 @@ apply plugin: "com.android.application"
 
 android {
     namespace "com.yandex.mapkitdemo"
-    compileSdkVersion 35
-    buildToolsVersion "35.0.0"
+    compileSdkVersion 36
+    buildToolsVersion "36.0.0"
 
     defaultConfig {
         minSdkVersion 26
-        targetSdkVersion 35
+        targetSdkVersion 36
     }
 
     flavorDimensions "versionName"
@@ -85,9 +85,9 @@ android {
 
 dependencies {
     // lite version provides only map and some core services.
-    liteImplementation 'com.yandex.android:maps.mobile:4.42.0-lite'
+    liteImplementation 'com.yandex.android:maps.mobile:4.45.0-lite'
     // full version provides the rest of maps API routing, panoramas, search and etc.
-    fullImplementation 'com.yandex.android:maps.mobile:4.42.0-full'
+    fullImplementation 'com.yandex.android:maps.mobile:4.45.0-full'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.1'
     implementation 'androidx.preference:preference:1.2.1'
     implementation 'com.google.android.gms:play-services-location:21.0.1'

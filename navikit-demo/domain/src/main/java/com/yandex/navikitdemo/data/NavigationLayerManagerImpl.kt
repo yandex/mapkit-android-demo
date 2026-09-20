@@ -23,6 +23,7 @@ import com.yandex.navikitdemo.domain.utils.CameraAnimations
 import dagger.hilt.android.scopes.ActivityScoped
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import java.lang.ref.WeakReference
 import javax.inject.Inject
 
 @ActivityScoped
@@ -173,16 +174,16 @@ class NavigationLayerManagerImpl @Inject constructor(
     }
 
     private fun NavigationLayer.addAllListeners() {
-        addRouteViewListener(routeViewListener)
-        addBalloonViewListener(balloonViewListener)
-        addListener(navigationLayerListener)
-        camera.addListener(cameraListener)
+        addRouteViewListener(WeakReference(routeViewListener))
+        addBalloonViewListener(WeakReference(balloonViewListener))
+        addListener(WeakReference(navigationLayerListener))
+        camera.addListener(WeakReference(cameraListener))
     }
 
     private fun NavigationLayer.removeAllListeners() {
-        camera.removeListener(cameraListener)
-        removeListener(navigationLayerListener)
-        removeBalloonViewListener(balloonViewListener)
-        removeRouteViewListener(routeViewListener)
+        camera.removeListener(WeakReference(cameraListener))
+        removeListener(WeakReference(navigationLayerListener))
+        removeBalloonViewListener(WeakReference(balloonViewListener))
+        removeRouteViewListener(WeakReference(routeViewListener))
     }
 }
